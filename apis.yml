@@ -160,7 +160,63 @@ tags:
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
-common: []
+common:
+  - name: Changelog
+    description: 'null'
+    url: https://docs.diffbot.com/changelog
+    type: ChangeLog
+  - name: Diffbot | Knowledge Graph, AI Web Data Extraction and Crawling
+    description: 'null'
+    url: https://www.diffbot.com/
+    type: Website
+  - name: Diffbot | Plans & Pricing
+    description: 'null'
+    url: https://www.diffbot.com/pricing/
+    type: Pricing
+  - name: Diffbot | Customer Stories
+    description: 'null'
+    url: https://www.diffbot.com/customer-stories/
+    type: Customers
+  - name: New to Diffbot?
+    description: 'null'
+    url: https://docs.diffbot.com/docs/getting-started-with-diffbot
+    type: Documentation
+  - name: Diffbot | Company News
+    description: 'null'
+    url: https://www.diffbot.com/company/news/
+    type: News
+  - name: Diffblog  Intelligent applications start here
+    description: 'null'
+    url: https://blog.diffbot.com/
+    type: Blog
+  - name: Diffblog  Intelligent applications start here
+    description: 'null'
+    url: https://blog.diffbot.com/
+    type: Blog
+  - name: Diffblog  Intelligent applications start here
+    description: 'null'
+    url: https://blog.diffbot.com/
+    type: Blog
+  - name: Knowledge Graph Glossary  Diffblog
+    description: 'null'
+    url: https://blog.diffbot.com/knowledge-graph-glossary/
+    type: Glossary
+  - name: Webinars  Diffblog
+    description: 'null'
+    url: https://blog.diffbot.com/webinars/
+    type: Webinars
+  - name: Diffbot | Terms & Conditions
+    description: 'null'
+    url: https://www.diffbot.com/company/terms/
+    type: TermsOfService
+  - name: Diffbot | Our Commitment to Your Privacy
+    description: 'null'
+    url: https://www.diffbot.com/company/privacy/
+    type: PrivacyPolicy
+  - name: Is Diffbot Compliant with GDPR/EU Data Laws?
+    description: 'null'
+    url: https://docs.diffbot.com/docs/is-diffbot-compliant-with-gdpr
+    type: DataLicensing
 created: '2024-11-13'
 modified: '2025-03-27'
 position: Consumer
