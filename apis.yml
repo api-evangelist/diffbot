@@ -10,8 +10,8 @@ apis:
       - Query Language
     humanURL: https://docs.diffbot.com/reference/introduction-to-search-dql
     properties:
-      url: https://docs.diffbot.com/reference/introduction-to-search-dql
-      type: Documentation
+      - url: https://docs.diffbot.com/reference/introduction-to-search-dql
+        type: Documentation
     description: >-
       The Diffbot DQL API is a powerful tool that allows users to query and
       retrieve data from the web in a structured format. By using a simple query
@@ -30,8 +30,8 @@ apis:
       - Enhancements
     humanURL: https://docs.diffbot.com/reference/introduction-to-enhance-api
     properties:
-      url: https://docs.diffbot.com/reference/introduction-to-enhance-api
-      type: Documentation
+      - url: https://docs.diffbot.com/reference/introduction-to-enhance-api
+        type: Documentation
     description: >-
       Diffbot Enhance API is a powerful tool that enhances data by providing
       additional context and insights. By analyzing text and images, the API can
@@ -52,8 +52,9 @@ apis:
       - Languages
     humanURL: https://docs.diffbot.com/reference/introduction-to-natural-language-api
     properties:
-      url: https://docs.diffbot.com/reference/introduction-to-natural-language-api
-      type: Documentation
+      - url: >-
+          https://docs.diffbot.com/reference/introduction-to-natural-language-api
+        type: Documentation
     description: >-
       Sure! Diffbot Natural Language API is a powerful tool that allows users to
       extract and analyze textual content from websites. By utilizing advanced
@@ -71,8 +72,8 @@ apis:
       - Harvesting
     humanURL: https://docs.diffbot.com/reference/extract-introduction
     properties:
-      url: https://docs.diffbot.com/reference/extract-introduction
-      type: Documentation
+      - url: https://docs.diffbot.com/reference/extract-introduction
+        type: Documentation
     description: >-
       Diffbot Extract API is a powerful tool that allows users to automatically
       extract multiple types of data from web pages. This API is capable of
@@ -91,8 +92,8 @@ apis:
       - Harvesting
     humanURL: https://docs.diffbot.com/reference/bulk-job-introduction
     properties:
-      url: https://docs.diffbot.com/reference/bulk-job-introduction
-      type: Documentation
+      - url: https://docs.diffbot.com/reference/bulk-job-introduction
+        type: Documentation
     description: >-
       Diffbot Bulk Extract API is a tool that allows users to extract data at
       scale from a variety of sources, including websites, documents, and social
@@ -112,8 +113,8 @@ apis:
       - Crawling
     humanURL: https://docs.diffbot.com/reference/crawl-introduction
     properties:
-      url: https://docs.diffbot.com/reference/crawl-introduction
-      type: Documentation
+      - url: https://docs.diffbot.com/reference/crawl-introduction
+        type: Documentation
     description: >-
       Diffbot Crawl API is a powerful tool that automates the process of
       extracting content and data from websites on a large scale. By using
@@ -136,8 +137,8 @@ apis:
       - Bulk
     humanURL: https://docs.diffbot.com/reference/search
     properties:
-      url: https://docs.diffbot.com/reference/search
-      type: Documentation
+      - url: https://docs.diffbot.com/reference/search
+        type: Documentation
     description: >-
       The Diffbot Crawl/Bulk Job API is a powerful tool that allows users to
       automatically extract and organize large amounts of web data. It enables
