@@ -4,10 +4,10 @@ apis:
   - aid: diffbot:diffbot-dql-api
     name: Diffbot DQL API
     tags:
-      - Scraping
       - Extraction
       - Harvesting
       - Query Language
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/introduction-to-search-dql
     properties:
       - url: https://docs.diffbot.com/reference/introduction-to-search-dql
@@ -22,10 +22,10 @@ apis:
   - aid: diffbot:diffbot-enhance-api
     name: Diffbot Enhance API
     tags:
-      - Scraping
+      - Enhancements
       - Extraction
       - Harvesting
-      - Enhancements
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/introduction-to-enhance-api
     properties:
       - url: https://docs.diffbot.com/reference/introduction-to-enhance-api
@@ -38,10 +38,10 @@ apis:
   - aid: diffbot:diffbot-natural-language-api
     name: Diffbot Natural Language API
     tags:
-      - Scraping
       - Extraction
       - Harvesting
       - Languages
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/introduction-to-natural-language-api
     properties:
       - url: >-
@@ -56,9 +56,9 @@ apis:
   - aid: diffbot:diffbot-extract-api
     name: Diffbot Extract API
     tags:
-      - Scraping
       - Extraction
       - Harvesting
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/extract-introduction
     properties:
       - url: https://docs.diffbot.com/reference/extract-introduction
@@ -71,9 +71,9 @@ apis:
   - aid: diffbot:diffbot-bulk-extract-api
     name: Diffbot Bulk Extract API
     tags:
-      - Scraping
       - Extraction
       - Harvesting
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/bulk-job-introduction
     properties:
       - url: https://docs.diffbot.com/reference/bulk-job-introduction
@@ -87,10 +87,10 @@ apis:
   - aid: diffbot:diffbot-crawl-api
     name: Diffbot Crawl API
     tags:
-      - Scraping
+      - Crawling
       - Extraction
       - Harvesting
-      - Crawling
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/crawl-introduction
     properties:
       - url: https://docs.diffbot.com/reference/crawl-introduction
@@ -103,11 +103,11 @@ apis:
   - aid: diffbot:diffbot-crawlbulk-job-api
     name: Diffbot Crawl/Bulk Job API
     tags:
-      - Scraping
+      - Bulk
+      - Crawling
       - Extraction
       - Harvesting
-      - Crawling
-      - Bulk
+      - Scraping
     humanURL: https://docs.diffbot.com/reference/search
     properties:
       - url: https://docs.diffbot.com/reference/search
@@ -119,9 +119,9 @@ apis:
       multiple websites in a structured and organized manner.
 name: Diffbot
 tags:
-  - Scraping
   - Extraction
   - Harvesting
+  - Scraping
   - Web
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
