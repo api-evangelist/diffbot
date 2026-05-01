@@ -176,7 +176,7 @@ common:
     url: https://docs.diffbot.com/docs/is-diffbot-compliant-with-gdpr
     type: DataLicensing
 created: '2024-11-13'
-modified: '2026-03-16'
+modified: '2026-04-28'
 position: Consumer
 description: >-
   Diffbot is a company that provides AI-powered web scraping and data extraction
