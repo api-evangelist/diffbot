@@ -1,0 +1,13 @@
+{
+  "repo": "diffbot",
+  "feeds": [
+    {
+      "source": "https://blog.diffbot.com/",
+      "feed_url": "https://blog.diffbot.com/feed/",
+      "saved": 10,
+      "title": "Diffblog"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:27:04Z"
+}
