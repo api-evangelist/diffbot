@@ -127,6 +127,10 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 common:
+  - type: GitHubOrganization
+    url: https://github.com/diffbot
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/diffbot
   - name: Changelog
     description: 'null'
     url: https://docs.diffbot.com/changelog
