@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: Diffbot API
+  description: >-
+    Diffbot's automatic web data extraction APIs. Includes the Extract family
+    (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List,
+    Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and
+    Natural Language Processing endpoints. All endpoints are authenticated via
+    a token query parameter.
+  version: "1.0"
+servers:
+  - url: https://api.diffbot.com
+    description: Diffbot API
+  - url: https://kg.diffbot.com
+    description: Diffbot Knowledge Graph
+  - url: https://nl.diffbot.com
+    description: Diffbot Natural Language
+security:
+  - tokenAuth: []
+tags:
+  - name: Extract
+  - name: Knowledge Graph
+  - name: Crawl
+  - name: Natural Language
+paths:
+  /v3/analyze:
+    get:
+      tags: [Extract]
+      summary: Analyze a page and extract structured data
+      operationId: analyze
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Extracted data
+  /v3/article:
+    get:
+      tags: [Extract]
+      summary: Extract article content
+      operationId: article
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Article data
+  /v3/product:
+    get:
+      tags: [Extract]
+      summary: Extract product details
+      operationId: product
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Product data
+  /v3/image:
+    get:
+      tags: [Extract]
+      summary: Extract image metadata
+      operationId: image
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Image data
+  /v3/discussion:
+    get:
+      tags: [Extract]
+      summary: Extract reviews and discussion content
+      operationId: discussion
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Discussion data
+  /v3/video:
+    get:
+      tags: [Extract]
+      summary: Extract video metadata
+      operationId: video
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Video data
+  /v3/event:
+    get:
+      tags: [Extract]
+      summary: Extract event details
+      operationId: event
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Event data
+  /v3/job:
+    get:
+      tags: [Extract]
+      summary: Extract job posting details
+      operationId: job
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Job data
+  /v3/list:
+    get:
+      tags: [Extract]
+      summary: Extract list items
+      operationId: list
+      parameters:
+        - $ref: '#/components/parameters/Url'
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: List data
+  /kg/v3/dql:
+    get:
+      tags: [Knowledge Graph]
+      summary: Query the Knowledge Graph using DQL
+      operationId: dqlSearch
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: DQL query string
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Query results
+  /kg/v3/enhance:
+    get:
+      tags: [Knowledge Graph]
+      summary: Enhance a person or organization record
+      operationId: enhance
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Person, Organization]
+        - name: name
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Enhanced record
+  /v3/crawl:
+    get:
+      tags: [Crawl]
+      summary: Manage a crawl job (create, pause, restart, delete, status)
+      operationId: crawl
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: seeds
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Crawl status
+  /v3/crawl/data:
+    get:
+      tags: [Crawl]
+      summary: Retrieve crawl extraction results
+      operationId: crawlData
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Crawl data
+  /v1/:
+    post:
+      tags: [Natural Language]
+      summary: Process raw text and extract entities/relationships
+      operationId: nl
+      parameters:
+        - $ref: '#/components/parameters/Token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                lang:
+                  type: string
+      responses:
+        '200':
+          description: Entities and relationships
+components:
+  parameters:
+    Url:
+      name: url
+      in: query
+      required: true
+      schema:
+        type: string
+        format: uri
+    Token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
