@@ -179,6 +179,8 @@ common:
     description: 'null'
     url: https://docs.diffbot.com/docs/is-diffbot-compliant-with-gdpr
     type: DataLicensing
+  - type: LLMsTxt
+    url: https://docs.diffbot.com/llms.txt
 created: '2024-11-13'
 modified: '2026-04-28'
 position: Consumer
