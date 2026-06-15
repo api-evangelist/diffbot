@@ -1,0 +1,382 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Diffbot API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "token",
+      "value": "{{token}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extract",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Analyze a page and extract structured data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/analyze",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Analyze a page and extract structured data"
+        },
+        {
+          "info": {
+            "name": "Extract article content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/article",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract article content"
+        },
+        {
+          "info": {
+            "name": "Extract product details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/product",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract product details"
+        },
+        {
+          "info": {
+            "name": "Extract image metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/image",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract image metadata"
+        },
+        {
+          "info": {
+            "name": "Extract reviews and discussion content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/discussion",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract reviews and discussion content"
+        },
+        {
+          "info": {
+            "name": "Extract video metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/video",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract video metadata"
+        },
+        {
+          "info": {
+            "name": "Extract event details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/event",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract event details"
+        },
+        {
+          "info": {
+            "name": "Extract job posting details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/job",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract job posting details"
+        },
+        {
+          "info": {
+            "name": "Extract list items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/list",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract list items"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Knowledge Graph",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query the Knowledge Graph using DQL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/kg/v3/dql",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "DQL query string"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Query the Knowledge Graph using DQL"
+        },
+        {
+          "info": {
+            "name": "Enhance a person or organization record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/kg/v3/enhance",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Enhance a person or organization record"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Crawl",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Manage a crawl job (create, pause, restart, delete, status)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/crawl",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "seeds",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Manage a crawl job (create, pause, restart, delete, status)"
+        },
+        {
+          "info": {
+            "name": "Retrieve crawl extraction results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/crawl/data",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve crawl extraction results"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Natural Language",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Process raw text and extract entities/relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.diffbot.com/v1/",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Process raw text and extract entities/relationships"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
