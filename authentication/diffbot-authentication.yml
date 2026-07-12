@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/diffbot-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - query
+schemes:
+- name: tokenAuth
+  type: apiKey
+  in: query
+  parameter: token
+  sources:
+  - openapi/diffbot-openapi.yml
