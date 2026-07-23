@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: Diffbot Crawl Natural Language API
+  description: Diffbot's automatic web data extraction APIs. Includes the Extract family (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List, Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and Natural Language Processing endpoints. All endpoints are authenticated via a token query parameter.
+  version: '1.0'
+servers:
+- url: https://api.diffbot.com
+  description: Diffbot API
+- url: https://kg.diffbot.com
+  description: Diffbot Knowledge Graph
+- url: https://nl.diffbot.com
+  description: Diffbot Natural Language
+security:
+- tokenAuth: []
+tags:
+- name: Natural Language
+paths:
+  /v1/:
+    post:
+      tags:
+      - Natural Language
+      summary: Process raw text and extract entities/relationships
+      operationId: nl
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                lang:
+                  type: string
+      responses:
+        '200':
+          description: Entities and relationships
+components:
+  parameters:
+    Token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token

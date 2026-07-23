@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  title: Diffbot Crawl Knowledge Graph API
+  description: Diffbot's automatic web data extraction APIs. Includes the Extract family (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List, Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and Natural Language Processing endpoints. All endpoints are authenticated via a token query parameter.
+  version: '1.0'
+servers:
+- url: https://api.diffbot.com
+  description: Diffbot API
+- url: https://kg.diffbot.com
+  description: Diffbot Knowledge Graph
+- url: https://nl.diffbot.com
+  description: Diffbot Natural Language
+security:
+- tokenAuth: []
+tags:
+- name: Knowledge Graph
+paths:
+  /kg/v3/dql:
+    get:
+      tags:
+      - Knowledge Graph
+      summary: Query the Knowledge Graph using DQL
+      operationId: dqlSearch
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+        description: DQL query string
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Query results
+  /kg/v3/enhance:
+    get:
+      tags:
+      - Knowledge Graph
+      summary: Enhance a person or organization record
+      operationId: enhance
+      parameters:
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - Person
+          - Organization
+      - name: name
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Enhanced record
+components:
+  parameters:
+    Token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token

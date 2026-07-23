@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Diffbot Crawl Extract API
+  description: Diffbot's automatic web data extraction APIs. Includes the Extract family (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List, Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and Natural Language Processing endpoints. All endpoints are authenticated via a token query parameter.
+  version: '1.0'
+servers:
+- url: https://api.diffbot.com
+  description: Diffbot API
+- url: https://kg.diffbot.com
+  description: Diffbot Knowledge Graph
+- url: https://nl.diffbot.com
+  description: Diffbot Natural Language
+security:
+- tokenAuth: []
+tags:
+- name: Extract
+paths:
+  /v3/analyze:
+    get:
+      tags:
+      - Extract
+      summary: Analyze a page and extract structured data
+      operationId: analyze
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Extracted data
+  /v3/article:
+    get:
+      tags:
+      - Extract
+      summary: Extract article content
+      operationId: article
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Article data
+  /v3/product:
+    get:
+      tags:
+      - Extract
+      summary: Extract product details
+      operationId: product
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Product data
+  /v3/image:
+    get:
+      tags:
+      - Extract
+      summary: Extract image metadata
+      operationId: image
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Image data
+  /v3/discussion:
+    get:
+      tags:
+      - Extract
+      summary: Extract reviews and discussion content
+      operationId: discussion
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Discussion data
+  /v3/video:
+    get:
+      tags:
+      - Extract
+      summary: Extract video metadata
+      operationId: video
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Video data
+  /v3/event:
+    get:
+      tags:
+      - Extract
+      summary: Extract event details
+      operationId: event
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Event data
+  /v3/job:
+    get:
+      tags:
+      - Extract
+      summary: Extract job posting details
+      operationId: job
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Job data
+  /v3/list:
+    get:
+      tags:
+      - Extract
+      summary: Extract list items
+      operationId: list
+      parameters:
+      - $ref: '#/components/parameters/Url'
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: List data
+components:
+  parameters:
+    Token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
+    Url:
+      name: url
+      in: query
+      required: true
+      schema:
+        type: string
+        format: uri
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token

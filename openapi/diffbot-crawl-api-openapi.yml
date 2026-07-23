@@ -1,0 +1,65 @@
+openapi: 3.1.0
+info:
+  title: Diffbot Crawl API
+  description: Diffbot's automatic web data extraction APIs. Includes the Extract family (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List, Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and Natural Language Processing endpoints. All endpoints are authenticated via a token query parameter.
+  version: '1.0'
+servers:
+- url: https://api.diffbot.com
+  description: Diffbot API
+- url: https://kg.diffbot.com
+  description: Diffbot Knowledge Graph
+- url: https://nl.diffbot.com
+  description: Diffbot Natural Language
+security:
+- tokenAuth: []
+tags:
+- name: Crawl
+paths:
+  /v3/crawl:
+    get:
+      tags:
+      - Crawl
+      summary: Manage a crawl job (create, pause, restart, delete, status)
+      operationId: crawl
+      parameters:
+      - name: name
+        in: query
+        schema:
+          type: string
+      - name: seeds
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Crawl status
+  /v3/crawl/data:
+    get:
+      tags:
+      - Crawl
+      summary: Retrieve crawl extraction results
+      operationId: crawlData
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '200':
+          description: Crawl data
+components:
+  parameters:
+    Token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
