@@ -1,0 +1,233 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Diffbot Crawl Extract API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "token",
+      "value": "{{token}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extract",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Analyze a page and extract structured data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/analyze",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Analyze a page and extract structured data"
+        },
+        {
+          "info": {
+            "name": "Extract article content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/article",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract article content"
+        },
+        {
+          "info": {
+            "name": "Extract product details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/product",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract product details"
+        },
+        {
+          "info": {
+            "name": "Extract image metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/image",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract image metadata"
+        },
+        {
+          "info": {
+            "name": "Extract reviews and discussion content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/discussion",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract reviews and discussion content"
+        },
+        {
+          "info": {
+            "name": "Extract video metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/video",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract video metadata"
+        },
+        {
+          "info": {
+            "name": "Extract event details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/event",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract event details"
+        },
+        {
+          "info": {
+            "name": "Extract job posting details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/job",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract job posting details"
+        },
+        {
+          "info": {
+            "name": "Extract list items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.diffbot.com/v3/list",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract list items"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

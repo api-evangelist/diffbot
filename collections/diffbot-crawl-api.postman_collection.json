@@ -1,0 +1,225 @@
+{
+  "item": [
+    {
+      "id": "dac3e3fc-e823-4930-a2d1-301ee27361a4",
+      "name": "Crawl",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "30bb879e-19dc-47f7-9f5b-71b1f79b9769",
+          "name": "Manage a crawl job (create, pause, restart, delete, status)",
+          "request": {
+            "name": "Manage a crawl job (create, pause, restart, delete, status)",
+            "description": {},
+            "url": {
+              "path": [
+                "v3",
+                "crawl"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "seeds",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f55c2011-ab61-4eee-a4af-58b94b67d8f4",
+              "name": "Crawl status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "crawl"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "seeds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a797873-9b41-4830-881c-b55f0ff7d400",
+          "name": "Retrieve crawl extraction results",
+          "request": {
+            "name": "Retrieve crawl extraction results",
+            "description": {},
+            "url": {
+              "path": [
+                "v3",
+                "crawl",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c668cee1-67a4-4351-bda8-9bda161bc40e",
+              "name": "Crawl data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "crawl",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.diffbot.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "token"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "77ae958c-b750-4c7b-9d86-ac95c60aa622",
+    "name": "Diffbot Crawl API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Diffbot's automatic web data extraction APIs. Includes the Extract family (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List, Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and Natural Language Processing endpoints. All endpoints are authenticated via a token query parameter.",
+      "type": "text/plain"
+    }
+  }
+}

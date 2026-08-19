@@ -1,0 +1,228 @@
+{
+  "item": [
+    {
+      "id": "ca6f3b3c-14fd-4ddf-b2f5-d0dec3b9031c",
+      "name": "Knowledge Graph",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ec1557a2-d63f-482d-8ee0-46b1867b0318",
+          "name": "Query the Knowledge Graph using DQL",
+          "request": {
+            "name": "Query the Knowledge Graph using DQL",
+            "description": {},
+            "url": {
+              "path": [
+                "kg",
+                "v3",
+                "dql"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>",
+                  "description": "(Required) DQL query string"
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ba9da76a-b747-416e-bfd8-173ab498e73d",
+              "name": "Query results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "kg",
+                    "v3",
+                    "dql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a83e30e6-4117-476e-9a1e-91e3d88c9541",
+          "name": "Enhance a person or organization record",
+          "request": {
+            "name": "Enhance a person or organization record",
+            "description": {},
+            "url": {
+              "path": [
+                "kg",
+                "v3",
+                "enhance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "132eb768-41c1-4c60-9046-f6191f822b69",
+              "name": "Enhanced record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "kg",
+                    "v3",
+                    "enhance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.diffbot.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "token"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "125b1a67-d0b3-4ef3-8ab0-946a153d3e35",
+    "name": "Diffbot Crawl Knowledge Graph API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Diffbot's automatic web data extraction APIs. Includes the Extract family (Analyze, Article, Product, Image, Job, Video, Discussion, Event, List, Custom), Knowledge Graph (DQL Search, Enhance, Bulk Enhance), Crawl, and Natural Language Processing endpoints. All endpoints are authenticated via a token query parameter.",
+      "type": "text/plain"
+    }
+  }
+}

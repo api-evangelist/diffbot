@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Diffbot Crawl Natural Language API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "token",
+      "value": "{{token}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Natural Language",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Process raw text and extract entities/relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.diffbot.com/v1/",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Process raw text and extract entities/relationships"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
