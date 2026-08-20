@@ -37,6 +37,11 @@ apis:
   tags:
   - Extraction
   - Harvesting
+  - Language
+  - Scraping
+  tags_raw:
+  - Extraction
+  - Harvesting
   - Languages
   - Scraping
   humanURL: https://docs.diffbot.com/reference/introduction-to-natural-language-api
@@ -139,6 +144,8 @@ apis:
   description: The Natural Language API from Diffbot — 1 operation(s) for natural language.
   humanURL: https://docs.diffbot.com/reference/introduction-to-search-dql
   tags:
+  - Natural-Language
+  tags_raw:
   - Natural Language
   properties:
   - type: OpenAPI
