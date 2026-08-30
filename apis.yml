@@ -144,7 +144,7 @@ apis:
   description: The Natural Language API from Diffbot — 1 operation(s) for natural language.
   humanURL: https://docs.diffbot.com/reference/introduction-to-search-dql
   tags:
-  - Natural-Language
+  - Natural Language
   tags_raw:
   - Natural Language
   properties:
