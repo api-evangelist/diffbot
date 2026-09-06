@@ -1,0 +1,123 @@
+generated: '2026-09-06'
+method: probed
+source: >-
+  https://github.com/diffbot/diffbot-mcp (README, pyproject.toml) and a live anonymous
+  MCP session against https://mcp.diffbot.com/mcp — initialize + tools/list, 2026-09-06.
+provider: Diffbot
+providerId: diffbot
+name: Diffbot MCP Server
+description: >-
+  Diffbot's first-party MCP server. Exposes the Extract, Web Search, Knowledge Graph
+  (Enhance / DQL), Crawl and Natural Language surfaces as seven agent tools. Diffbot
+  operates a hosted remote endpoint and also ships the same server as a local stdio
+  process from the diffbot-mcp repository — the repo deploys directly to the remote.
+status: published
+deployment:
+  mode: both
+  endpoint: https://mcp.diffbot.com/mcp
+  install: python3 diffbot_mcp_server.py
+  package: https://github.com/diffbot/diffbot-mcp
+  auth: api-key
+  verified: probed
+  note: >-
+    Remote: an MCP client POSTs to https://mcp.diffbot.com/mcp with the Diffbot token
+    supplied as a ?token= query parameter. Local: clone the repo, `pip install .`, then
+    run diffbot_mcp_server.py over stdio with DIFFBOT_TOKEN in the environment; a Dockerfile
+    is provided. Both are documented by Diffbot in the repository README. The package is
+    NOT on PyPI (404 as of 2026-09-06), so `pip install diffbot-mcp` does not work.
+x-evidence:
+  fetched: '2026-09-06'
+  initialize:
+    url: https://mcp.diffbot.com/mcp
+    method: POST
+    http_status: 200
+    content_type: text/event-stream
+    server_info:
+      name: Diffbot MCP Server
+      version: 2.14.7
+    protocol_version: '2025-06-18'
+  tools_list:
+    url: https://mcp.diffbot.com/mcp
+    method: POST
+    http_status: 200
+    tool_count: 7
+    file: mcp/diffbot-mcp-tools.json
+    note: >-
+      tools/list answered anonymously after the standard initialize handshake, so the real
+      inputSchema for every tool was captured without a token. Tool CALLS still require a
+      Diffbot token. prompts/list and resources/list both returned empty arrays.
+  well_known:
+    probes:
+      - url: https://mcp.diffbot.com/.well-known/oauth-protected-resource
+        http_status: 404
+      - url: https://mcp.diffbot.com/.well-known/oauth-authorization-server
+        http_status: 404
+    note: >-
+      No OAuth discovery documents — the server authenticates with a Diffbot API token,
+      not an OAuth flow, so RFC 9728 metadata is correctly absent rather than missing.
+transport:
+  - streamable-http
+  - stdio
+runtime: fastmcp 2.14.7
+authentication:
+  type: api-key
+  parameter: token
+  location: query (remote) / DIFFBOT_TOKEN environment variable (local stdio)
+  signup: https://app.diffbot.com/get-started
+tools:
+  - name: extract
+    summary: >-
+      Fetch a URL and return structured JSON or markdown. Positioned by Diffbot as a
+      replacement for a generic web_fetch tool, optimized for token economy.
+    required: [url]
+    parameters: [url, page_type, format]
+    output_schema: true
+  - name: search_web
+    summary: >-
+      Web search over Diffbot's own index, reranked for factual relevance and primary
+      sources rather than popularity. Returns markdown content chunks for citation.
+    required: [query]
+    parameters: [query]
+    output_schema: true
+  - name: enhance
+    summary: >-
+      Look up an organization or person in the Knowledge Graph by name, URL, location,
+      email, employer, title or school and return the full entity record.
+    required: [type]
+    parameters: [type, name, url, location, email, employer, job_title, school]
+    output_schema: true
+  - name: resolve_entities
+    summary: >-
+      Identify named entities in a block of text and resolve each to a Knowledge Graph
+      entity with confidence, salience and sentiment.
+    required: [text]
+    parameters: [text, lang]
+    output_schema: true
+  - name: crawl
+    summary: >-
+      Crawl a site and extract every page it visits. Runs as a background job; the tool
+      also manages and retrieves those jobs.
+    required: []
+    parameters: [action, url, job_name, hops, max_to_crawl, max_to_process, restrict_domain, url_crawl_pattern, url_process_pattern, obey_robots, use_proxies, crawl_delay, page_type, format, max_results, offset]
+    output_schema: true
+  - name: dql
+    summary: >-
+      Query the Knowledge Graph with DQL for set-shaped questions over organizations,
+      people, articles and products.
+    required: [query]
+    parameters: [query, size, offset, fields, hits_only]
+    output_schema: true
+  - name: dql_ontology
+    summary: >-
+      Look up entity types, fields, taxonomies and enums so a dql query can be written
+      against field paths that actually exist.
+    required: [action]
+    parameters: [action, name, search, limit]
+    output_schema: true
+documentation:
+  - https://github.com/diffbot/diffbot-mcp
+  - https://www.diffbot.com/docs/interfaces/agent-skills
+maintainer:
+  note: >-
+    The repository README names @jeromechoo as the builder and maintainer, with
+    sales@diffbot.com as the faster support path.

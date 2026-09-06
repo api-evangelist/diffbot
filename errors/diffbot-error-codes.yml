@@ -1,0 +1,177 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.diffbot.com/docs/extract/errors/ (401, 404-could-not-download-page, 429, 457,
+  500-too-many-requests, 500-unable-to-apply-rules, automatic-page-concatenation-timeout),
+  https://www.diffbot.com/changelog/2026-03-03-optional-param-noredirects, and the 4xx/5xx
+  responses declared in the eight first-party OpenAPI documents in openapi/_original/.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Diffbot's error catalog. Two things an agent must internalise before writing a retry loop:
+  the envelope is proprietary rather than RFC 9457, and `errorCode` in the body is NOT
+  reliably the HTTP status — Diffbot returns HTTP 500 for conditions other APIs express as
+  429, and uses a non-standard 457.
+format: proprietary
+rfc9457: false
+envelope:
+  content_type: application/json
+  shape: '{"errorCode": <integer>, "error": "<human-readable message>"}'
+  variant: >-
+    The api.diffbot.com and nl.diffbot.com gateways sometimes emit
+    {"requestId": "...", "code": <int>, "message": "..."} instead of the errorCode/error
+    pair — observed live on unauthenticated requests. Both shapes are in production, so a
+    parser must handle `errorCode`/`error` and `code`/`message`.
+problem_types:
+  - code: 401
+    http_status: 401
+    title: Not authorized API token
+    message: Not authorized API token.
+    cause: The supplied token is missing, malformed, or not authorized for this request.
+    remediation: >-
+      Check for a stray space in the token. Verify the token on the dashboard token page.
+      Note the Web Search API expects Authorization Bearer, not ?token=.
+    retryable: false
+    docs: https://www.diffbot.com/docs/extract/errors/401
+  - code: 404
+    http_status: 404
+    title: Could not download page
+    message: Could not download page (404)
+    cause: >-
+      The target website is slow, down, or is blocking Diffbot's crawlers. This describes the
+      page being extracted, not the Diffbot endpoint.
+    remediation: >-
+      Retry with &proxy to rotate IPs (counts as a double call / 2 credits), add a render
+      delay, or supply the HTML directly.
+    retryable: true
+    docs: https://www.diffbot.com/docs/extract/errors/404-could-not-download-page
+  - code: 429
+    http_status: 429
+    title: Site has received too many requests
+    message: Site has received too many requests. Please try again later.
+    cause: >-
+      The caller exceeded the plan's calls-per-second rate limit. Also returned as
+      "429 Quota Exceeded" on the Free plan once the 10,000-credit monthly allowance is spent.
+    remediation: >-
+      Stop calling for one second, then resume. For parallel callers, sleep 1/n seconds per
+      call where n is the plan's calls-per-second, or implement exponential backoff. NOTE:
+      Diffbot returns NO Retry-After header, so the backoff interval must be client-chosen.
+    retryable: true
+    docs: https://www.diffbot.com/docs/extract/errors/429
+  - code: 457
+    http_status: 457
+    title: Invalid API
+    message: >-
+      Invalid API. Make sure the api is valid. Check that it does not contain any unnecessary
+      trailing backslashes.
+    cause: >-
+      The API name in the path is neither a standard Extract entity type nor a Custom API the
+      token owns. 457 is not an IANA-registered status code — it is Diffbot-specific.
+    remediation: Use one of the documented Extract page types, or create the Custom API first.
+    retryable: false
+    docs: https://www.diffbot.com/docs/extract/errors/457
+  - code: 500
+    http_status: 500
+    title: Site has received too many requests (Diffbot-wide throttle)
+    message: Site has received too many requests. Please try again later.
+    cause: >-
+      Aggregate Diffbot traffic to the target site is high enough to risk a permanent block,
+      so Diffbot deliberately throttles everyone. Common on Walmart, Amazon, BestBuy.
+      Distinct from the 429 above, which is the caller's own rate limit.
+    remediation: >-
+      Wait several minutes; or use a whitelisted user agent via Custom Extract API; or send
+      the HTML directly instead of a URL.
+    retryable: true
+    docs: https://www.diffbot.com/docs/extract/errors/500-too-many-requests
+  - code: 500
+    http_status: 500
+    title: Unable to apply rules
+    message: Unable to apply rules. One or more rules could not be applied.
+    cause: >-
+      Custom API only. The custom rule targets an element that does not exist on the page and
+      no other valid field was extracted.
+    remediation: >-
+      Add a wildcard field to the ruleset (e.g. a `title` field with a `title` selector) so
+      every page yields at least one value.
+    retryable: false
+    docs: https://www.diffbot.com/docs/extract/errors/500-unable-to-apply-rules
+  - code: 500
+    http_status: 500
+    title: Redirect required (noredirects)
+    message: >-
+      This page requires a redirect. Please retry with redirects enabled if this url needs to
+      be extracted.
+    cause: >-
+      The request used the noredirects parameter and the URL requires a redirect to reach
+      content. The final redirected URL is not returned.
+    remediation: Re-issue without noredirects, or accept the non-extraction as the intended outcome.
+    retryable: false
+    docs: https://www.diffbot.com/changelog/2026-03-03-optional-param-noredirects
+  - code: 505
+    http_status: 505
+    title: Job name rejected / crawl limit reached
+    message: >-
+      Crawl: too many collections for token — the 1,000-crawl limit has been reached.
+      Bulk: job name rejected — names can consist only of letters, numbers and characters.
+    cause: >-
+      Declared in openapi/_original/diffbot-crawl-openapi.json and diffbot-bulk-openapi.json
+      as the 505 response on the create operations.
+    remediation: Delete unused jobs, or supply a job name matching the permitted character set.
+    retryable: false
+    source: openapi/_original/diffbot-crawl-openapi.json
+  - code: 400
+    http_status: 400
+    title: Bad request
+    message: 'Varies: "No job found by that name", "Error parsing request", DQL syntax errors.'
+    cause: Malformed query, unknown job name, or unparseable request body.
+    remediation: Validate the DQL against dql_ontology / db dql ontology before submitting.
+    retryable: false
+    source: openapi/_original/diffbot-dql-openapi.json
+  - code: 404
+    http_status: 404
+    title: Bulkjob or report not found
+    message: Bulkjob not found / Report not found
+    cause: The bulkjobId or reportId does not exist for this token.
+    remediation: List bulkjobs for the token first (bulkjobStatusForToken).
+    retryable: false
+    source: openapi/_original/diffbot-enhance-openapi.json
+  - code: 422
+    http_status: 422
+    title: Unprocessable DQL query
+    cause: Declared on all four DQL operations; the query parsed but cannot be executed.
+    remediation: Simplify the query; confirm field paths exist via the ontology.
+    retryable: false
+    source: openapi/_original/diffbot-dql-openapi.json
+  - code: 429
+    http_status: 429
+    title: Insufficient credits
+    message: Insufficient credits
+    cause: >-
+      Enhance-specific. Declared on every Enhance operation. Diffbot bills Enhance only when
+      a match is found (25 credits, 100 with refresh).
+    remediation: Upgrade the plan or wait for the monthly credit refresh.
+    retryable: false
+    source: openapi/_original/diffbot-enhance-openapi.json
+non_error_conditions:
+  - title: Automatic page-concatenation timeout
+    docs: https://www.diffbot.com/docs/extract/errors/automatic-page-concatenation-timeout
+    note: Documented under the errors section but describes a partial-result condition, not a status code.
+job_status_codes:
+  note: >-
+    Crawl and Bulk jobs report progress through a jobStatus object rather than an HTTP error.
+    An agent polling a job must read these, not the status line.
+  docs: https://www.diffbot.com/docs/crawl/manage
+  codes:
+    0: Job is initializing
+    1: Job has reached maxRounds limit
+    2: Job has reached maxToCrawl limit
+    3: Job has reached maxToProcess limit
+    4: Next round to start in _ seconds
+    5: No URLs were added to the crawl
+    6: Job paused
+    7: Job in progress
+    8: All crawling temporarily paused by root administrator for maintenance
+    9: Job has completed and no repeat is scheduled
+    10: Failed to crawl any seed
+    11: Job automatically paused because crawl is inefficient
+support: support@diffbot.com

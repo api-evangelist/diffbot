@@ -1,15 +1,121 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/diffbot-openapi.yml
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.diffbot.com/docs/authentication, https://www.diffbot.com/docs/account-billing/multiple-tokens,
+  and the securitySchemes blocks of the eight first-party OpenAPI documents in
+  openapi/_original/ (harvested from https://www.diffbot.com/openapi/*.json).
+docs: https://www.diffbot.com/docs/authentication
+provider: Diffbot
+providerId: diffbot
+description: >-
+  One credential covers the whole Diffbot estate, but it is presented two different ways.
+  Six of seven surfaces take it as a `token` query parameter; the Web Search API takes the
+  same value as an HTTP Bearer header. There is no OAuth, no OIDC, and no scope system.
 summary:
   types:
-  - apiKey
+    - apiKey
+    - http
   api_key_in:
-  - query
+    - query
+  http_schemes:
+    - bearer
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+  scopes: false
 schemes:
-- name: tokenAuth
-  type: apiKey
-  in: query
-  parameter: token
-  sources:
-  - openapi/diffbot-openapi.yml
+  - name: tokenscheme
+    type: apiKey
+    in: query
+    parameter: token
+    description: Your Diffbot API token.
+    applies_to:
+      - Extract APIs (https://api.diffbot.com/v3)
+      - Crawl API (https://api.diffbot.com/v3)
+      - Bulk Extract API (https://api.diffbot.com/v3)
+      - Account API (https://api.diffbot.com/v4)
+      - DQL API (https://kg.diffbot.com)
+      - ENHANCE API (https://kg.diffbot.com)
+    sources:
+      - openapi/_original/diffbot-extract-openapi.json
+      - openapi/_original/diffbot-crawl-openapi.json
+      - openapi/_original/diffbot-bulk-openapi.json
+      - openapi/_original/diffbot-account-openapi.json
+      - openapi/_original/diffbot-dql-openapi.json
+      - openapi/_original/diffbot-enhance-openapi.json
+  - name: DiffbotToken
+    type: apiKey
+    in: query
+    parameter: token
+    applies_to:
+      - Natural Language API (https://nl.diffbot.com)
+    sources:
+      - openapi/_original/diffbot-natural-language-openapi.json
+    note: >-
+      Same credential, different scheme name — the Natural Language contract is still
+      Swagger 2.0 and names its securityDefinition DiffbotToken.
+  - name: Authorization
+    type: http
+    scheme: bearer
+    header: Authorization
+    description: Diffbot API Token
+    applies_to:
+      - Web Search API (https://llm.diffbot.com/api/v1/web_search)
+      - Diffbot LLM (https://llm.diffbot.com/v1)
+    sources:
+      - openapi/_original/diffbot-web-search-openapi.json
+    note: >-
+      THE DIVERGENCE. Same token value, carried as `Authorization: Bearer <token>` instead
+      of ?token=. Confirmed in the published contract and in the curl example at
+      https://www.diffbot.com/docs/web-search/get. An agent that hard-codes the query
+      parameter across the estate will get a 401 on Web Search and on the LLM endpoint.
+token_management:
+  issuance: >-
+    A token is created on registration; a free one at https://app.diffbot.com/get-started.
+  dashboard: https://app.diffbot.com/
+  child_tokens: true
+  child_tokens_note: >-
+    Additional tokens can be generated under a parent token, so usage can be segmented per
+    application or team. https://www.diffbot.com/docs/account-billing/multiple-tokens
+  labelling_and_disabling: true
+  labelling_note: >-
+    Tokens can be labelled and disabled from the dashboard — shipped 2025-06-30 per the
+    changelog. This is the closest thing to a revocation control.
+  rotation_policy_published: false
+  expiry: none
+  introspection_endpoint: >-
+    GET https://api.diffbot.com/v4/account returns token details and usage
+    (operationId `account`, openapi/_original/diffbot-account-openapi.json).
+sdk_resolution:
+  order:
+    - explicit token argument
+    - DIFFBOT_API_TOKEN environment variable
+    - a DIFFBOT_API_TOKEN=... line in ~/.diffbot/credentials
+  note: >-
+    diffbot-python's resolve_token() and @diffbot/typescript's resolveTokenFromEnv() share
+    this order, and the CLI uses the same path. Diffbot documents chmod 600 on the
+    credentials file.
+risks:
+  - id: token-in-query-string
+    severity: medium
+    finding: >-
+      Six of seven surfaces carry the credential in the URL, so it is exposed to proxy logs,
+      server access logs, browser history and Referer headers. Diffbot's own documentation
+      examples show the token inline in curl URLs.
+    mitigation: >-
+      Use child tokens scoped per application and disable them from the dashboard when
+      leaked; there is no scope system to limit blast radius.
+  - id: no-scopes
+    severity: medium
+    finding: >-
+      A token is all-or-nothing across Extract, Crawl, Bulk, Knowledge Graph, Natural
+      Language, Web Search and Account. There is no read-only credential, so an agent given a
+      token to run searches can also delete crawl jobs — an irreversible action per
+      conventions/diffbot-conventions.yml.
+  - id: no-oauth
+    severity: low
+    finding: >-
+      No delegated-authorization path exists, so Diffbot cannot be integrated on behalf of a
+      third-party user without sharing that user's raw token. No /.well-known/
+      openid-configuration or oauth-authorization-server on any host — see
+      well-known/diffbot-well-known.yml.

@@ -1,0 +1,209 @@
+generated: '2026-09-06'
+method: derived
+source: >-
+  mcp/diffbot-mcp-tools.json (live anonymous tools/list against https://mcp.diffbot.com/mcp,
+  2026-09-06) bound against the eight first-party OpenAPI documents in openapi/_original/,
+  harvested from https://www.diffbot.com/openapi/*.json.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Binds each Diffbot MCP tool to the REST operation(s) that back it, and records where the
+  two surfaces diverge. Both surfaces were read from Diffbot's own published artifacts, so
+  every operationId below is verified against a spec in this repository — none is inferred.
+surfaces:
+  openapi:
+    - file: openapi/_original/diffbot-extract-openapi.json
+      title: Extract APIs
+      server: https://api.diffbot.com/v3
+      gated: false
+    - file: openapi/_original/diffbot-crawl-openapi.json
+      title: Crawl API
+      server: https://api.diffbot.com/v3
+      gated: false
+    - file: openapi/_original/diffbot-bulk-openapi.json
+      title: Bulk Extract API
+      server: https://api.diffbot.com/v3
+      gated: false
+    - file: openapi/_original/diffbot-dql-openapi.json
+      title: DQL API
+      server: https://kg.diffbot.com
+      gated: false
+    - file: openapi/_original/diffbot-enhance-openapi.json
+      title: ENHANCE API
+      server: https://kg.diffbot.com
+      gated: false
+    - file: openapi/_original/diffbot-natural-language-openapi.json
+      title: Natural Language API
+      server: https://nl.diffbot.com
+      gated: false
+    - file: openapi/_original/diffbot-web-search-openapi.json
+      title: Web Search
+      server: https://llm.diffbot.com/api/v1/web_search
+      gated: false
+    - file: openapi/_original/diffbot-account-openapi.json
+      title: Account API
+      server: https://api.diffbot.com/v4
+      gated: false
+  graphql: null
+  mcp:
+    url: https://mcp.diffbot.com/mcp
+    gated: false
+    note: >-
+      tools/list is anonymous after the initialize handshake; tool CALLS require a Diffbot
+      token as a ?token= query parameter. Schemas below are the provider's real inputSchemas,
+      not reconstructions.
+crosswalk:
+  - tool: extract
+    category: extraction
+    rest:
+      - extract-analyze
+      - article
+      - product
+      - discussion
+      - job
+      - image
+      - video
+      - list
+      - event
+    binding: one-to-many
+    confidence: high
+    note: >-
+      The tool's `page_type` argument selects which Extract operation runs. page_type
+      "analyze" (the default) maps to extract-analyze; every other value maps to the
+      like-named operation in openapi/_original/diffbot-extract-openapi.json.
+  - tool: search_web
+    category: search
+    rest:
+      - get_
+      - post_
+    binding: one-to-one
+    confidence: high
+    note: >-
+      Backed by the Web Search API at https://llm.diffbot.com/api/v1/web_search. Note the
+      REST surface authenticates with an Authorization Bearer header while every other
+      Diffbot REST surface uses a ?token= query parameter.
+  - tool: enhance
+    category: knowledge-graph
+    rest:
+      - enhance
+      - enhancePost
+    binding: one-to-one
+    confidence: high
+    note: >-
+      The tool's type/name/url/location/email/employer/job_title/school arguments correspond
+      to the Enhance API's accepted-input parameters.
+  - tool: resolve_entities
+    category: nlp
+    rest: []
+    binding: unbound-operationless-spec
+    confidence: medium
+    note: >-
+      Backed by the Natural Language API. The published Swagger 2.0 document declares a
+      single POST /v1/ operation with NO operationId, so there is no identifier to bind to —
+      this is a gap in the provider's spec, not a missing surface. Bind by path:
+      POST https://nl.diffbot.com/v1/.
+  - tool: crawl
+    category: crawling
+    rest:
+      - create-a-crawl
+      - manage-a-crawl-job
+      - retrieve-crawl-job-data
+    binding: one-to-many
+    confidence: high
+    note: >-
+      The tool's `action` argument multiplexes the three Crawl operations (create / manage /
+      retrieve). The MCP tool does not expose the Bulk Extract equivalents.
+  - tool: dql
+    category: knowledge-graph
+    rest:
+      - dqlGet
+      - dqlPost
+    binding: one-to-one
+    confidence: high
+  - tool: dql_ontology
+    category: knowledge-graph
+    rest: []
+    binding: mcp-only
+    confidence: high
+    note: >-
+      No public REST operation exposes the ontology. Diffbot documents the ontology as
+      human-readable reference pages under /docs/ontology/ and /docs/taxonomy/; the MCP
+      server is the only machine surface that returns it.
+mcp_only:
+  - tool: dql_ontology
+    reason: >-
+      Ontology/taxonomy lookup has no REST counterpart in any of the eight published
+      OpenAPI documents — it is served only through MCP.
+rest_only:
+  - operationId: account
+    spec: openapi/_original/diffbot-account-openapi.json
+    reason: Account details and usage; no agent tool exposes billing/quota state.
+  - operationId: create-a-bulk-job
+    spec: openapi/_original/diffbot-bulk-openapi.json
+    reason: Bulk Extract has no MCP tool; the crawl tool covers only the Crawl API.
+  - operationId: pause-delete-or-restart-a-bulk-job
+    spec: openapi/_original/diffbot-bulk-openapi.json
+    reason: Bulk Extract job control is REST-only.
+  - operationId: retrieve-bulk-job-data
+    spec: openapi/_original/diffbot-bulk-openapi.json
+    reason: Bulk Extract retrieval is REST-only.
+  - operationId: customget
+    spec: openapi/_original/diffbot-extract-openapi.json
+    reason: Custom API extraction; the MCP extract tool exposes only the standard page types.
+  - operationId: retrieve-a-custom-api
+    spec: openapi/_original/diffbot-extract-openapi.json
+    reason: Custom API ruleset management is REST-only (no agent tool).
+  - operationId: create-a-custom-api
+    spec: openapi/_original/diffbot-extract-openapi.json
+    reason: Custom API ruleset management is REST-only (no agent tool).
+  - operationId: delete-a-custom-api
+    spec: openapi/_original/diffbot-extract-openapi.json
+    reason: Custom API ruleset management is REST-only (no agent tool).
+  - operationId: reportFind
+    spec: openapi/_original/diffbot-dql-openapi.json
+    reason: DQL coverage reports are REST-only.
+  - operationId: reportGet
+    spec: openapi/_original/diffbot-dql-openapi.json
+    reason: DQL coverage reports are REST-only.
+  - operationId: combine
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance Combine is REST-only.
+  - operationId: submitBulkjob
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: The whole Enhance bulkjob lifecycle is REST-only; the enhance tool is single-entity.
+  - operationId: bulkjobStatusForToken
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: bulkjobStatus
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: bulkjobResultGet
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: bulkjobResultPost
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: coverageReportGet
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: deleteBulkjob
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: singleResult
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+  - operationId: stopBulkjob
+    spec: openapi/_original/diffbot-enhance-openapi.json
+    reason: Enhance bulkjob lifecycle, REST-only.
+coverage:
+  mcp_tools: 7
+  rest_operations: 39
+  tools_bound_to_rest: 6
+  tools_mcp_only: 1
+  rest_operations_bound: 18
+  rest_operations_unbound: 21
+  note: >-
+    18 of 39 published REST operations are reachable through the MCP server. The unbound
+    remainder is concentrated in three places: the whole Enhance bulkjob lifecycle (9),
+    Bulk Extract (3), and Custom API ruleset management (4). resolve_entities is bound by
+    path rather than operationId because the Natural Language Swagger declares none.

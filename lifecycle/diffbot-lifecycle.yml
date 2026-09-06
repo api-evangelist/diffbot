@@ -1,0 +1,105 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://status.diffbot.com/, https://www.diffbot.com/changelog,
+  https://www.diffbot.com/changelog/feed.xml,
+  https://www.diffbot.com/docs/dql/migrating-from-legacy-api,
+  https://www.diffbot.com/pricing, and the version fields of the eight first-party OpenAPI
+  documents in openapi/_original/.
+provider: Diffbot
+providerId: diffbot
+description: Versioning, deprecation, status and change-communication practice for the Diffbot APIs.
+versioning:
+  scheme: uri-path
+  policy_published: false
+  note: >-
+    Version is a path segment and differs by surface. Diffbot publishes no written versioning
+    policy — no statement of what constitutes a breaking change, no support window, no
+    minimum notice period. The versions below are read from the specs themselves.
+  surfaces:
+    - api: Extract APIs
+      spec_version: 1.1.0
+      path_version: v3
+      server: https://api.diffbot.com/v3
+    - api: Crawl API
+      spec_version: '1.1'
+      path_version: v3
+      server: https://api.diffbot.com/v3
+    - api: Bulk Extract API
+      spec_version: '1.1'
+      path_version: v3
+      server: https://api.diffbot.com/v3
+    - api: Account API
+      spec_version: '1.1'
+      path_version: v4
+      server: https://api.diffbot.com/v4
+    - api: DQL API
+      spec_version: 1.0.0
+      path_version: v3
+      server: https://kg.diffbot.com/kg/v3
+    - api: ENHANCE API
+      spec_version: 3.0.0
+      path_version: v3
+      server: https://kg.diffbot.com/kg/v3
+    - api: Natural Language API
+      spec_version: 1.0.0
+      path_version: v1
+      server: https://nl.diffbot.com/v1
+    - api: Web Search
+      spec_version: 1.0.0
+      path_version: v1
+      server: https://llm.diffbot.com/api/v1
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  practice: documented-per-endpoint
+  docs: https://www.diffbot.com/docs/dql/migrating-from-legacy-api
+  note: >-
+    Diffbot has no written deprecation POLICY and emits no RFC 8594 Sunset/Deprecation
+    headers. It does document deprecations when they happen, with a migration guide and an
+    explicit no-shutoff commitment — recorded here as the practice that actually exists.
+  deprecated:
+    - surface: Legacy DQL endpoint
+      endpoint: https://kg.diffbot.com/kg/dql_endpoint
+      deprecated_on: 2022-Q4
+      status: still-serving
+      replacement: https://kg.diffbot.com/kg/v3/dql
+      sunset_date: null
+      migration_guide: https://www.diffbot.com/docs/dql/migrating-from-legacy-api
+      note: >-
+        Diffbot's own wording: "deprecated in Q4 2022. It continues to work but new features
+        and performance improvements are only added to the new v3 API." Four years on, no
+        sunset date has been announced. Response shape changed (entities moved under an
+        `entity` wrapper in `data[]`), which the guide documents.
+  deprecated_operations_in_spec: []
+  deprecated_operations_note: >-
+    No operation in any of the eight published OpenAPI documents carries `deprecated: true`.
+status_page:
+  published: true
+  url: https://status.diffbot.com/
+  http_status: 200
+  provider: Pingdom Public Reports
+  history_window: 7 days
+  components_note: >-
+    A Pingdom uptime board rather than a full incident-communication status page: it shows
+    per-service up/disrupted/outage bars for the last seven days. There is no incident
+    history, no scheduled-maintenance calendar, no subscribe/webhook feed, and no
+    machine-readable status endpoint an agent could poll.
+  checked: '2026-09-06'
+sla:
+  published: false
+  note: >-
+    No SLA, uptime commitment or credit-for-downtime term is published on the pricing page or
+    in the terms. Enterprise plans advertise "dedicated support" and custom rate limits; any
+    SLA is presumably contractual and not public.
+support:
+  email: support@diffbot.com
+  sales: sales@diffbot.com
+  enterprise: Dedicated support on the Enterprise plan
+change_communication:
+  changelog: https://www.diffbot.com/changelog
+  feed: https://www.diffbot.com/changelog/feed.xml
+  feed_format: RSS 2.0
+  artifact: changelog/diffbot-changelog.yml

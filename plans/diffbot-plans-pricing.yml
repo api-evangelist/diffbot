@@ -4,158 +4,217 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Diffbot
 providerId: diffbot
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-06'
+generated: '2026-09-06'
+method: searched
+source: https://www.diffbot.com/pricing (fetched 2026-09-06, HTTP 200) and https://www.diffbot.com/docs/credits
+# 2026-09-06: replaced the 2026-05-04 scaffold, whose tiers and prices were placeholder
+# defaults, with the four tiers Diffbot actually publishes.
 tags:
   - Extraction
   - Harvesting
   - Scraping
   - Web
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+description: >-
+  Diffbot's published, self-serve plans. Pricing is a single credit currency spent across all
+  APIs rather than per-API pricing: a credit is the unit of processing, and each product
+  consumes a documented number of credits per action. Monthly credits do not roll over.
+currency: USD
+billingPeriod: month
+contract: none
+cancellation: Monthly subscription, cancel any time; no charge for the following month.
+plan_count: 4
 plans:
   - id: diffbot-free
     name: Free
     type: freemium
-    description: Free entry tier for the Diffbot API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
+    price: '0.00'
+    currency: USD
+    billingPeriod: month
+    description: Kick the tires on every API. No credit card required.
     entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
+      - label: Credits
+        name: credits
         type: quota
-        metric: requests
-        limit: 1000
+        metric: credits
+        limit: 10000
         timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
+        note: >-
+          The pricing calculator's worked example shows 9,500 credits allocated across a
+          sample workload; the plan card states 10,000 credits/month as the allowance.
+      - label: Rate limit
         name: rate_limit
         type: rate
         metric: requests_per_minute
-        limit: 10
+        limit: 5
         timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Diffbot DQL API
-      - name: Diffbot Enhance API
-      - name: Diffbot Natural Language API
-      - name: Diffbot Extract API
-      - name: Diffbot Bulk Extract API
-      - name: Diffbot Crawl API
-      - name: Diffbot Crawl/Bulk Job API
-  - id: diffbot-pro
-    name: Professional
-    type: paid
-    description: Production tier for Diffbot. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains: []
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains: []
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
+      - label: APIs included
+        name: apis
+        type: feature
+        value: All four APIs
       - label: Overage
-        description: Per-request price after monthly quota is exceeded
         name: overage
-        type: metered
-        metric: requests
-        limit: -1
+        type: feature
+        value: >-
+          None — the plan hard-stops with a 429 Quota Exceeded once credits or the rate limit
+          are hit. Quotas reset at the start of each billing period.
+      - label: Credit card
+        name: card_required
+        type: feature
+        value: 'No'
+  - id: diffbot-startup
+    name: Startup
+    type: paid
+    price: '299.00'
+    currency: USD
+    billingPeriod: month
+    description: For production workloads finding their feet.
+    entries:
+      - label: Credits
+        name: credits
+        type: quota
+        metric: credits
+        limit: 250000
         timeFrame: month
-        geo: global
-        domains: []
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Diffbot DQL API
-      - name: Diffbot Enhance API
-      - name: Diffbot Natural Language API
-      - name: Diffbot Extract API
-      - name: Diffbot Bulk Extract API
-      - name: Diffbot Crawl API
-      - name: Diffbot Crawl/Bulk Job API
+      - label: Rate limit
+        name: rate_limit
+        type: rate
+        metric: requests_per_second
+        limit: 5
+        timeFrame: second
+      - label: Overage
+        name: overage
+        type: overage
+        unitPrice: '0.001'
+        unit: credit
+        currency: USD
+        note: Billed pro rata on the next invoice; no additional overage fee.
+      - label: APIs included
+        name: apis
+        type: feature
+        value: All four APIs
+      - label: Crawl
+        name: crawl
+        type: feature
+        value: Not included
+  - id: diffbot-plus
+    name: Plus
+    type: paid
+    price: '899.00'
+    currency: USD
+    billingPeriod: month
+    description: For teams scaling steady, heavy usage.
+    entries:
+      - label: Credits
+        name: credits
+        type: quota
+        metric: credits
+        limit: 1000000
+        timeFrame: month
+      - label: Rate limit
+        name: rate_limit
+        type: rate
+        metric: requests_per_second
+        limit: 25
+        timeFrame: second
+      - label: Overage
+        name: overage
+        type: overage
+        unitPrice: '0.0009'
+        unit: credit
+        currency: USD
+        note: >-
+          Diffbot's own worked example — 1,500,000 credits on Plus is $899 + 500,000 × $0.0009.
+      - label: Crawl
+        name: crawl
+        type: quota
+        metric: active_jobs
+        limit: 25
+      - label: User seats
+        name: seats
+        type: quota
+        metric: seats
+        limit: 3
   - id: diffbot-enterprise
     name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Diffbot. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
+    type: custom
+    price: null
+    currency: USD
+    billingPeriod: month
+    description: Custom volume, rate limits, and support.
+    contact: sales@diffbot.com
     entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
+      - label: Credits
+        name: credits
         type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
+        metric: credits
+        limit: null
+        value: Custom credit allotment
+      - label: Rate limit
         name: rate_limit
         type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains: []
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Diffbot DQL API
-      - name: Diffbot Enhance API
-      - name: Diffbot Natural Language API
-      - name: Diffbot Extract API
-      - name: Diffbot Bulk Extract API
-      - name: Diffbot Crawl API
-      - name: Diffbot Crawl/Bulk Job API
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+        metric: requests_per_second
+        limit: 25
+        value: 25+ requests/sec
+      - label: Crawl
+        name: crawl
+        type: quota
+        metric: active_jobs
+        limit: 100
+        value: 100+ active crawls
+      - label: User seats
+        name: seats
+        type: feature
+        value: Custom user seats
+      - label: Support
+        name: support
+        type: feature
+        value: Dedicated support
+creditModel:
+  unit: credit
+  rollover: false
+  docs: https://www.diffbot.com/docs/credits
+  consumption:
+    - product: Extract
+      action: Extract 1 page
+      credits: 1
+    - product: Extract
+      action: Extract 1 page via datacenter proxy
+      credits: 2
+    - product: Crawl
+      action: Spider a site for links and pages
+      credits: 0
+    - product: Natural Language
+      action: Process 1 document (<= 10,000 characters)
+      credits: 1
+    - product: Knowledge Graph
+      action: Export 1 entity record
+      credits: 25
+    - product: Knowledge Graph
+      action: Export 1 facet query record
+      credits: 100
+    - product: Knowledge Graph
+      action: Enhance 1 entity record
+      credits: 25
+    - product: Knowledge Graph
+      action: Enhance 1 entity record with refresh (re-crawl sources)
+      credits: 100
+    - product: Web Search
+      action: Run 1 search
+      credits: 1
+  no_charge_conditions:
+    - Knowledge Graph searches run from the dashboard (app.diffbot.com)
+    - Knowledge Graph searches that return 0 entities
+    - Enhance calls where no match is found
+    - Crawl spidering for links (only successful extraction is charged)
+discounts:
+  - name: Diffbot for Students
+    description: >-
+      Startup-tier access free of charge for students and academic researchers, per the
+      pricing-page FAQ.
+  - name: Open-source Web Search upgrade
+    description: >-
+      Diffbot states it will upgrade a token to 1,000,000 Web Search queries/month at no cost
+      for open-source projects — star and open an issue on diffbot-python, diffbot-typescript
+      or diffbot-skills to request it.
+    source: https://www.diffbot.com/docs/web-search/

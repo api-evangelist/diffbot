@@ -1,0 +1,39 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Diffbot Extract APIs
+  version: 1.0.0
+extends: openapi/_original/diffbot-extract-openapi.json
+x-generated: '2026-09-06'
+x-method: generated
+x-source: Generated from openapi/_original/diffbot-extract-openapi.json (3.1.0) plus the measured artifacts
+  in this repository. Does not mutate the original contract.
+actions:
+- target: $.info
+  description: Record where this contract was harvested from and what it is worth to an agent.
+  update:
+    x-apis-io-source: https://www.diffbot.com/openapi/extract.json
+    x-apis-io-harvested: '2026-09-06'
+    x-apis-io-provider: diffbot
+    x-apis-io-docs: https://www.diffbot.com/docs/extract/
+- target: $
+  description: 'Attach the runtime semantics this contract does not state: error envelope, rate-limit
+    signalling, idempotency and reversibility, all measured from Diffbot''s own documentation.'
+  update:
+    x-error-envelope:
+      format: proprietary
+      rfc9457: false
+      shape: '{"errorCode": <int>, "error": "<message>"}'
+      catalog: errors/diffbot-error-codes.yml
+      warning: errorCode is not always the HTTP status; read the body.
+    x-rate-limit-signalling:
+      headers_returned: []
+      retry_after: false
+      status_on_exhaustion:
+      - 429
+      - 500
+      catalog: rate-limits/diffbot-rate-limits.yml
+    x-idempotency:
+      coverage: none
+      header: null
+      note: No replay protection documented on any mutating operation.
+    x-conventions: conventions/diffbot-conventions.yml

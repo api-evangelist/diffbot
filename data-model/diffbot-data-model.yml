@@ -1,0 +1,230 @@
+generated: '2026-09-06'
+method: derived
+source: >-
+  Derived from the components.schemas / definitions blocks of
+  openapi/_original/diffbot-natural-language-openapi.json (19 schemas),
+  diffbot-enhance-openapi.json (20), diffbot-dql-openapi.json (9) and
+  diffbot-web-search-openapi.json (3), cross-read against the entity reference at
+  https://www.diffbot.com/docs/ontology/ and the taxonomies at
+  https://www.diffbot.com/docs/taxonomy/.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Diffbot's data model has two layers that the specs expose unevenly. The API-transport layer
+  (request/response envelopes, job records, error shapes) is fully typed in the published
+  OpenAPI. The Knowledge Graph ENTITY layer — the actual product — is typed as an opaque
+  JSON node in every spec and documented only as human-readable ontology pages. That
+  asymmetry is the central finding here and is recorded rather than papered over.
+identifier_scheme:
+  primary: diffbotUri
+  format: A Diffbot URI naming a Knowledge Graph entity, e.g. http://diffbot.com/entity/<id>
+  secondary:
+    - name: id
+      note: Bare entity id, accepted by Enhance via the IdRequestEntity shape.
+    - name: allUris
+      note: >-
+        Cross-references to the same entity in other identifier systems; entity types
+        additionally carry a dbpediaUri, which is a real linked-data anchor.
+  docs: https://www.diffbot.com/docs/dql/concepts/entity-id-and-diffboturi
+typed_entities:
+  note: >-
+    These are declared as schemas in a published spec, so an agent can rely on their shape.
+  entities:
+    - name: EntityWithMentions
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [name, diffbotUri, confidence, salience, sentiment, allUris, allTypes, mentions, location]
+    - name: Entity
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [name, diffbotUri, confidence, allUris, allTypes, isCustom, entityIndex]
+    - name: Fact
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [humanReadable, entity, property, value, qualifiers, confidence, evidence]
+    - name: Property
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [name, diffbotUri, description]
+    - name: EntityType
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [name, diffbotUri, dbpediaUri]
+    - name: Mention
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [text, beginOffset, endOffset, isPronoun, confidence]
+    - name: Evidence
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [passage, entityMentions, valueMentions]
+    - name: Category / Categorization
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [id, name, path, confidence, isPrimary]
+      note: Three parallel taxonomies — iabv1, iabv2 and Diffbot's own.
+    - name: Location
+      spec: openapi/_original/diffbot-natural-language-openapi.json
+      fields: [latitude, longitude, precision]
+    - name: BulkjobStatus
+      spec: openapi/_original/diffbot-enhance-openapi.json
+      fields: [job_id, name, refresh, search, message, jobs_total, jobs_completed, status, estimate_remaining_time]
+    - name: Report
+      spec: openapi/_original/diffbot-enhance-openapi.json
+      fields: [reportId, status, format, spec, exportfile, exportSeparator, filter, onlyMatches]
+    - name: DqlResponse
+      spec: openapi/_original/diffbot-dql-openapi.json
+      fields: [version, hits, results, kgversion, diffbot_type, facet, data, rewrites, textFallback]
+    - name: EnhanceResponse
+      spec: openapi/_original/diffbot-enhance-openapi.json
+      fields: [version, hits, kgversion, request_ctx, data, errors, searchInfo]
+relationships:
+  - from: NaturalLanguageResponse
+    to: EntityWithMentions
+    type: has_many
+    via: entities
+  - from: NaturalLanguageResponse
+    to: Fact
+    type: has_many
+    via: facts
+  - from: NaturalLanguageResponse
+    to: Categorization
+    type: has_one
+    via: categories
+  - from: NaturalLanguageResponse
+    to: Span
+    type: has_many
+    via: sentences
+  - from: EntityWithMentions
+    to: Mention
+    type: has_many
+    via: mentions
+  - from: EntityWithMentions
+    to: EntityType
+    type: has_many
+    via: allTypes
+  - from: EntityWithMentions
+    to: Location
+    type: has_one
+    via: location
+  - from: Fact
+    to: Entity
+    type: belongs_to
+    via: entity
+  - from: Fact
+    to: Property
+    type: has_one
+    via: property
+  - from: Fact
+    to: Qualifier
+    type: has_many
+    via: qualifiers
+  - from: Fact
+    to: Evidence
+    type: has_many
+    via: evidence
+  - from: Evidence
+    to: Mention
+    type: has_many
+    via: entityMentions / valueMentions
+  - from: Qualifier
+    to: Property
+    type: has_one
+    via: property
+  - from: Categorization
+    to: Category
+    type: has_many
+    via: iabv1 / iabv2 / diffbot
+  - from: Document
+    to: CustomSummary
+    type: has_one
+    via: customSummary
+  - from: DqlResponse
+    to: Data
+    type: has_many
+    via: data
+  - from: DqlResponse
+    to: Rewrite
+    type: has_many
+    via: rewrites
+  - from: EnhanceResponse
+    to: Data
+    type: has_many
+    via: data
+  - from: EnhanceResponse
+    to: RequestContext
+    type: has_one
+    via: request_ctx
+  - from: EnhanceResponse
+    to: SearchCandidate
+    type: has_many
+    via: searchInfo
+  - from: RequestContext
+    to: OrganizationRequest / PersonRequest
+    type: has_one
+    via: query
+  - from: Data
+    to: RefreshDebugInformation
+    type: has_one
+    via: refreshInfo
+  - from: BulkjobStatus
+    to: Report
+    type: has_many
+    via: reports
+untyped_core:
+  finding: >-
+    The Knowledge Graph entity itself is NOT typed in any published spec. In
+    diffbot-enhance-openapi.json the field Data.entity is an `ObjectNode` — an unconstrained
+    JSON object — and in diffbot-dql-openapi.json Data.entity resolves to `JSONObject`, whose
+    only declared property is `empty`. The Organization, Person, Article, Place, Product,
+    JobPost, Event, Image, Video, Discussion, CreativeWork and Research entity shapes that
+    the whole product is about exist as documentation pages, not as schemas.
+  consequence: >-
+    An agent can rely on the envelope and cannot rely on the payload. It must either read the
+    ontology pages, or call the MCP `dql_ontology` tool, which is the only machine-readable
+    route to the entity model (see mcp/diffbot-tool-crosswalk.yml — dql_ontology is MCP-only).
+  documented_entity_types:
+    - Organization
+    - Person
+    - Article
+    - Place
+    - Product
+    - JobPost
+    - Event
+    - Image
+    - Video
+    - Discussion
+    - CreativeWork
+    - AdministrativeArea
+    - LegalEntity
+    - Research
+    - Skills
+  entity_docs: https://www.diffbot.com/docs/ontology/all-entities
+  taxonomies:
+    - name: Article categories
+      url: https://www.diffbot.com/docs/taxonomy/article-categories
+    - name: Organization categories
+      url: https://www.diffbot.com/docs/taxonomy/organization-categories
+    - name: Product categories
+      url: https://www.diffbot.com/docs/taxonomy/product-categories
+    - name: Employment categories
+      url: https://www.diffbot.com/docs/taxonomy/employment-categories
+    - name: Technology categories
+      url: https://www.diffbot.com/docs/taxonomy/technology-categories
+  external_classification_schemes:
+    - NACE Rev 2.1
+    - NAICS
+    - ISO 3166
+    - IAB v1 / IAB v2 content taxonomy
+    - DBpedia (via EntityType.dbpediaUri)
+quality_signals:
+  note: >-
+    Diffbot exposes provenance and confidence as first-class, documented fields — unusual and
+    worth recording for a data provider.
+  fields:
+    - name: confidence
+      docs: https://www.diffbot.com/docs/dql/concepts/confidence-score
+    - name: salience
+    - name: sentiment
+    - name: importance
+      docs: https://www.diffbot.com/docs/dql/concepts/importance
+    - name: origin / nbOrigins
+      docs: https://www.diffbot.com/docs/dql/concepts/origin
+    - name: nbIncomingEdges
+      docs: https://www.diffbot.com/docs/dql/concepts/nb-incoming-edges
+    - name: crawlTimestamp
+      docs: https://www.diffbot.com/docs/dql/concepts/crawl-timestamp
+    - name: sources
+      docs: https://www.diffbot.com/docs/dql/concepts/sources

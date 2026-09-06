@@ -1,0 +1,178 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  The eight first-party OpenAPI documents in openapi/_original/,
+  https://www.diffbot.com/docs/authentication, https://www.diffbot.com/docs/account-billing/gdpr,
+  https://www.diffbot.com/docs/account-billing/ccpa, https://www.diffbot.com/company/privacy,
+  https://www.diffbot.com/company/privacy-eeu, https://www.diffbot.com/company/privacy-ca,
+  https://llm.diffbot.com/v1/models, and a live MCP initialize against https://mcp.diffbot.com/mcp.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Standards and cross-cutting conventions the Diffbot estate does and does not conform to.
+  Reward-only: a "false" below is a measurement, not a penalty.
+conformance:
+  - id: openapi-3.1
+    conforms: true
+    evidence: >-
+      Five of the eight published documents are OpenAPI 3.1.0 (extract, crawl, bulk, account
+      plus the refined splits). Fetched from https://www.diffbot.com/openapi/extract.json.
+  - id: openapi-3.0
+    conforms: true
+    evidence: >-
+      dql.json and enhance.json declare OpenAPI 3.0.1; web-search.json declares 3.0.0.
+      https://www.diffbot.com/openapi/dql.json
+  - id: swagger-2.0
+    conforms: true
+    evidence: >-
+      natural-language.json is still Swagger 2.0 — the one surface that has not been migrated.
+      https://www.diffbot.com/openapi/natural-language.json
+  - id: api-key-auth
+    conforms: true
+    evidence: >-
+      securitySchemes.tokenscheme {type: apiKey, name: token, in: query} in seven of eight
+      documents. https://www.diffbot.com/docs/authentication
+  - id: http-bearer-auth
+    conforms: true
+    evidence: >-
+      securitySchemes.Authorization {type: http, scheme: bearer} in
+      openapi/_original/diffbot-web-search-openapi.json — the Web Search API only.
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No oauth2 or openIdConnect security scheme in any published document; no
+      /.well-known/openid-configuration or /.well-known/oauth-authorization-server on any host
+      (all 404/401, see well-known/diffbot-well-known.yml).
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      Errors use a proprietary {"errorCode","error"} envelope with content type
+      application/json, not application/problem+json. See errors/diffbot-error-codes.yml.
+  - id: rfc8594-sunset
+    conforms: false
+    evidence: >-
+      No Sunset or Deprecation response headers. The one deprecated endpoint
+      (kg/dql_endpoint) is announced in prose only.
+      https://www.diffbot.com/docs/dql/migrating-from-legacy-api
+  - id: rfc6585-rate-limit-headers
+    conforms: false
+    evidence: >-
+      No RateLimit-*, X-RateLimit-* or Retry-After headers on any surface, confirmed against
+      the docs and the published specs. See rate-limits/diffbot-rate-limits.yml.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header or equivalent anywhere in the spec set or the docs.
+      See conventions/diffbot-conventions.yml (idempotency.coverage = none).
+  - id: pagination
+    conforms: true
+    evidence: >-
+      Offset/limit pagination via `size` and `offset` on DQL and Web Search, with a `hits`
+      total in the response. openapi/_original/diffbot-dql-openapi.json
+  - id: json-api
+    conforms: false
+    evidence: Responses are bespoke JSON object graphs; no JSON:API media type or envelope.
+  - id: odata
+    conforms: false
+    evidence: No $metadata surface; DQL is Diffbot's own query language.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt returns 404 on www, kg, llm and mcp hosts and 401 on the
+      token-gated api and nl hosts. See well-known/diffbot-well-known.yml.
+  - id: mcp-2025-06-18
+    conforms: true
+    evidence: >-
+      A live initialize against https://mcp.diffbot.com/mcp returned
+      protocolVersion "2025-06-18", serverInfo "Diffbot MCP Server" 2.14.7, and capabilities
+      for tools, prompts, resources and tasks. tools/list returned 7 tools with inputSchema
+      and outputSchema. Probed 2026-09-06. See mcp/diffbot-mcp.yml.
+  - id: a2a-agent-card
+    conforms: false
+    evidence: >-
+      /.well-known/agent-card.json and /.well-known/agent.json probed on eight hosts —
+      404, 401 or SPA soft-404 everywhere. No agent card is published.
+  - id: llms-txt
+    conforms: true
+    evidence: >-
+      https://www.diffbot.com/llms.txt returns 200 text/plain, 653 bytes, last modified
+      2026-08-25. Saved verbatim to llms/diffbot-llms.txt. Note one of its three advertised
+      links is dead — see llms/diffbot-llms-probe.yml.
+  - id: agent-skills
+    conforms: true
+    evidence: >-
+      Ten SKILL.md files published at https://github.com/diffbot/diffbot-skills with plugin
+      manifests for the Claude, Cortex, Factory and GitHub Copilot formats. Saved verbatim
+      to skills/.
+domain_standards:
+  - id: openai-chat-completions-compatible
+    conforms: true
+    market: LLM inference / RAG
+    evidence: >-
+      https://llm.diffbot.com/v1/models returns 200 with the OpenAI models-list shape
+      {"object":"list","data":[{"id":...,"object":"model","owned_by":...}]}, advertising
+      diffbot-tiny, diffbot-small, diffbot-small-xl and diffbot-coder alongside gpt-3.5 and
+      gpt-4 aliases. The diffbot-python SDK exposes it as `ask` with an OpenAI-style
+      messages array and response_format/JSON-Schema constraint. A consumer already speaking
+      the OpenAI wire format integrates Diffbot LLM with no bespoke connector.
+    probed: '2026-09-06'
+    http_status: 200
+  - id: rss-2.0
+    conforms: true
+    market: change communication
+    evidence: >-
+      https://www.diffbot.com/changelog/feed.xml returns 200 text/xml, a valid RSS 2.0
+      channel titled "Diffbot Changelog" carrying 50 dated items.
+  - id: sitemaps-0.9
+    conforms: true
+    market: web discovery
+    evidence: >-
+      https://www.diffbot.com/sitemap.xml returns 200 text/xml, a sitemaps.org 0.9 urlset
+      with 834 locations. Named as canonical by the llms.txt.
+  - id: nace-rev-2.1
+    conforms: true
+    market: industry classification
+    evidence: >-
+      Diffbot classifies Knowledge Graph organizations against NACE and shipped a Rev 2.1
+      update. https://www.diffbot.com/changelog/2025-09-04-nace-code-rev-21-updates and
+      https://www.diffbot.com/docs/dql/faq/industry-classifications
+  - id: naics
+    conforms: true
+    market: industry classification
+    evidence: >-
+      NAICS classifications are a documented Knowledge Graph field.
+      https://www.diffbot.com/docs/dql/faq/naics-classifications
+  - id: iso-3166
+    conforms: true
+    market: geography
+    evidence: >-
+      ISO country/region codes are a documented Knowledge Graph field.
+      https://www.diffbot.com/docs/dql/faq/iso-codes
+compliance:
+  certifications: []
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP attestation is published anywhere on the
+    Diffbot site, and there is no trust center — https://www.diffbot.com/security/,
+    /trust/ and /company/security/ all return 404, and trust.diffbot.com does not resolve.
+    What Diffbot does publish is a regulatory-privacy program, recorded below.
+  programs:
+    - name: GDPR
+      published: true
+      url: https://www.diffbot.com/docs/account-billing/gdpr
+      note: >-
+        Diffbot documents its GDPR posture for Knowledge Graph data and account data, plus a
+        dedicated EEA privacy notice at https://www.diffbot.com/company/privacy-eeu.
+    - name: CCPA / CPRA
+      published: true
+      url: https://www.diffbot.com/docs/account-billing/ccpa
+      note: >-
+        California-specific privacy notice at https://www.diffbot.com/company/privacy-ca and a
+        documented account/data deletion path at
+        https://www.diffbot.com/docs/account-billing/delete-account.
+    - name: robots.txt honoring
+      published: true
+      url: https://www.diffbot.com/docs/crawl/faq/robots-txt
+      note: >-
+        Material for a web-data company: Diffbot documents that its crawler obeys robots.txt,
+        exposes an obey_robots control on crawl jobs, and states that content which has opted
+        out of crawling is excluded from the Web Search index.

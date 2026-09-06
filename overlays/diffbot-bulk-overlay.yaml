@@ -1,0 +1,62 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Diffbot Bulk Extract API
+  version: 1.0.0
+extends: openapi/_original/diffbot-bulk-openapi.json
+x-generated: '2026-09-06'
+x-method: generated
+x-source: Generated from openapi/_original/diffbot-bulk-openapi.json (3.1.0) plus the measured artifacts
+  in this repository. Does not mutate the original contract.
+actions:
+- target: $.info
+  description: Record where this contract was harvested from and what it is worth to an agent.
+  update:
+    x-apis-io-source: https://www.diffbot.com/openapi/bulk.json
+    x-apis-io-harvested: '2026-09-06'
+    x-apis-io-provider: diffbot
+    x-apis-io-docs: https://www.diffbot.com/docs/bulk/
+- target: $
+  description: 'Attach the runtime semantics this contract does not state: error envelope, rate-limit
+    signalling, idempotency and reversibility, all measured from Diffbot''s own documentation.'
+  update:
+    x-error-envelope:
+      format: proprietary
+      rfc9457: false
+      shape: '{"errorCode": <int>, "error": "<message>"}'
+      catalog: errors/diffbot-error-codes.yml
+      warning: errorCode is not always the HTTP status; read the body.
+    x-rate-limit-signalling:
+      headers_returned: []
+      retry_after: false
+      status_on_exhaustion:
+      - 429
+      - 500
+      catalog: rate-limits/diffbot-rate-limits.yml
+    x-idempotency:
+      coverage: none
+      header: null
+      note: No replay protection documented on any mutating operation.
+    x-conventions: conventions/diffbot-conventions.yml
+- target: $.paths
+  description: Record the notifyWebhook callback this job API can fire, which the contract declares as
+    a plain parameter only.
+  update:
+    x-webhooks:
+      catalog: asyncapi/diffbot-webhooks.yml
+      delivery: HTTP POST to the caller-supplied notifyWebhook URL
+      headers:
+      - X-Crawl-Name
+      - X-Crawl-Status
+      signed: false
+      note: No signature, secret or retry policy is documented.
+- target: $.paths
+  description: Record reversibility for this job-control surface, including what cannot be undone.
+  update:
+    x-reversibility:
+      grade: verified
+      reversible:
+      - pause=1 is undone by pause=0
+      irreversible:
+      - delete=1 deletes the job and all associated data permanently
+      - restart=1 erases all previously processed data and re-spends credits
+      docs: https://www.diffbot.com/docs/bulk/manage

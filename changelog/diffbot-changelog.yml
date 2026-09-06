@@ -1,0 +1,114 @@
+generated: '2026-09-06'
+method: searched
+source: https://www.diffbot.com/changelog and its RSS feed https://www.diffbot.com/changelog/feed.xml
+provider: Diffbot
+providerId: diffbot
+description: Diffbot publishes a dated, per-entry changelog going back to February 2015, grouped by month
+  and year, with a machine-readable RSS 2.0 feed. Entries are product/API notes written by Diffbot Engineering;
+  they are not release-versioned and do not label breaking vs additive changes, so the classification
+  below is this pipeline's reading of each entry's own text, not a provider label.
+scheme: dated-entries
+versioned: false
+breaking_change_labels: false
+url: https://www.diffbot.com/changelog
+feed:
+  url: https://www.diffbot.com/changelog/feed.xml
+  format: RSS 2.0
+  http_status: 200
+  items_in_feed: 50
+archive:
+  earliest_entry: '2015-02-10'
+  years_covered:
+  - 2015
+  - 2016
+  - 2017
+  - 2018
+  - 2019
+  - 2020
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  - 2025
+  - 2026
+note_on_old_pointer: The apis.yml ChangeLog pointer previously named https://docs.diffbot.com/changelog,
+  the readme.io docs host. That host now answers 200 with an SPA shell for every path, so the pointer
+  was unverifiable. The live changelog is on www.diffbot.com.
+recent_count: 20
+recent:
+- date: '2026-06-15'
+  title: sortBy:date, Last six months vs. full archive
+  url: https://www.diffbot.com/changelog/2026-06-15-kg-article-search-sortbydate-last-six-months-or-full-archive
+- date: '2026-05-06'
+  title: Extract Links from a Sitemap
+  url: https://www.diffbot.com/changelog/2026-05-06-extract-links-from-a-sitemap
+- date: '2026-03-03'
+  title: Optional Param noredirects
+  url: https://www.diffbot.com/changelog/2026-03-03-optional-param-noredirects
+- date: '2026-01-07'
+  title: 50 billion new facts Added to the KG in the last month
+  url: https://www.diffbot.com/changelog/2026-01-07-50-billion-new-facts-added-to-the-kg-in-the-last-month
+- date: '2025-11-10'
+  title: DiffbotAPI now returns Interactive Elements for 'mode=llm'
+  url: https://www.diffbot.com/changelog/2025-11-10-diffbotapi-now-returns-interactive-elements-for-modellm
+- date: '2025-09-04'
+  title: NACE Code Rev 2.1 Updates
+  url: https://www.diffbot.com/changelog/2025-09-04-nace-code-rev-21-updates
+- date: '2025-09-02'
+  title: Diffbot LLM live on LMArena
+  url: https://www.diffbot.com/changelog/2025-09-02-diffbot-llm-live-on-lmarena
+- date: '2025-06-30'
+  title: Getting Started with Diffbot LLM
+  url: https://www.diffbot.com/changelog/2025-06-30-getting-started-with-diffbot-llm
+- date: '2025-06-30'
+  title: Label & Disable Diffbot Tokens from the Dashboard
+  url: https://www.diffbot.com/changelog/2025-06-30-label-disable-diffbot-tokens-from-the-dashboard
+- date: '2025-06-10'
+  title: Diffbot on Postman
+  url: https://www.diffbot.com/changelog/2025-06-10-diffbot-on-postman
+- date: '2025-06-04'
+  title: Investment Transactions Now Searchable on Leadgraph
+  url: https://www.diffbot.com/changelog/2025-06-04-investment-transactions-now-searchable-on-leadgraph
+- date: '2025-06-02'
+  title: DOM & HTML Features Added to the Extract UI
+  url: https://www.diffbot.com/changelog/2025-06-02-dom-view-html-button-added-to-the-extract-ui
+- date: '2025-05-01'
+  title: Company Reports in the KG
+  url: https://www.diffbot.com/changelog/2025-05-01-company-reports-available-in-the-kg
+- date: '2025-04-02'
+  title: Invite a User
+  url: https://www.diffbot.com/changelog/2025-04-02-invite-a-user
+- date: '2025-04-02'
+  title: New DQL JSON Export filter - ' &filterExclude'
+  url: https://www.diffbot.com/changelog/2025-04-02-new-dql-json-export-filter-filterexclude
+- date: '2025-04-02'
+  title: PDF Invoices
+  url: https://www.diffbot.com/changelog/2025-04-02-pdf-invoices
+- date: '2025-03-17'
+  title: type:Acquisition added to the KG
+  url: https://www.diffbot.com/changelog/2025-03-17-typeacquisition-added-to-the-kg
+- date: '2025-01-07'
+  title: Diffbot GraphRAG LLM
+  url: https://www.diffbot.com/changelog/2025-01-07-diffbot-graphrag-llm
+- date: '2024-12-02'
+  title: type:CompanyReport
+  url: https://www.diffbot.com/changelog/2024-12-02-typecompanyreport
+- date: '2024-11-12'
+  title: Scheduled Maintenance Window, Thurs. Nov. 14th
+  url: https://www.diffbot.com/changelog/2024-11-12-scheduled-maintenance-window-thurs-nov-14th-10-am-pst-2-pm-pst
+highlights_2026:
+- date: '2026-06-15'
+  change: DQL sortBy:date gained a searchArchives mode — default searches the last six months, &searchArchives=1
+    searches 2+ years.
+  type: addition
+- date: '2026-05-06'
+  change: Analyze API can extract links from an XML sitemap via fields=allLinks.
+  type: addition
+- date: '2026-03-03'
+  change: New optional noredirects parameter stops the API following HTTP redirects; introduces a new
+    500 error body.
+  type: addition
+- date: '2026-01-07'
+  change: 50 billion new facts added to the Knowledge Graph in one month, including 30M organizations
+    and 600M articles.
+  type: data

@@ -4,10 +4,16 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Diffbot
 providerId: diffbot
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-06'
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.diffbot.com/docs/rate-limits (the per-plan table), https://www.diffbot.com/pricing,
+  https://www.diffbot.com/docs/extract/errors/429, https://www.diffbot.com/docs/credits,
+  https://www.diffbot.com/docs/web-search/.
+# 2026-09-06: replaced the 2026-05-04 scaffold, whose limits and response headers were
+# placeholder defaults, with Diffbot's own published table. The header block below is the
+# important correction — the scaffold asserted X-RateLimit-* headers Diffbot does not send.
 tags:
   - Extraction
   - Harvesting
@@ -15,107 +21,140 @@ tags:
   - Web
   - Rate Limiting
   - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Diffbot API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
+description: >-
+  Published rate limits for the Diffbot API estate. Limits are enforced per plan and apply
+  per token. Diffbot notes that some enterprise plans carry custom limits not shown here.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  published: false
+  note: >-
+    MEASURED ABSENCE, not an omission. Diffbot returns no rate-limit response headers on any
+    surface — no X-RateLimit-*, no RateLimit-*, no Retry-After. An agent cannot observe its
+    remaining budget at runtime; it can only read the plan table in the docs and count its own
+    calls. The documented remedy for a 429 is a client-side 1-second pause or an
+    exponential backoff the caller implements.
 responseCodes:
   throttled: 429
   quotaExceeded: 429
-  serviceUnavailable: 503
+  siteThrottled: 500
+  note: >-
+    429 covers both the caller's own rate limit and Free-plan credit exhaustion
+    ("429 Quota Exceeded"). A separate HTTP 500 with errorCode 500 signals a Diffbot-wide
+    protective throttle against the TARGET site, which is not the caller's limit. See
+    errors/diffbot-error-codes.yml.
 limits:
   - tier: free
-    name: Free Tier Default
+    name: Free
     scope: api-key
     metric: requests_per_minute
-    limit: 10
-    burst: 20
+    limit: 5
     timeFrame: minute
-    applies:
-      - Diffbot DQL API
-      - Diffbot Enhance API
-      - Diffbot Natural Language API
-      - Diffbot Extract API
-      - Diffbot Bulk Extract API
-      - Diffbot Crawl API
-      - Diffbot Crawl/Bulk Job API
+    applies: all APIs
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: startup
+    name: Startup
+    scope: api-key
+    metric: requests_per_second
+    limit: 5
+    timeFrame: second
+    applies: all APIs
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: plus
+    name: Plus
+    scope: api-key
+    metric: requests_per_second
+    limit: 25
+    timeFrame: second
+    applies: all APIs
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: enterprise
+    name: Enterprise
+    scope: api-key
+    metric: requests_per_second
+    limit: 25
+    limitQualifier: '25+ (custom)'
+    timeFrame: second
+    applies: all APIs
+    source: https://www.diffbot.com/pricing
   - tier: free
-    name: Free Tier Monthly Quota
+    name: Extract API monthly cap
     scope: api-key
-    metric: requests_per_month
-    limit: 1000
+    metric: calls_per_month
+    limit: 10000
     timeFrame: month
-    applies:
-      - Diffbot DQL API
-      - Diffbot Enhance API
-      - Diffbot Natural Language API
-      - Diffbot Extract API
-      - Diffbot Bulk Extract API
-      - Diffbot Crawl API
-      - Diffbot Crawl/Bulk Job API
-  - tier: professional
-    name: Professional Tier Default
+    applies: Extract API
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: free
+    name: Natural Language API monthly cap
     scope: api-key
-    metric: requests_per_minute
+    metric: calls_per_month
+    limit: 500
+    timeFrame: month
+    applies: Natural Language API
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: free
+    name: DQL API monthly entity cap
+    scope: api-key
+    metric: entities_per_month
+    limit: 400
+    timeFrame: month
+    applies: DQL API
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: free
+    name: Enhance API monthly entity cap
+    scope: api-key
+    metric: entities_per_month
+    limit: 400
+    timeFrame: month
+    applies: Enhance API
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: plus
+    name: Crawl / Bulk Extract concurrency
+    scope: api-key
+    metric: active_jobs
+    limit: 25
+    applies: Crawl and Bulk Extract
+    note: >-
+      Plus also carries a 1,000 total-job ceiling. Crawl and Bulk are unavailable on Free and
+      Startup. Exceeding the total-job ceiling returns HTTP 505 per the Crawl OpenAPI.
+    source: https://www.diffbot.com/docs/rate-limits
+  - tier: enterprise
+    name: Crawl concurrency
+    scope: api-key
+    metric: active_jobs
     limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Diffbot DQL API
-      - Diffbot Enhance API
-      - Diffbot Natural Language API
-      - Diffbot Extract API
-      - Diffbot Bulk Extract API
-      - Diffbot Crawl API
-      - Diffbot Crawl/Bulk Job API
-  - tier: professional
-    name: Professional Tier Monthly Quota
+    limitQualifier: '100+'
+    applies: Crawl
+    source: https://www.diffbot.com/pricing
+  - tier: free
+    name: Web Search API
     scope: api-key
-    metric: requests_per_month
+    metric: queries_per_minute
+    limit: 60
+    timeFrame: minute
+    applies: Web Search API
+    note: >-
+      Documented separately from the plan table. A free token includes 100,000 Web Search
+      queries per month at 60 QPM with no concurrency; Diffbot quotes >30,000 QPM and 500+
+      concurrency under a commercial agreement.
+    source: https://www.diffbot.com/docs/web-search/
+  - tier: free
+    name: Web Search API monthly quota
+    scope: api-key
+    metric: queries_per_month
     limit: 100000
     timeFrame: month
-    applies:
-      - Diffbot DQL API
-      - Diffbot Enhance API
-      - Diffbot Natural Language API
-      - Diffbot Extract API
-      - Diffbot Bulk Extract API
-      - Diffbot Crawl API
-      - Diffbot Crawl/Bulk Job API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Diffbot DQL API
-      - Diffbot Enhance API
-      - Diffbot Natural Language API
-      - Diffbot Extract API
-      - Diffbot Bulk Extract API
-      - Diffbot Crawl API
-      - Diffbot Crawl/Bulk Job API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+    applies: Web Search API
+    source: https://www.diffbot.com/docs/web-search/
+limit_count: 12
+quotaModel:
+  unit: credit
+  note: >-
+    Rate limits and quotas are separate axes. Rate limits are calls per second/minute; quotas
+    are monthly credit allotments that do not roll over. Overage on a paid plan is billed at
+    the plan's per-credit rate with no additional overage fee; on Free it returns 429.
+  docs: https://www.diffbot.com/docs/credits

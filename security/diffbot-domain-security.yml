@@ -1,23 +1,23 @@
-generated: '2026-07-11'
+generated: '2026-09-06'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: www.diffbot.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Aug 27 21:55:32 2026 GMT
+  cert_expires: Nov  1 15:52:43 2026 GMT
   hsts: true
   hsts_max_age: 31536000
 - host: docs.diffbot.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep 22 08:23:12 2026 GMT
+  cert_expires: Nov 23 09:06:01 2026 GMT
   hsts: true
   hsts_max_age: 31536000
 - host: api.diffbot.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep 29 21:42:49 2026 GMT
+  cert_expires: Nov 29 05:40:32 2026 GMT
   hsts: null
 domains:
 - domain: diffbot.com

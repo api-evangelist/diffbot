@@ -1,0 +1,87 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.diffbot.com/docs/crawl/create and https://www.diffbot.com/docs/bulk/create
+  (the notifyWebhook parameter), plus openapi/_original/diffbot-crawl-openapi.json and
+  openapi/_original/diffbot-bulk-openapi.json.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Diffbot publishes no AsyncAPI document and operates no event stream, message broker or
+  subscription surface. It does have one real webhook: asynchronous Crawl and Bulk Extract
+  jobs can call back a caller-supplied URL when they finish or hit a limit. That callback is
+  catalogued here.
+asyncapi_published: false
+asyncapi_note: >-
+  Searched /asyncapi.yaml, /asyncapi.json on www, api, kg and nl hosts and the diffbot GitHub
+  org; none exists. Diffbot's asynchronous surfaces are poll-based job APIs plus this one
+  callback, which is not an event-driven architecture. Recorded as an honest absence — no
+  AsyncAPI document was generated.
+webhooks:
+  count: 2
+  delivery: HTTP POST to a caller-supplied URL
+  subscription_model: per-job parameter, not a registered subscription
+  configuration:
+    parameter: notifyWebhook
+    set_on:
+      - operationId: create-a-crawl
+        spec: openapi/_original/diffbot-crawl-openapi.json
+      - operationId: create-a-bulk-job
+        spec: openapi/_original/diffbot-bulk-openapi.json
+    note: >-
+      The callback URL is supplied when the job is created. There is no webhook registration
+      endpoint, no endpoint list, no per-endpoint secret, and no way to enumerate or revoke
+      callbacks after the fact.
+  events:
+    - name: crawl.job.completed
+      trigger: The crawl job completes.
+      transport: HTTP POST
+      headers:
+        X-Crawl-Name: The job name as supplied at creation.
+        X-Crawl-Status: The job's status at the time of the callback.
+      payload: The job's JSON metadata (the individual job object).
+      payload_note: >-
+        Diffbot states explicitly that parent jobs are NOT sent in webhook POSTs — only the
+        individual job object is returned.
+      source: https://www.diffbot.com/docs/crawl/create
+    - name: crawl.job.limit_reached
+      trigger: The job hits its maxToCrawl or maxToProcess limit.
+      transport: HTTP POST
+      headers:
+        X-Crawl-Name: The job name as supplied at creation.
+        X-Crawl-Status: The job's status at the time of the callback.
+      payload: The job's JSON metadata.
+      source: https://www.diffbot.com/docs/crawl/create
+    - name: bulk.job.completed
+      trigger: The bulk extract job completes or hits its limits.
+      transport: HTTP POST
+      headers:
+        X-Crawl-Name: The job name.
+        X-Crawl-Status: The job's status.
+      payload: The job's JSON metadata.
+      note: >-
+        Bulk shares Crawl's job-control semantics and the same notifyWebhook parameter; the
+        headers are documented with the same X-Crawl-* names.
+      source: https://www.diffbot.com/docs/bulk/create
+  security:
+    signature: false
+    shared_secret: false
+    replay_protection: false
+    ip_allowlist_published: false
+    note: >-
+      No signing secret, HMAC signature header, timestamp or nonce is documented. A receiver
+      cannot verify that a callback came from Diffbot, and cannot detect a replay. Recorded
+      as a gap worth raising with the provider.
+  retry_policy:
+    published: false
+    note: No delivery guarantee, retry schedule or dead-letter behaviour is documented.
+polling_alternative:
+  note: >-
+    Because the callback is unsigned and unretried, the reliable pattern is polling the job
+    status endpoints instead.
+  operations:
+    - manage-a-crawl-job
+    - pause-delete-or-restart-a-bulk-job
+    - bulkjobStatus
+    - bulkjobStatusForToken
+  job_status_codes: errors/diffbot-error-codes.yml

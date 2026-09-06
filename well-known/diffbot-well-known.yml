@@ -1,0 +1,176 @@
+generated: '2026-09-06'
+method: probed
+source: live anonymous HTTP probes of the named /.well-known/ paths on every host this record knows
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Negative probe result, recorded deliberately. Diffbot serves NO /.well-known/ discovery
+  document on any of its hosts. No WellKnown, SecurityTxt or APICatalog pointer is emitted
+  from this file — a recorded absence is a measurement, not a presence.
+summary:
+  hosts_probed: 7
+  paths_probed_per_host: 5
+  documents_found: 0
+notes:
+  - >-
+    api.diffbot.com and nl.diffbot.com answer 401 on every path including /.well-known/*:
+    the token gateway rejects unauthenticated requests before routing, so a 401 there is the
+    gateway, not a protected discovery document.
+  - >-
+    docs.diffbot.com answers HTTP 200 with the same 158,524-byte HTML page for every path,
+    including paths that cannot exist. That is an SPA catch-all, i.e. a soft-404 — treated
+    as a miss, never as a document.
+  - >-
+    www.diffbot.com returns a real 404 body for every /.well-known/ path, which is the
+    cleanest possible negative.
+hosts:
+  - host: www.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+  - host: docs.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: null
+        verdict: soft-404
+        note: HTML SPA catch-all, not a document
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: null
+        verdict: soft-404
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: null
+        verdict: soft-404
+      - path: /.well-known/api-catalog
+        status: 200
+        file: null
+        verdict: soft-404
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        file: null
+        verdict: soft-404
+  - host: api.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 401
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 401
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 401
+        file: null
+      - path: /.well-known/api-catalog
+        status: 401
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 401
+        file: null
+  - host: kg.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+  - host: nl.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 401
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 401
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 401
+        file: null
+      - path: /.well-known/api-catalog
+        status: 401
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 401
+        file: null
+  - host: llm.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+  - host: mcp.diffbot.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+a2a:
+  probed: '2026-09-06'
+  found: false
+  note: >-
+    /.well-known/agent-card.json and /.well-known/agent.json were probed on www, docs, api,
+    kg, nl, llm, app and mcp hosts. Every one either 404d, 401d, or returned the docs SPA
+    shell. No agent card exists, so no a2a/ artifact and no AgentCard pointer were written.
+  probes:
+    - url: https://www.diffbot.com/.well-known/agent-card.json
+      status: 404
+    - url: https://www.diffbot.com/.well-known/agent.json
+      status: 404
+    - url: https://mcp.diffbot.com/.well-known/agent-card.json
+      status: 404
+    - url: https://api.diffbot.com/.well-known/agent-card.json
+      status: 401
+    - url: https://kg.diffbot.com/.well-known/agent-card.json
+      status: 404
+    - url: https://llm.diffbot.com/.well-known/agent-card.json
+      status: 404
+    - url: https://app.diffbot.com/.well-known/agent-card.json
+      status: 404
+    - url: https://docs.diffbot.com/.well-known/agent-card.json
+      status: 200
+      verdict: soft-404

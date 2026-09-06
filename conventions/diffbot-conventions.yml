@@ -1,0 +1,192 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.diffbot.com/docs/authentication, /docs/rate-limits, /docs/credits,
+  /docs/crawl/manage, /docs/crawl/create, /docs/bulk/manage, /docs/extract/errors/*,
+  /docs/web-search/get, plus the eight first-party OpenAPI documents in openapi/_original/.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Cross-cutting runtime semantics for the Diffbot APIs — how an agent authenticates,
+  paginates, retries, and tells whether an action it took can be undone.
+authentication:
+  style: api-key
+  primary:
+    parameter: token
+    location: query
+    applies_to:
+      - https://api.diffbot.com/v3 (Extract, Crawl, Bulk)
+      - https://api.diffbot.com/v4 (Account)
+      - https://kg.diffbot.com (DQL, Enhance)
+      - https://nl.diffbot.com (Natural Language)
+    docs: https://www.diffbot.com/docs/authentication
+    note: >-
+      One token, seven surfaces. Parent tokens can mint child tokens from the dashboard.
+  divergence:
+    surface: Web Search API
+    scheme: http bearer
+    header: 'Authorization: Bearer <token>'
+    server: https://llm.diffbot.com/api/v1/web_search
+    note: >-
+      The Web Search API is the one Diffbot surface that does NOT take ?token=. It takes the
+      same credential as an Authorization Bearer header. An agent that generalizes the query
+      parameter across the whole estate will get a 401 here. Confirmed in
+      openapi/_original/diffbot-web-search-openapi.json (securitySchemes.Authorization) and in
+      the curl example on https://www.diffbot.com/docs/web-search/get.
+  transport_warning: >-
+    Because the token travels in the query string on six of seven surfaces, it lands in
+    proxy logs, browser history and Referer headers. Diffbot documents token rotation and
+    disabling from the dashboard as the mitigation.
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  retention: null
+  evidence:
+    - >-
+      No Idempotency-Key header, request-id echo, or replay-protection mechanism appears in
+      any of the eight published OpenAPI documents or anywhere in the /docs/ tree.
+    - >-
+      The mutating surface is small and mostly named-resource shaped, which softens the
+      impact: POST /v3/crawl and POST /v3/bulk are keyed on a caller-supplied job `name`,
+      so re-posting the same name updates that job rather than creating a duplicate. That is
+      natural-key convergence, NOT a documented idempotency guarantee, and Diffbot does not
+      describe it as one — so it is recorded as coverage: none.
+  note: >-
+    Recorded honestly as none. An agent retrying a failed POST /kg/v3/enhance/bulk has no
+    documented way to avoid creating a second bulkjob and being charged twice.
+pagination:
+  style: offset-limit
+  parameters:
+    size: Number of results to return
+    offset: Zero-based starting index
+    from: Alias used by the DQL export path in the `db` CLI
+  applies_to: [dqlGet, dqlPost, get_, post_]
+  response_fields: [hits, data, search_results]
+  note: >-
+    DQL exposes `size` and `offset`; a `hits` count in the response is the total available,
+    so an agent can compute how many more pages exist. There are no cursors and no Link
+    headers on any Diffbot surface.
+field_selection:
+  supported: true
+  parameters: [fields, filter]
+  note: >-
+    Both Extract and the Knowledge Graph surfaces accept a `fields` list to limit the
+    response, and Enhance/DQL additionally accept a JSONPath-style `filter`
+    (e.g. filter=$.name;$.diffbotUri). This is the primary token-economy lever for an agent.
+metadata:
+  supported: false
+  note: No user-defined metadata or tagging on any request or job object.
+request_id_tracing:
+  supported: partial
+  note: >-
+    Error bodies from the api.diffbot.com and nl.diffbot.com gateways carry a `requestId`
+    (observed on live 401 responses, e.g. {"requestId":"...","code":401,...}). Successful
+    responses do not carry one, and no request-id request header is documented, so an agent
+    can cite a failure but not correlate a success.
+versioning:
+  style: uri-path
+  current:
+    - https://api.diffbot.com/v3 (Extract, Crawl, Bulk)
+    - https://api.diffbot.com/v4 (Account)
+    - https://kg.diffbot.com/kg/v3 (DQL, Enhance)
+    - https://nl.diffbot.com/v1 (Natural Language)
+    - https://llm.diffbot.com/api/v1 (Web Search)
+  note: >-
+    Version lives in the path and differs per surface — v3 and v4 coexist on the same host.
+    No version header, no date-pinned versioning.
+error_envelope:
+  format: proprietary
+  rfc9457: false
+  shape: '{"errorCode": <int>, "error": "<human message>"}'
+  note: >-
+    Not RFC 9457 problem+json. Critically, `errorCode` is NOT always the HTTP status: Diffbot
+    documents a 500 whose body carries errorCode 500 for "site has received too many requests"
+    — a condition most APIs would express as 429 — and a proprietary 457 "Invalid API".
+    An agent must read the body, not the status line. See errors/diffbot-error-codes.yml.
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: [429, 500]
+  retry_after: false
+  note: >-
+    Diffbot publishes per-plan rate limits (see rate-limits/) but returns NO rate-limit
+    response headers — no X-RateLimit-*, no RateLimit-*, no Retry-After. The documented
+    remediation for a 429 is "do not call again for 1 second" or an exponential backoff the
+    client implements itself. This is the single largest agent-readiness gap on the estate:
+    the limit is knowable from the docs but not observable at runtime.
+  docs: https://www.diffbot.com/docs/extract/errors/429
+reversibility:
+  grade: verified
+  applies: true
+  note: >-
+    Diffbot's write surface is job control — create, pause, resume, restart, delete on Crawl,
+    Bulk Extract and Enhance bulkjobs. Reversal is well documented and, unusually, so is the
+    IRREVERSIBILITY, which is the more valuable half for an agent about to act.
+  write_surfaces:
+    - operation: create-a-crawl
+      spec: openapi/_original/diffbot-crawl-openapi.json
+      reversal: manage-a-crawl-job with delete=1
+      window: >-
+        Any time while the job exists. Diffbot states plainly: "Job deletions are
+        irreversible" — the job and all associated data go permanently.
+      docs: https://www.diffbot.com/docs/crawl/manage
+      graded: verified
+    - operation: manage-a-crawl-job (pause=1)
+      spec: openapi/_original/diffbot-crawl-openapi.json
+      reversal: manage-a-crawl-job with pause=0
+      window: Any time while the job is paused; resumption is unbounded and documented.
+      docs: https://www.diffbot.com/docs/crawl/manage
+      graded: verified
+    - operation: manage-a-crawl-job (restart=1)
+      spec: openapi/_original/diffbot-crawl-openapi.json
+      reversal: none
+      window: >-
+        No reversal. Diffbot states restart "will erase all previously processed data and
+        re-process all of the submitted URLs" — destructive and not undoable. An agent must
+        treat restart as a one-way door and it also re-spends credits.
+      docs: https://www.diffbot.com/docs/crawl/manage
+      graded: verified-irreversible
+    - operation: pause-delete-or-restart-a-bulk-job
+      spec: openapi/_original/diffbot-bulk-openapi.json
+      reversal: pause=0 resumes; delete=1 is irreversible
+      window: Same semantics as Crawl — the two endpoints share their control surface.
+      docs: https://www.diffbot.com/docs/bulk/manage
+      graded: verified
+    - operation: submitBulkjob
+      spec: openapi/_original/diffbot-enhance-openapi.json
+      reversal: stopBulkjob, then deleteBulkjob
+      window: >-
+        stopBulkjob halts a running Enhance bulkjob; deleteBulkjob removes it. Credits
+        already consumed on entities already enhanced are NOT refunded — Diffbot's credits
+        page states Enhance consumes credits whenever a match is found.
+      docs: https://www.diffbot.com/docs/enhance/bulk/stop
+      graded: verified
+    - operation: create-a-custom-api
+      spec: openapi/_original/diffbot-extract-openapi.json
+      reversal: delete-a-custom-api
+      window: Any time. Rulesets can also be backed up and restored per the Custom API FAQ.
+      docs: https://www.diffbot.com/docs/custom-api/faq/backup-restore-rulesets
+      graded: verified
+  read_only_surfaces:
+    - Extract (all page-type operations)
+    - DQL search and coverage reports
+    - Natural Language process-text
+    - Web Search
+    - Account
+dry_run_mode:
+  supported: partial
+  note: >-
+    No dry-run flag on any write operation. There ARE zero-cost rehearsal paths, which is the
+    practical equivalent for cost: DQL queries returning 0 entities consume no credits,
+    Knowledge Graph searches run from the dashboard consume no credits, and crawl spidering
+    (as opposed to extraction) costs 0 credits. The `db dql probe` CLI command runs variants
+    at size=0 specifically to test selectivity before committing to an export.
+  docs: https://www.diffbot.com/docs/credits
+cross_references:
+  errors: errors/diffbot-error-codes.yml
+  lifecycle: lifecycle/diffbot-lifecycle.yml
+  authentication: authentication/diffbot-authentication.yml
+  rate_limits: rate-limits/diffbot-rate-limits.yml
+  plans: plans/diffbot-plans-pricing.yml
+  webhooks: asyncapi/diffbot-webhooks.yml

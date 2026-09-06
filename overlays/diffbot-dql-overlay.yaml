@@ -1,0 +1,49 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Diffbot DQL API
+  version: 1.0.0
+extends: openapi/_original/diffbot-dql-openapi.json
+x-generated: '2026-09-06'
+x-method: generated
+x-source: Generated from openapi/_original/diffbot-dql-openapi.json (3.0.1) plus the measured artifacts
+  in this repository. Does not mutate the original contract.
+actions:
+- target: $.info
+  description: Record where this contract was harvested from and what it is worth to an agent.
+  update:
+    x-apis-io-source: https://www.diffbot.com/openapi/dql.json
+    x-apis-io-harvested: '2026-09-06'
+    x-apis-io-provider: diffbot
+    x-apis-io-docs: https://www.diffbot.com/docs/dql/
+- target: $
+  description: 'Attach the runtime semantics this contract does not state: error envelope, rate-limit
+    signalling, idempotency and reversibility, all measured from Diffbot''s own documentation.'
+  update:
+    x-error-envelope:
+      format: proprietary
+      rfc9457: false
+      shape: '{"errorCode": <int>, "error": "<message>"}'
+      catalog: errors/diffbot-error-codes.yml
+      warning: errorCode is not always the HTTP status; read the body.
+    x-rate-limit-signalling:
+      headers_returned: []
+      retry_after: false
+      status_on_exhaustion:
+      - 429
+      - 500
+      catalog: rate-limits/diffbot-rate-limits.yml
+    x-idempotency:
+      coverage: none
+      header: null
+      note: No replay protection documented on any mutating operation.
+    x-conventions: conventions/diffbot-conventions.yml
+- target: $.components.schemas
+  description: Record that the Knowledge Graph entity payload is untyped in this contract.
+  update:
+    x-untyped-core:
+      field: Data.entity
+      declared_as: JSONObject
+      note: The entity shape that this API exists to return is not modelled here. The ontology is documented
+        at https://www.diffbot.com/docs/ontology/ and is machine-readable only through the MCP dql_ontology
+        tool.
+      analysis: data-model/diffbot-data-model.yml

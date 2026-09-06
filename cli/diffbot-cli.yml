@@ -1,0 +1,108 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://github.com/diffbot/diffbot-python (README, main branch),
+  https://www.diffbot.com/docs/interfaces/python, and the CLI invocations documented in
+  Diffbot's own skills/diffbot-dql.md.
+provider: Diffbot
+providerId: diffbot
+name: db
+description: >-
+  Diffbot ships a first-party CLI called `db`, distributed as an entry point of the
+  diffbot-python library and also as a self-contained binary. It is not a peripheral: Diffbot's
+  own published Agent Skills drive `db` rather than the REST API directly, which makes it the
+  execution layer for the skills surface.
+official: true
+binary: db
+package: diffbot-python
+install:
+  - method: standalone-binary
+    command: curl -fsSL https://raw.githubusercontent.com/diffbot/diffbot-python/main/install.sh | sh
+    note: >-
+      Self-contained builds for Linux x86_64, Linux aarch64 and macOS Apple Silicon. The
+      installer detects the platform, verifies a SHA256 checksum, and installs or upgrades
+      into ~/.local/bin. Pin with --version / DB_VERSION, relocate with --bin-dir /
+      DB_INSTALL_DIR.
+  - method: uv
+    command: uv tool install .
+    note: Installs an isolated `db` into ~/.local/bin.
+  - method: pip
+    command: python3 -m pip install diffbot-python
+    note: Installs the `db` entry point into the active environment.
+authentication:
+  order:
+    - explicit token argument
+    - DIFFBOT_API_TOKEN environment variable
+    - a DIFFBOT_API_TOKEN=... line in ~/.diffbot/credentials
+  note: >-
+    The CLI and the library share one credential resolution path (resolve_token()), so the
+    same file works for scripts and for the CLI. Diffbot documents chmod 600 on the
+    credentials file.
+commands:
+  - group: extract
+    commands:
+      - command: db extract <url>
+        summary: Extract structured content from a URL.
+  - group: ask
+    commands:
+      - command: db ask "<prompt>"
+        summary: Query the Diffbot LLM with live web grounding.
+      - command: db ask "<prompt>" --json
+        summary: Return a JSON answer.
+      - command: db ask "<prompt>" --schema <file.json>
+        summary: Constrain the answer to a JSON Schema, enforced by grammar during decoding.
+  - group: crawl
+    commands:
+      - command: db crawl <url> --hops <n>
+        summary: Start a crawl and stream job events.
+      - command: db crawl-list-jobs
+        summary: List active crawl jobs for the token.
+      - command: db crawl-delete-job <job-name>
+        summary: Delete a crawl job. Irreversible — see conventions/ reversibility.
+  - group: web-search
+    commands:
+      - command: db web-search "<query>"
+        summary: Search Diffbot's web index.
+      - command: db web-search "<query>" -n <count> -f json
+        summary: Limit result count and choose the output format.
+  - group: entities
+    commands:
+      - command: db entities "<text>"
+        summary: Resolve named entities in text to Knowledge Graph entities.
+      - command: db entities "<text>" -f dql
+        summary: Emit the resolved entities as a DQL fragment.
+  - group: dql
+    note: >-
+      The dql command group is documented in Diffbot's published Agent Skills
+      (skills/diffbot-dql.md) rather than in the library README.
+    commands:
+      - command: db dql init
+        summary: Refresh the ontology cache and check credentials.
+      - command: db dql ontology types|composites|enums|taxonomies
+        summary: List the Knowledge Graph ontology surfaces.
+      - command: db dql ontology fields <Type> [regex]
+        summary: List the fields of an entity type or composite.
+      - command: db dql ontology taxonomy <Name> [regex]
+        summary: List taxonomy values, recursing into children.
+      - command: db dql ontology enum <Name>
+        summary: List enum values.
+      - command: db dql ontology search <regex>
+        summary: Fallback search for any name anywhere in the ontology.
+      - command: db dql probe "<Q1>" "<Q2>" ...
+        summary: >-
+          Run query variants in parallel at size=0 to compare hit counts before committing.
+          This is the estate's dry-run mechanism for cost — size=0 queries consume no credits.
+      - command: db dql export "<DQL>" --out <file> [--format csv|xls|xlsx|json] [--spec "name,Name;..."] [--size N] [--from K]
+        summary: Write a full result set straight to a file rather than to stdout.
+output:
+  note: >-
+    Errors go to stderr with non-zero exit codes; everything else goes to stdout unless
+    --out is supplied. That makes it scriptable and safe to drive from an agent harness.
+used_by:
+  - artifact: skills/_index.yml
+    note: >-
+      All ten of Diffbot's published Agent Skills invoke `db` from a dedicated virtualenv at
+      ~/.diffbot/venv, at the fixed path ~/.diffbot/venv/bin/db, and bootstrap it if missing.
+docs:
+  - https://github.com/diffbot/diffbot-python#cli
+  - https://www.diffbot.com/docs/interfaces/python

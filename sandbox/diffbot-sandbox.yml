@@ -1,0 +1,73 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://www.diffbot.com/products/extract/testdrive, https://www.diffbot.com/products/crawl/testdrive,
+  https://www.diffbot.com/docs/credits, https://www.diffbot.com/pricing,
+  https://www.diffbot.com/docs/extract/analyze, and the "Cache and insert token into example
+  requests" control on the reference pages.
+provider: Diffbot
+providerId: diffbot
+description: >-
+  Diffbot publishes no separate sandbox environment and no test-mode credential. What it does
+  publish is a set of in-browser consoles that call the live API, plus documented zero-cost
+  request shapes that let an agent rehearse without spending credits. Recorded honestly:
+  there is no test/live key split.
+test_environment:
+  separate_sandbox: false
+  test_mode_keys: false
+  key_prefixes: null
+  note: >-
+    One token, one environment. Diffbot has no test-mode key prefix and no sandbox host —
+    every call in a console or a doc example hits production and consumes credits under the
+    normal rules.
+consoles:
+  - name: Test Drive Extract
+    url: https://www.diffbot.com/products/extract/testdrive
+    http_status: 200
+    auth_required: false
+    note: >-
+      Enter a URL, pick a page type (analyze, article, product, image, video, discussion,
+      event, list, job), set a timeout and hyperlink/meta toggles, and see the live JSON
+      response. Ships with three prefilled examples (a news article, "Bombas ankle socks",
+      a conference-speakers page).
+  - name: Test Drive Crawl
+    url: https://www.diffbot.com/products/crawl/testdrive
+    http_status: 200
+    auth_required: false
+  - name: Reference-page try-it consoles
+    url: https://www.diffbot.com/docs/extract/analyze
+    http_status: 200
+    auth_required: true
+    note: >-
+      Every API reference page carries an executable request panel. It offers to cache the
+      caller's own token and insert it into the example requests, with a stated 15-day
+      expiry — a convenience for a real token, not a test credential.
+zero_cost_rehearsal:
+  note: >-
+    This is the closest thing Diffbot has to a sandbox, and it is genuinely useful to an agent
+    sizing a job before committing spend. All four are published on the credits page.
+  paths:
+    - action: Knowledge Graph search from the dashboard (app.diffbot.com)
+      credits: 0
+    - action: Knowledge Graph search returning 0 entities
+      credits: 0
+    - action: Crawl spidering for links (as distinct from extracting a page)
+      credits: 0
+    - action: db dql probe "<query>" — runs variants at size=0 to compare hit counts
+      credits: 0
+      source: skills/diffbot-dql.md
+  docs: https://www.diffbot.com/docs/credits
+free_tier_as_sandbox:
+  note: >-
+    Diffbot's practical substitute for a sandbox is the Free plan: 10,000 credits a month,
+    all four APIs, no credit card required, 5 requests/minute. The Web Search API separately
+    advertises 100,000 free queries/month on a free token.
+  signup: https://app.diffbot.com/get-started
+  docs: https://www.diffbot.com/pricing
+test_fixtures:
+  published: false
+  note: >-
+    No magic test URLs, fixture identifiers, seeded entity IDs or trigger values are
+    published. Nothing is recorded here that Diffbot does not state.
+time_simulation:
+  supported: false
