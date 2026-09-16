@@ -24,9 +24,9 @@ apis:
   - type: APIReference
     url: https://www.diffbot.com/docs/extract/analyze
   description: >-
-    Diffbot Extract API is a powerful tool that allows users to automatically extract multiple types
-    of data from web pages. This API is capable of extracting information such as article text,
-    author details, images, and even product prices from a variety of websites.
+    Diffbot Extract API is a powerful tool that allows users to automatically extract multiple types of
+    data from web pages. This API is capable of extracting information such as article text, author details,
+    images, and even product prices from a variety of websites.
 - aid: diffbot:diffbot-crawl-api
   name: Diffbot Crawl API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
@@ -50,83 +50,9 @@ apis:
   - type: APIReference
     url: https://www.diffbot.com/docs/crawl/create
   description: >-
-    Diffbot Crawl API is a powerful tool that automates the process of extracting content and data
-    from websites on a large scale. By using advanced machine learning algorithms, the API can
-    analyze and extract information from web pages with speed and accuracy.
-- aid: diffbot:diffbot-bulk-extract-api
-  name: Diffbot Bulk Extract API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
-  baseURL: https://api.diffbot.com/v3
-  humanURL: https://www.diffbot.com/docs/bulk/
-  tags:
-  - Bulk
-  - Extraction
-  - Harvesting
-  - Scraping
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/diffbot-bulk-openapi.json
-  - type: Overlay
-    url: overlays/diffbot-bulk-overlay.yaml
-  - type: Documentation
-    url: https://www.diffbot.com/docs/bulk/
-  - type: APIReference
-    url: https://www.diffbot.com/docs/bulk/create
-  description: >-
-    Diffbot Bulk Extract API is a tool that allows users to extract data at scale from a variety of
-    sources, including websites, documents, and social media platforms. This API utilizes machine
-    learning algorithms to automatically identify and extract relevant information from large
-    amounts of unstructured data.
-- aid: diffbot:diffbot-dql-api
-  name: Diffbot DQL API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
-  baseURL: https://kg.diffbot.com
-  humanURL: https://www.diffbot.com/docs/dql/
-  tags:
-  - Extraction
-  - Harvesting
-  - Knowledge Graph
-  - Query Language
-  - Scraping
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/diffbot-dql-openapi.json
-  - type: Overlay
-    url: overlays/diffbot-dql-overlay.yaml
-  - type: Documentation
-    url: https://www.diffbot.com/docs/dql/
-  - type: APIReference
-    url: https://www.diffbot.com/docs/dql/get
-  description: >-
-    The Diffbot DQL API is a powerful tool that allows users to query and retrieve data from the web
-    in a structured format. By using a simple query language, users can access a wealth of
-    information from articles, images, videos, and more. This API is particularly useful for
-    developers and data analysts who need to extract specific data from websites quickly and
-    efficiently.
-- aid: diffbot:diffbot-enhance-api
-  name: Diffbot Enhance API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
-  baseURL: https://kg.diffbot.com
-  humanURL: https://www.diffbot.com/docs/enhance/
-  tags:
-  - Enhancements
-  - Extraction
-  - Harvesting
-  - Knowledge Graph
-  - Scraping
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/diffbot-enhance-openapi.json
-  - type: Overlay
-    url: overlays/diffbot-enhance-overlay.yaml
-  - type: Documentation
-    url: https://www.diffbot.com/docs/enhance/
-  - type: APIReference
-    url: https://www.diffbot.com/docs/enhance/get
-  description: >-
-    Diffbot Enhance API enhances data by providing additional context and insights. By analyzing
-    text and images, the API can identify and extract key information, such as entities, topics, and
-    sentiment, to enrich existing data sets.
+    Diffbot Crawl API is a powerful tool that automates the process of extracting content and data from
+    websites on a large scale. By using advanced machine learning algorithms, the API can analyze and
+    extract information from web pages with speed and accuracy.
 - aid: diffbot:diffbot-natural-language-api
   name: Diffbot Natural Language API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
@@ -150,58 +76,10 @@ apis:
   - type: APIReference
     url: https://www.diffbot.com/docs/natural-language/process-text
   description: >-
-    Diffbot Natural Language API allows users to extract and analyze textual content from websites.
-    By utilizing advanced natural language processing algorithms, the API can automatically identify
-    and extract valuable information such as article titles, authors, publication dates, and key
-    entities mentioned in the text.
-- aid: diffbot:diffbot-web-search-api
-  name: Diffbot Web Search API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
-  baseURL: https://llm.diffbot.com/api/v1/web_search
-  humanURL: https://www.diffbot.com/docs/web-search/
-  tags:
-  - Search
-  - Web
-  - Index
-  - Retrieval
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/diffbot-web-search-openapi.json
-  - type: Overlay
-    url: overlays/diffbot-web-search-overlay.yaml
-  - type: Documentation
-    url: https://www.diffbot.com/docs/web-search/
-  - type: APIReference
-    url: https://www.diffbot.com/docs/web-search/get
-  description: >-
-    Search Diffbot's own web index — the largest independently crawled index outside Google and
-    Bing, over 150TB. Candidates are retrieved and reranked by a cross-encoder trained to favour
-    factual relevance over popularity and primary sources over secondary ones, and the most relevant
-    chunk of each page is returned inline for citation. This is the one Diffbot surface that
-    authenticates with an Authorization Bearer header rather than a token query parameter.
-- aid: diffbot:diffbot-account-api
-  name: Diffbot Account API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
-  baseURL: https://api.diffbot.com/v4
-  humanURL: https://www.diffbot.com/docs/account
-  tags:
-  - Account
-  - Billing
-  - Usage
-  - Metering
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/diffbot-account-openapi.json
-  - type: Overlay
-    url: overlays/diffbot-account-overlay.yaml
-  - type: Documentation
-    url: https://www.diffbot.com/docs/account
-  - type: APIReference
-    url: https://www.diffbot.com/docs/account
-  description: >-
-    Retrieve account details, plan, token metadata and usage activity for a Diffbot token. The only
-    introspection surface Diffbot publishes: because the APIs return no rate-limit or quota response
-    headers, this endpoint is how a client discovers how much of its credit allotment it has spent.
+    Diffbot Natural Language API allows users to extract and analyze textual content from websites. By
+    utilizing advanced natural language processing algorithms, the API can automatically identify and
+    extract valuable information such as article titles, authors, publication dates, and key entities
+    mentioned in the text.
 - aid: diffbot:diffbot-knowledge-graph-api
   name: Diffbot Knowledge Graph API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
@@ -223,13 +101,13 @@ apis:
   - type: APIReference
     url: https://www.diffbot.com/docs/ontology/all-entities
   description: >-
-    The Knowledge Graph itself — a linked graph of over 10 billion entities (organizations, people,
-    articles, places, products, job posts and more) crawled and structured from the public web. It is
-    reached through two contracts, the DQL API for structured search and the Enhance API for
-    single-entity enrichment, over a shared ontology. Entities carry first-class provenance and quality
-    fields (confidence, salience, importance, origin, nbIncomingEdges, crawlTimestamp, sources) and are
-    classified against NACE Rev 2.1, NAICS, ISO 3166 and IAB taxonomies. The entity shapes are
-    documented as reference pages rather than declared as schemas in the published OpenAPI.
+    The Knowledge Graph itself — a linked graph of over 10 billion entities (organizations, people, articles,
+    places, products, job posts and more) crawled and structured from the public web. It is reached through
+    two contracts, the DQL API for structured search and the Enhance API for single-entity enrichment,
+    over a shared ontology. Entities carry first-class provenance and quality fields (confidence, salience,
+    importance, origin, nbIncomingEdges, crawlTimestamp, sources) and are classified against NACE Rev
+    2.1, NAICS, ISO 3166 and IAB taxonomies. The entity shapes are documented as reference pages rather
+    than declared as schemas in the published OpenAPI.
 - aid: diffbot:diffbot-crawlbulk-job-api
   name: Diffbot Crawl/Bulk Job API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
@@ -247,11 +125,532 @@ apis:
   - type: APIReference
     url: https://www.diffbot.com/docs/crawl/search
   description: >-
-    The Diffbot Crawl/Bulk Job API is a powerful tool that allows users to automatically extract and
-    organize large amounts of web data. It enables users to create custom scraping jobs that can
-    gather information from multiple websites in a structured and organized manner.
+    The Diffbot Crawl/Bulk Job API is a powerful tool that allows users to automatically extract and organize
+    large amounts of web data. It enables users to create custom scraping jobs that can gather information
+    from multiple websites in a structured and organized manner.
+- aid: diffbot:diffbot-account-api
+  name: Diffbot Account API
+  description: The Account API from Diffbot — 1 operation(s) for account.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-account-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-analyze-api
+  name: Diffbot Analyze API
+  description: The Analyze API from Diffbot — 1 operation(s) for analyze.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Analyze
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-analyze-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-article-api
+  name: Diffbot Article API
+  description: The Article API from Diffbot — 1 operation(s) for article.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Article
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-article-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-bulk-api
+  name: Diffbot Bulk API
+  description: The Bulk API from Diffbot — 2 operation(s) for bulk.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Bulk
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-bulk-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-bulk-enhance-api
+  name: Diffbot Bulk Enhance API
+  description: Enhance multiple records asynchronously
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Bulk Enhance
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-bulk-enhance-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-combine-api
+  name: Diffbot Combine API
+  description: Enhance both a person and the employer data
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Combine
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-combine-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-custom-api
+  name: Diffbot Custom API
+  description: The Custom API from Diffbot — 2 operation(s) for custom.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Custom
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-custom-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-discussion-api
+  name: Diffbot Discussion API
+  description: The Discussion API from Diffbot — 1 operation(s) for discussion.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Discussion
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-discussion-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-dql-search-api
+  name: Diffbot DQL Search API
+  description: DQL Search
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - DQL Search
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-dql-search-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-enhance-api
+  name: Diffbot Enhance API
+  description: Enhance single records synchronously
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Enhance
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-enhance-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-event-api
+  name: Diffbot Event API
+  description: The Event API from Diffbot — 1 operation(s) for event.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Event
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-event-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-image-api
+  name: Diffbot Image API
+  description: The Image API from Diffbot — 1 operation(s) for image.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Image
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-image-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-job-api
+  name: Diffbot Job API
+  description: The Job API from Diffbot — 1 operation(s) for job.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Job
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-job-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-list-api
+  name: Diffbot List API
+  description: The List API from Diffbot — 1 operation(s) for list.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - List
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-list-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-product-api
+  name: Diffbot Product API
+  description: The Product API from Diffbot — 1 operation(s) for product.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Product
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-product-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-video-api
+  name: Diffbot Video API
+  description: The Video API from Diffbot — 1 operation(s) for video.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Video
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-video-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
+- aid: diffbot:diffbot-web-search-api
+  name: Diffbot Web Search API
+  description: The Web Search API from Diffbot — 1 operation(s) for web search.
+  humanURL: https://www.diffbot.com/docs/extract/
+  baseURL: https://api.diffbot.com/v3
+  tags:
+  - Web Search
+  properties:
+  - type: OpenAPI
+    url: openapi/diffbot-web-search-api-openapi.yml
+  - type: Documentation
+    url: https://www.diffbot.com/docs/bulk/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/bulk/create
+  - type: Documentation
+    url: https://www.diffbot.com/docs/dql/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/dql/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/enhance/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/enhance/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/web-search/
+  - type: APIReference
+    url: https://www.diffbot.com/docs/web-search/get
+  - type: Documentation
+    url: https://www.diffbot.com/docs/account
+  - type: APIReference
+    url: https://www.diffbot.com/docs/account
 name: Diffbot
 tags:
+  - Extraction
+  - Harvesting
+  - Scraping
+  - Web
+  - Knowledge Graph
+  - Crawling
+  - Web Search
+  - Natural-Language
+  - Entity Resolution
+  - Artificial Intelligence
+tags_raw:
   - Extraction
   - Harvesting
   - Scraping
@@ -292,6 +691,16 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
 access: 3rd-Party
 common:
+  - type: Overlay
+    url: overlays/diffbot-bulk-overlay.yaml
+  - type: Overlay
+    url: overlays/diffbot-dql-overlay.yaml
+  - type: Overlay
+    url: overlays/diffbot-enhance-overlay.yaml
+  - type: Overlay
+    url: overlays/diffbot-web-search-overlay.yaml
+  - type: Overlay
+    url: overlays/diffbot-account-overlay.yaml
   - type: OpenAPI
     name: Diffbot Extract APIs (first-party OpenAPI 3.1.0)
     url: openapi/_original/diffbot-extract-openapi.json
