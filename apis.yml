@@ -344,6 +344,8 @@ apis:
   humanURL: https://www.diffbot.com/docs/extract/
   baseURL: https://api.diffbot.com/v3
   tags:
+  - Discussions
+  tags_raw:
   - Discussion
   properties:
   - type: OpenAPI
