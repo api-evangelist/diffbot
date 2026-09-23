@@ -1,0 +1,186 @@
+openapi: 3.2.0
+info:
+  title: Extract Video API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Video
+paths:
+  /video:
+    get:
+      tags:
+      - Video
+      summary: Video
+      description: The Video API automatically extracts detailed video information—including most metadata, thumbnail images, direct video URL and embed code from nearly any video page or video platform on the web.
+      operationId: video
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://www.youtube.com/watch?v=hFZFjoX2cGg
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                        images:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              diffbotUri:
+                                type: string
+                              title:
+                                type: string
+                              url:
+                                type: string
+                              primary:
+                                type: boolean
+                        author:
+                          type: string
+                        mime:
+                          type: string
+                        naturalHeight:
+                          type: integer
+                        diffbotUri:
+                          type: string
+                        type:
+                          type: string
+                        title:
+                          type: string
+                        url:
+                          type: string
+                        naturalWidth:
+                          type: integer
+                        duration:
+                          type: integer
+                        provider:
+                          type: string
+                        humanLanguage:
+                          type: string
+                        html:
+                          type: string
+                        pageUrl:
+                          type: string
+                        text:
+                          type: string
+                        viewCount:
+                          type: integer
+              example:
+                request:
+                  pageUrl: https://www.youtube.com/watch?v=hFZFjoX2cGg
+                  api: video
+                  version: 3
+                objects:
+                - date: Sun, 24 May 2020 07:00:00 GMT
+                  images:
+                  - diffbotUri: image|3|231854607
+                    title: Backyard Squirrel Maze 1.0- Ninja Warrior Course
+                    url: https://i.ytimg.com/vi/hFZFjoX2cGg/maxresdefault.jpg
+                    primary: true
+                  author: Mark Rober
+                  mime: video/mp4
+                  naturalHeight: 720
+                  diffbotUri: video|3|1870173316
+                  type: video
+                  title: Backyard Squirrel Maze 1.0- Ninja Warrior Course
+                  url: https://rr6---sn-5uaeznks.googlevideo.com/videoplayback?expire=1649742262&ei=Vr1UYoLhFpDm8wTUt76wAQ&ip=23.229.39.25&id=o-AOUTPxsk0l8eAnvqC6G9PtYnkFK4S-lYoQ1G-mt8W40U&itag=399&aitags=133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C278%2C394%2C395%2C396%2C397%2C398%2C399&source=youtube&requiressl=yes&mh=s4&mm=31%2C29&mn=sn-5uaeznks%2Csn-5ualdnl7&ms=au%2Crdu&mv=u&mvi=6&pl=23&spc=4ocVC0JfKoZvX0FSPklAcHZ7LBTF&vprv=1&mime=video%2Fmp4&ns=ZSXKPHKFPvaGHi2sm3qErYcG&gir=yes&clen=246339629&dur=1220.093&lmt=1637823031873234&mt=1649720229&fvip=3&keepalive=yes&fexp=24001373%2C24007246&c=WEB&txp=5531432&n=b2VCd9pxXsFyoV_m&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cspc%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAKiKoHk2DfvaKA3Adu0CkNNF_lOavT4Mk0CYkQvbG0wpAiEAgiAc4h_1GqjzjGXgdiKdgdWZXWM0M9ubY-ns1qhGyns%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl&lsig=AG3C_xAwRQIhAM5DsCeq2RzEblNQ3qRq-3xEydeAidszCKAg8PvahEK1AiAzkjRXQQmDItpKWMxLq1TTb_32NWjPxiTDIVeOrBvxLw%3D%3D
+                  naturalWidth: 1280
+                  duration: 1220
+                  provider: YouTube
+                  humanLanguage: en
+                  html: <iframe src="https://www.youtube.com/embed/hFZFjoX2cGg" frameborder="0" allowfullscreen></iframe>
+                  pageUrl: https://www.youtube.com/watch?v=hFZFjoX2cGg
+                  text: "Squirrels were stealing my bird seed so I solved the problem with mechanical engineering :)\n\nHere is an explanation of the illusion dish thing!- https://demos.smu.ca/index.php/demos/optics/69-mirage-mirror\n\nHere is a link to the illusion dish (not sponsored :) https://www.amazon.com/dp/B0718XCG7F/ref=cm_sw_em_r_mt_dp_U_D9PYEbC85X14F\n\n*MUSIC*\n0:02 - Arrow (Instrumental) - Andrew Applepie http://andrewapplepie.com/\n0:27 - Kalimba Jam - Blue Wednesday https://soundcloud.com/bluewednesday/\n3:21 - Zambo - Devil in Disguise https://danijel-zambo.bandcamp.com/track/devil-in-disguise-2 \n3:47 - Cereal Killa - Blue Wednesday https://soundcloud.com/bluewednesday/\n5:28 - J. Thompson - Real Quick Lovin' https://www.amazon.com/Real-Quick-Lovin/dp/B0010YGE3W\n5:39 - New Shoes - Blue Wednesday https://soundcloud.com/bluewednesday/\n7:51- Chi- Ponder- https://www.prodbyponder.com/5-free-beats32029775\n8:31 - Marimba Idea - Blue Wednesday https://soundcloud.com/bluewednesday/ \n9:25 - Josef Falkenskold - Tiny Tumble https://www.epidemicsound.com/artists/josef-falkenskold\n19:07 - Nik- Ponder- https://www.prodbyponder.com/5-free-beats32029775"
+                  viewCount: 92199455
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

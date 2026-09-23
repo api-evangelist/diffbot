@@ -1,0 +1,317 @@
+openapi: 3.2.0
+info:
+  title: Extract Custom API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Custom
+paths:
+  /{api}:
+    get:
+      summary: Extract with Custom API
+      tags:
+      - Custom
+      description: Extracts a page using a modified Extract API or a custom ruleset.
+      operationId: customget
+      parameters:
+      - name: api
+        in: path
+        description: Name of your Custom API
+        required: true
+        schema:
+          type: string
+      - name: url
+        in: query
+        description: Target URL to extract (url encoded)
+        required: true
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+  /custom:
+    get:
+      summary: Retrieve Custom APIs
+      tags:
+      - Custom
+      description: Get all the Custom APIs and their rules currently defined on your token
+      operationId: retrieve-a-custom-api
+      parameters: []
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    notes:
+                      type: array
+                      items:
+                        type: string
+                    xForwardHeaders:
+                      type: object
+                      properties:
+                        X-Evaluate:
+                          type: string
+                      required:
+                      - X-Evaluate
+                    rules:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          selector:
+                            type: string
+                    api:
+                      type: string
+                    urlPattern:
+                      type: string
+                    testUrl:
+                      type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+    post:
+      summary: Create or Update a Custom API
+      tags:
+      - Custom
+      description: Create or update the parameters and ruleset of an existing Custom API
+      operationId: create-a-custom-api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of strings that can be added manually.  The API automatically adds a notes specifying when the API was last updated.
+                xForwardHeaders:
+                  type: object
+                  properties:
+                    X-Evaluate:
+                      type: string
+                  description: Allows you to pass in X-Forward headers by name, including X-Evaluate (aka. X-Forward-X-Evaluate; omit "X-Forward" in the header name)
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      selector:
+                        type: string
+                      filters:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            args:
+                              type: array
+                              items:
+                                type: string
+                            type:
+                              type: string
+                  description: An object that defines a set of rules for a specific urlPattern-api combination
+                api:
+                  type: string
+                  description: The specific API being targeted.  Always precede the API name with "/api/" as in `"/api/article"` except for "all")
+                urlPattern:
+                  type: string
+                  description: A regex that defines the URLs for which the ruleset will be applied
+                testUrl:
+                  type: string
+                  description: A URL that can be used to check that the rule still works as intended.  This is the page that will load automatically when editing the ruleset in the Dashboard UI
+                renderOptions:
+                  type: string
+                  description: Rendering options
+                prefilters:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of string selectors that should be omitted from the DOM before extraction occurs
+                useProxy:
+                  type: string
+                  description: Used to disable proxies (when they have been set globally), by applying the value `"none"`
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hashes:
+                    type: array
+                    items:
+                      type: string
+              example:
+                hashes:
+                - abcd1234
+      security:
+      - tokenscheme: []
+    delete:
+      summary: Delete a Custom API
+      tags:
+      - Custom
+      description: Delete definitions of existing Custom APIs for a given URL pattern and API on your token
+      operationId: delete-a-custom-api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                api:
+                  type: string
+                  description: The specific API being targeted.  Always precede the API name with "/api/" as in `"/api/article"` except for "all")
+                urlPattern:
+                  type: string
+                  description: A regex that defines the URLs corresponding to which the Custom API definitions will be deleted. Make sure that is json-escaped before url-encoding it.
+                token:
+                  type: string
+                  description: Your token. The Custom API definitions only for this token will be deleted
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  urlPattern:
+                    type: string
+                  api:
+                    type: string
+                  status:
+                    type: string
+              example:
+                api: /api/discussion
+                token: TOKEN
+                urlPattern: examplePattern.com
+                status: success
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                statusCode: 500
+                error: urlPattern and apiPrefix required to delete rule
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

@@ -1,0 +1,220 @@
+openapi: 3.2.0
+info:
+  title: Extract Image API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Image
+paths:
+  /image:
+    get:
+      tags:
+      - Image
+      summary: Image
+      description: Automatically identifies the primary image(s) on any web page and returns comprehensive information and metadata for each image.
+      operationId: image
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://www.diffbot.com/products/extract/
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+          - displayHeight
+          - displayWidth
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        xpath:
+                          type: string
+                        humanLanguage:
+                          type: string
+                        naturalHeight:
+                          type: integer
+                        diffbotUri:
+                          type: string
+                        pageUrl:
+                          type: string
+                        type:
+                          type: string
+                        url:
+                          type: string
+                        naturalWidth:
+                          type: integer
+                        tags:
+                          type: array
+                          items:
+                            oneOf:
+                            - type: object
+                              properties:
+                                typeHierarchy:
+                                  type: array
+                                  items:
+                                    type: string
+                                id:
+                                  type: integer
+                                label:
+                                  type: string
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                            - type: object
+                              properties:
+                                id:
+                                  type: integer
+                                label:
+                                  type: string
+                                uri:
+                                  type: string
+              example:
+                request:
+                  pageUrl: https://www.diffbot.com/products/extract/
+                  api: image
+                  version: 3
+                objects:
+                - xpath: /HTML/BODY/MAIN/DIV[@id='slice-readslikehumans']/DIV[@class='container px-3 py-5 py-md-6 mx-auto']/DIV[@class='row justify-content-center']/DIV[@class='col-12  col-md  d-flex justify-content-center align-items-center  order-md-1']/IMG[@class='img-fluid mb-4 align-self-start']
+                  humanLanguage: en
+                  naturalHeight: 1023
+                  diffbotUri: image|3|666824882
+                  pageUrl: https://www.diffbot.com/products/extract/
+                  type: image
+                  url: https://www.diffbot.com/assets/img/products/extract_screenshot.png
+                  naturalWidth: 897
+                  tags:
+                  - typeHierarchy:
+                    - http://www.w3.org/2002/07/owl#Thing
+                    - http://dbpedia.org/ontology/Work
+                    - http://dbpedia.org/ontology/Website
+                    id: 33898
+                    label: Website
+                    type: http://dbpedia.org/ontology/Website
+                    uri: https://www.diffbot.com/entity/Xd90vp_U4MJOoRHIja3quxg
+                  - id: 1404579
+                    label: Ring binder
+                    uri: http://diffbot.com/entity/XYwPij6UgPdaDEY6fXSrrRA
+                - xpath: /HTML/BODY/MAIN/DIV[@id='slice-lookslikeahuman']/DIV[@class='container px-3 py-5 py-md-6 mx-auto']/DIV[@class='row justify-content-center']/DIV[@class='col-12  col-md  d-flex justify-content-center align-items-center  order-md-1']/IMG[@class='img-fluid mb-4']
+                  humanLanguage: en
+                  naturalHeight: 270
+                  diffbotUri: image|3|1865428953
+                  pageUrl: https://www.diffbot.com/products/extract/
+                  type: image
+                  url: https://www.diffbot.com/assets/img/products/any_language.png
+                  naturalWidth: 554
+                  tags:
+                  - id: 5462349
+                    label: Sachet
+                    uri: http://diffbot.com/entity/X1_7MIKBoPpuRnAPVQXqQxA
+                  - id: 479373
+                    label: Eraser
+                    uri: http://diffbot.com/entity/XGPnWNBUZPyuNyfK9rJr6vQ
+                  - id: 57260
+                    label: Envelope
+                    uri: http://diffbot.com/entity/XK5gEV93iP6SqKMDjDr0YBQ
+                - xpath: /HTML/BODY/MAIN/DIV[@id='slice-one-click-crawling']/DIV[@class='container px-3 py-5 py-md-6 mx-auto']/DIV[@class='row justify-content-center']/DIV[@class='col-12  offset-md-1 col-md  d-flex justify-content-center align-items-center  order-md-2']/IMG[@class='img-fluid mb-4']
+                  humanLanguage: en
+                  naturalHeight: 372
+                  diffbotUri: image|3|1699007329
+                  pageUrl: https://www.diffbot.com/products/extract/
+                  type: image
+                  url: https://www.diffbot.com/assets/img/products/analyze_two.png
+                  naturalWidth: 451
+                  tags:
+                  - id: 268267
+                    label: Tray
+                    uri: http://diffbot.com/entity/XwXgQ3A7sNmypX2VX3oZCgg
+                  - id: 467731
+                    label: Spatula
+                    uri: http://diffbot.com/entity/XZohZtDoDPvq1wusJQCSZZA
+                  - id: 2649730
+                    label: Measuring cup
+                    uri: http://diffbot.com/entity/XhwdQ4HnKOsCVrf9YU3hyWw
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

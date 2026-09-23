@@ -1,0 +1,257 @@
+openapi: 3.2.0
+info:
+  title: Extract Product API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Product
+paths:
+  /product:
+    get:
+      tags:
+      - Product
+      summary: Product
+      description: Automatically extract pricing, product specs, images, and more from an e-commerce product page.
+      operationId: product
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://www.microcenter.com/product/628738/evga-nvidia-geforce-rtx-3090-ftw3-ultra-triple-fan-24gb-gddr6x-pcie-40-graphics-card
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      - name: discussion
+        in: query
+        description: Pass `discussion=false` to disable automatic extraction of product reviews.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  humanLanguage:
+                    type: string
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        images:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              xpath:
+                                type: string
+                              naturalHeight:
+                                type: integer
+                              width:
+                                type: integer
+                              diffbotUri:
+                                type: string
+                              title:
+                                type: string
+                              url:
+                                type: string
+                              naturalWidth:
+                                type: integer
+                              primary:
+                                type: boolean
+                              height:
+                                type: integer
+                        offerPrice:
+                          type: string
+                        productId:
+                          type: string
+                        diffbotUri:
+                          type: string
+                        upc:
+                          type: string
+                        productOrigin:
+                          type: string
+                        mpn:
+                          type: string
+                        gs1Code:
+                          type: string
+                        multipleProducts:
+                          type: boolean
+                        availability:
+                          type: boolean
+                        type:
+                          type: string
+                        title:
+                          type: string
+                        offerPriceDetails:
+                          type: object
+                          properties:
+                            symbol:
+                              type: string
+                            amount:
+                              type: number
+                            text:
+                              type: string
+                        specs:
+                          type: object
+                          properties:
+                            mfr_part_:
+                              type: string
+                            upc:
+                              type: string
+                            sku:
+                              type: string
+                        normalizedSpecs:
+                          type: object
+                          properties:
+                            sku:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  cleanLiteral:
+                                    type: string
+                        humanLanguage:
+                          type: string
+                        pageUrl:
+                          type: string
+                        text:
+                          type: string
+                        category:
+                          type: string
+                        sku:
+                          type: string
+                        brand:
+                          type: string
+                  type:
+                    type: string
+                  title:
+                    type: string
+              example:
+                request:
+                  pageUrl: https://www.microcenter.com/product/628738/evga-nvidia-geforce-rtx-3090-ftw3-ultra-triple-fan-24gb-gddr6x-pcie-40-graphics-card
+                  api: product
+                  version: 3
+                humanLanguage: en
+                objects:
+                - images:
+                  - xpath: /html[1]/body[1]/main[1]/article[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/a[1]/img[1]
+                    naturalHeight: 200
+                    width: 260
+                    diffbotUri: image|3|735477840
+                    title: Product Image View 2
+                    url: https://90a1c75758623581b3f8-5c119c3de181c9857fcb2784776b17ef.ssl.cf2.rackcdn.com/628738_177923_01_front_thumbnail.jpg
+                    naturalWidth: 200
+                    primary: true
+                    height: 260
+                  offerPrice: $1,919.99
+                  productId: '843368067137'
+                  diffbotUri: product|3|-1003574237
+                  upc: '843368067137'
+                  productOrigin: us
+                  mpn: 24G-P5-3987-KR
+                  gs1Code: U.S. and Canada
+                  multipleProducts: true
+                  availability: true
+                  type: product
+                  title: EVGA NVIDIA GeForce RTX 3090 FTW3 Ultra Triple-Fan 24GB GDDR6X PCIe 4.0 Graphics Card
+                  offerPriceDetails:
+                    symbol: $
+                    amount: 1919.99
+                    text: $1,919.99
+                  specs:
+                    mfr_part_: 24G-P5-3987-KR
+                    upc: '843368067137'
+                    sku: '177923'
+                  normalizedSpecs:
+                    sku:
+                    - cleanLiteral: '843368067137'
+                  humanLanguage: en
+                  pageUrl: https://www.microcenter.com/product/628738/evga-nvidia-geforce-rtx-3090-ftw3-ultra-triple-fan-24gb-gddr6x-pcie-40-graphics-card
+                  text: The EVGA GeForce RTX 3090 is colossally powerful in every way imaginable, giving you a whole new tier of performance at 8K resolution. It's powered by the NVIDIA Ampere architecture, which doubles down on ray tracing and AI performance with enhanced RT Cores, Tensor Cores, and new streaming multiprocessors. Combined with the next generation of design, cooling, and overclocking with EVGA Precision X1, the EVGA GeForce RTX 3090 Series redefines the definition of ultimate performance.
+                  category: Computers
+                  sku: '177923'
+                  brand: EVGA
+                type: product
+                title: EVGA NVIDIA GeForce RTX 3090 FTW3 Ultra Triple-Fan 24GB GDDR6X PCIe 4.0 Graphics Card - Micro Center
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

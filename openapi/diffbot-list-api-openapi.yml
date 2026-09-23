@@ -1,0 +1,177 @@
+openapi: 3.2.0
+info:
+  title: Extract List API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: List
+paths:
+  /list:
+    get:
+      tags:
+      - List
+      summary: List
+      description: Automatically structures a list of items from news index pages, product listings pages, search engine results pages, and other "list-like" pages.
+      operationId: list
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://slashdot.org/
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        diffbotUri:
+                          type: string
+                        icon:
+                          type: string
+                        pageUrl:
+                          type: string
+                        type:
+                          type: string
+                        title:
+                          type: string
+                        items:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              date:
+                                type: string
+                              summary:
+                                type: string
+                              link:
+                                type: string
+                              title:
+                                type: string
+              example:
+                request:
+                  pageUrl: https://slashdot.org/
+                  api: list
+                  version: 3
+                objects:
+                - diffbotUri: list|3|-768312769
+                  icon: https://slashdot.org/favicon.ico
+                  pageUrl: https://slashdot.org/
+                  type: list
+                  title: News for nerds, stuff that matters
+                  items:
+                  - date: Tue, 05 Oct 2021 00:00:00 GMT
+                    summary: 'According to fluent Korean speaker Youngmi Mayer, Squid Game features "botched" subtitles that have changed the show''s meaning for English-speaking viewers.
+
+                      For those unaware of Squid Game, it''s a Korean-language drama about an alternative world where people in debt compete in deadly games. The plot sees a group of people tempted into a survival game where they have the chance to walk away with 45.6 billion Korean won ($38 million) if they win a series of six games. According to a BBC article, it''s currently on track to become Netflix''s biggest original series. From the report:  "The dialogue was so well written and zero of it was preserved [in the subtitles]," Youngmi said in a Twitter post. In a TikTok video that''s had almost nine million views, Youngmi gave several examples of mistranslation. In one scene a character tries to convince people to play the game with her, and the closed-caption subtitles read: "I''m not a genius, but I still got it worked out." But what the character actually says, Youngmi explains, is: "I am very smart, I just never got a chance to study." That translation puts more emphasis on the wealth disparity in society -- which is also a theme in the Oscar-winning 2019 Korean film, Parasite. "Almost everything she says is being botched translation-wise... the writers, all they want you to know about her is that," Youngmi said. "[It] seems so small, but it''s the entire character''s purpose of being in the show."  Youngmi later clarifies that her initial comments were about the automatically generated closed-caption subtitles rather than the English language subtitles, which are "substantially better." But she added: "The misses in the metaphors -- and what the writers were trying to actually say -- are still pretty present."'
+                    link: https://entertainment.slashdot.org/story/21/10/05/0146245/squid-game-subtitles-change-meaning-of-netflix-show
+                    title: Squid Game Subtitles 'Change Meaning' of Netflix Show
+                  - date: Mon, 04 Oct 2021 00:00:00 GMT
+                    summary: 'An anonymous reader quotes a report from The Verge:  Sarah was the patient in a proof-of-concept trial of a new approach to treating severe, treatment-resistant depression, published today in the journal Nature Medicine. The findings open up another possible strategy for helping people with the disorder. The study only involved Sarah, and it''s still not clear how well it might work in other people. The lessons from the trial, though, helped the researchers understand more about the nature of depression and could apply to other efforts to treat the disease. The trial used a technique called deep brain stimulation, where electrodes implanted within the brain deliver electrical impulses in an attempt to change or regulate abnormal brain activity. It''s common for conditions like epilepsy and Parkinson''s disease. Research over the past decade has shown that it can sometimes help with depression, but the findings have been inconsistent. Most previous efforts delivered stimulation to individual regions of the brain thought to be involved in depression. This study, though, was targeted at regions that were part of specific brain circuits -- interconnected parts of the brain that are responsible for specific functions.
+
+                      In addition, the circuits involved might be different for each person. So in this trial, the study team personalized the treatment approach to the specific patient''s depression. They mapped out the type of brain activity that occurred when Sarah''s depression symptoms flared. Then, they surgically implanted a device that could detect that brain activity and send stimulation to the circuit where the activity was happening. For Sarah, the procedure was highly effective. Her scores on depression rating scales dropped the morning after the device was turned on. And perhaps more importantly, she felt dramatic changes in her mood. During her first time getting the stimulation, she laughed out loud in the lab. "And everyone in the room went, ''Oh my god,'' because that''s the first time I spontaneously laughed and smiled, where it wasn''t faked, in five years," she said. Sarah''s depression circuit flares up hundreds of times a day, and each time, the implanted device delivers a brief stimulating pulse. In total, she gets around 30 minutes of stimulation each day [...]. Sarah can''t feel the pulses, but she said she does have a general idea of when they''re happening throughout the day. "There''s a sense of alertness and energy or positivity that I''ll feel," she said.'
+                    link: https://science.slashdot.org/story/21/10/04/2241244/a-surgically-implanted-brain-stimulation-device-could-help-treat-severe-depression
+                    title: A Surgically Implanted Brain Stimulation Device Could Help Treat Severe Depression
+                  - date: Mon, 04 Oct 2021 00:00:00 GMT
+                    summary: 'German officials on Monday unveiled what they said is the world''s first commercial plant for making synthetic kerosene, touted as a climate-friendly fuel of the future. The Associated Press reports:  The facility in Werlte, near Germany''s northwestern border with the Netherlands, will use water and electricity from four nearby wind farms to produce hydrogen. In a century-old process, the hydrogen is combined with carbon dioxide to make crude oil, which can then be refined into jet fuel. Burning that synthetic kerosene releases only as much CO2 into the atmosphere as was previously removed to produce the fuel, making it "carbon neutral."
+
+                      The amount of fuel that the plant can produce beginning early next year is modest: just eight barrels a day, or about 336 gallons of jet fuel. That would be enough to fill up one small passenger plane every three weeks. By comparison, total fuel consumption of commercial airlines worldwide reached 95 billion gallons in 2019, before the pandemic hit the travel industry, according to the International Air Transport Association, or IATA. But Atmosfair, a German non-profit group behind the project, says its purpose is to show that the process is technologically feasible and -- once it is scaled up and with sufficient demand -- economically viable.
+
+                      Initially the price of synthetic kerosene produced in Werlte will be far higher than that of regular jet fuel, though Atmosfair won''t divulge how much it will be charging its first customer, the German airline Lufthansa. However Atmosfair''s chief executive, Dietrich Brockhagen, says a price of 5 euros ($5.80) per liter (0.26 gallons) is possible. That''s still several times what kerosene currently costs, but Atsmofair is banking on carbon taxes driving up the price of fossil fuels, making his product more competitive. Additionally, authorities at the national and European level are putting in place quotas for the amount of e-fuel that airlines will have to use in future. That will create demand, making it more attractive to invest in bigger and better plants. Ueckerdt said 5 euros per liter is feasible by 2030, when the European Union''s executive may require airlines to meet 0.7% of their kerosene needs with e-fuels. Under current plans, that would rise to 28% by 2050.'
+                    link: https://news.slashdot.org/story/21/10/04/2236211/germany-unveils-worlds-first-commercial-plant-for-making-synthetic-kerosene
+                    title: Germany Unveils World's First Commercial Plant For Making Synthetic Kerosene
+                  - date: Mon, 04 Oct 2021 00:00:00 GMT
+                    summary: 'We thought the carnage was over for popular decentralized finance, or DeFi, staking protocol Compound, but as it turns out, millions more than we thought are at risk. About $162 million is up for grabs after an upgrade gone very wrong, according to Robert Leshner, founder of Compound Labs. CNBC reports:  At first, the Compound chief tweeted Friday that there was a cap to how many comp tokens could be accidentally distributed, noting that âoethe impact is bounded, at worst, 280,000 comp tokens,â or about $92.6 million. But on Sunday morning, Leshner revealed that the pool of cash that had already been emptied once had been replenished â" exposing another 202,472.5 comp tokens to exploit, or roughly $66.9 million at its current price.
+
+                      On Wednesday, Compound rolled out what should have been a pretty standard upgrade. Soon after implementation, however, it was clear that something had gone seriously wrong, once users started to receive millions of dollars in comp tokens. For example, $30 million worth of comp tokens were claimed in one transaction. The saving grace of the entire debacle, however, was the fact that the pool of cash that was open to exploit -- something called the Comptroller contract -- had a finite amount of tokens. The problem is that this leaky pool got a fresh influx of cash, and 0.5 comp tokens are being added roughly every 15 seconds, according to Gupta. "When the drip() function was called this morning, it sent the backlog (202,472.5, about two months of COMP since the last time the function was called) into the protocol for distribution to users," Leshner wrote in a tweet Sunday morning. Leshner noted that this brought the total comp at risk to 490,000 comp tokens, or about $162 million.
+
+                      There are a few proposals to fix the bug, but Compound''s governance model is such that any changes to the protocol require a multiday voting window, and Gupta said it takes another week for the successful proposal to be executed. In the meantime, this pool of cash is once again up for grabs for users who know how to exploit the bug. Compound made clear that no supplied or borrowed funds were at risk, which is some consolation. "No user funds are or were at risk so it''s not that big of a deal," said Gupta. "Everyone kinda got diluted but didn''t lose anything directly."'
+                    link: https://news.slashdot.org/story/21/10/04/2228209/bug-puts-162-million-up-for-grabs-says-founder-of-defi-platform-compound
+                    title: Bug Puts $162 Million Up For Grabs, Says Founder of DeFi Platform Compound
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

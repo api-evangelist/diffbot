@@ -1,0 +1,420 @@
+openapi: 3.2.0
+info:
+  title: Extract Discussion API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Discussion
+paths:
+  /discussion:
+    get:
+      tags:
+      - Discussion
+      summary: Discussion
+      description: Automatically structure and extract entire threads of reviews/comments from articles, product pages, and forum threads.
+      operationId: discussion
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://forum.gl-inet.com/t/ssh-connection-protocol-does-not-work-well-between-vpn-clients/22779
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+          - sentiment
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      - name: paging
+        in: query
+        description: Pass `paging=false` to disable automatic concatenation multiple-page articles.
+        schema:
+          type: boolean
+      - name: maxPages
+        in: query
+        description: Set the maximum number of pages in a thread to automatically concatenate in a single response. Default = 1 (no concatenation). Set `maxPages=all` to retrieve all pages of a thread regardless of length. Each individual page will count as a separate API call.
+        schema:
+          type: string
+          default: '20'
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        numPages:
+                          type: integer
+                        humanLanguage:
+                          type: string
+                        confidence:
+                          type: number
+                        diffbotUri:
+                          type: string
+                        pageUrl:
+                          type: string
+                        numPosts:
+                          type: integer
+                        type:
+                          type: string
+                        title:
+                          type: string
+                        posts:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              date:
+                                type: string
+                              images:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    naturalHeight:
+                                      type: integer
+                                    width:
+                                      type: integer
+                                    diffbotUri:
+                                      type: string
+                                    pageUrl:
+                                      type: string
+                                    url:
+                                      type: string
+                                    naturalWidth:
+                                      type: integer
+                                    height:
+                                      type: integer
+                              humanLanguage:
+                                type: string
+                              author:
+                                type: string
+                              authorUrl:
+                                type: string
+                              diffbotUri:
+                                type: string
+                              html:
+                                type: string
+                              pageUrl:
+                                type: string
+                              id:
+                                type: integer
+                              text:
+                                type: string
+                              type:
+                                type: string
+                              title:
+                                type: string
+                        tags:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              score:
+                                type: number
+                              count:
+                                type: integer
+                              label:
+                                type: string
+                              uri:
+                                type: string
+                              rdfTypes:
+                                type: array
+                                items:
+                                  type: string
+                        participants:
+                          type: integer
+                        rssUrl:
+                          type: string
+              example:
+                request:
+                  pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                  api: discussion
+                  version: 3
+                objects:
+                - numPages: 1
+                  humanLanguage: en
+                  confidence: 0.05500000089407453
+                  diffbotUri: discussion|3|-870809033
+                  pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                  numPosts: 13
+                  type: discussion
+                  title: '[OC] 66% of Top 50 Russian Exposed Companies Have Announced Sanctions'
+                  posts:
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    images:
+                    - naturalHeight: 767
+                      width: 457
+                      diffbotUri: image|3|-804821395
+                      pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                      url: https://preview.redd.it/l76k59t8jsm81.png?width=457&auto=webp&s=632efa1f24e607358bbec99c161a6aa579aebfe1
+                      naturalWidth: 457
+                      height: 767
+                    humanLanguage: en
+                    author: hicheoo
+                    authorUrl: https://old.reddit.com/user/hicheoo
+                    diffbotUri: post|3|29462830
+                    html: '<figure><a href="https://i.redd.it/l76k59t8jsm81.png"><img src="https://preview.redd.it/l76k59t8jsm81.png?width=457&auto=webp&s=632efa1f24e607358bbec99c161a6aa579aebfe1"></img></a></figure>
+
+                      <h2>Want to add to the discussion?</h2>
+
+                      <p>Post a comment!</p>
+
+                      <p>Create an account</p>'
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 0
+                    text: "Want to add to the discussion?\nPost a comment!\n\n \nCreate an account"
+                    type: post
+                    title: '[OC] 66% of Top 50 Russian Exposed Companies Have Announced Sanctions'
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: not_mig
+                    authorUrl: https://old.reddit.com/user/not_mig
+                    diffbotUri: post|3|-720375378
+                    html: <p>What's the difference between blue, yellow, and green?</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 1
+                    text: What's the difference between blue, yellow, and green?
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: hicheoo
+                    authorUrl: https://old.reddit.com/user/hicheoo
+                    diffbotUri: post|3|-148816221
+                    html: "<p>They're exemptions. I should've clarified up top, but they're basically all in the description.</p>\n<p>Green: Typical Sanctions<br>\n Yellow: Sanctions, but might be a PR move.<br>\n Blue: Healthcare</p>"
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 2
+                    text: 'They''re exemptions. I should''ve clarified up top, but they''re basically all in the description.
+
+                      Green: Typical Sanctions
+
+                      Yellow: Sanctions, but might be a PR move.
+
+                      Blue: Healthcare'
+                    type: post
+                    parentId: 1
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: Zealousideal-Lie7255
+                    authorUrl: https://old.reddit.com/user/Zealousideal-Lie7255
+                    diffbotUri: post|3|-683402068
+                    html: <p>A lot of oil service companies have no reported sanctions. Like Schlumberger, Baker Hughes. Some Chinese companies too.</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 3
+                    text: A lot of oil service companies have no reported sanctions. Like Schlumberger, Baker Hughes. Some Chinese companies too.
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: varnima
+                    authorUrl: https://old.reddit.com/user/varnima
+                    diffbotUri: post|3|-603833918
+                    html: <p>JetBrains changed and imposed sanctions <a href="https://blog.jetbrains.com/blog/2022/03/11/jetbrains-statement-on-ukraine/">https://blog.jetbrains.com/blog/2022/03/11/jetbrains-statement-on-ukraine/</a></p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 4
+                    text: JetBrains changed and imposed sanctions https://blog.jetbrains.com/blog/2022/03/11/jetbrains-statement-on-ukraine/
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: hicheoo
+                    authorUrl: https://old.reddit.com/user/hicheoo
+                    diffbotUri: post|3|-296888207
+                    html: <p>Yeah, they're green in the chart.</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 5
+                    text: Yeah, they're green in the chart.
+                    type: post
+                    parentId: 4
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: hicheoo
+                    authorUrl: https://old.reddit.com/user/hicheoo
+                    diffbotUri: post|3|624793084
+                    html: '<p><strong>Sources:</strong> - Diffbot Sanctions Tracker (<a href="https://www.diffbot.com/insights/every-company-affected-by-sanctions/">https://www.diffbot.com/insights/every-company-affected-by-sanctions/</a>) - Diffbot Knowledge Graph (more detail on query below)</p>
+
+                      <p><strong>Data Viz Tool:</strong> Infogram</p>
+
+                      <p><strong>Disclaimer:</strong> I work for Diffbot</p>
+
+                      <p>I started by querying the Knowledge Graph for people who live in Russia but work for a non-Russian company. Faceting this query by their employer provides me with a list of non-Russian companies ranked by # of Russian employees.</p>
+
+                      <p><code>
+
+                      type:Person location.country.name:&quot;Russia&quot; employments.{employer.{location.country.name!=&quot;Russia&quot; nbLocations&gt;0} isCurrent:true} facet:employments.{employer.name isCurrent:true}
+
+                      </code></p>
+
+                      <p>This data underrepresents actual employment figures, as there are many employees who do not maintain an internet presence linking them to their employer. Underrepresentation should be fairly equal across all companies, and relative position in the rankings should be accurate.</p>'
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 6
+                    text: 'Sources: - Diffbot Sanctions Tracker (https://www.diffbot.com/insights/every-company-affected-by-sanctions/) - Diffbot Knowledge Graph (more detail on query below)
+
+                      Data Viz Tool: Infogram
+
+                      Disclaimer: I work for Diffbot
+
+                      I started by querying the Knowledge Graph for people who live in Russia but work for a non-Russian company. Faceting this query by their employer provides me with a list of non-Russian companies ranked by # of Russian employees.
+
+                      type:Person location.country.name:"Russia" employments.{employer.{location.country.name!="Russia" nbLocations>0} isCurrent:true} facet:employments.{employer.name isCurrent:true}
+
+                      This data underrepresents actual employment figures, as there are many employees who do not maintain an internet presence linking them to their employer. Underrepresentation should be fairly equal across all companies, and relative position in the rankings should be accurate.'
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: zzzmick
+                    authorUrl: https://old.reddit.com/user/zzzmick
+                    diffbotUri: post|3|-130810969
+                    html: <p>epam had over 10k employees in Russia</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 7
+                    text: epam had over 10k employees in Russia
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: hicheoo
+                    authorUrl: https://old.reddit.com/user/hicheoo
+                    diffbotUri: post|3|-1458692070
+                    html: <p>Yup. The data underrepresents actual employment figures, as there are many employees who do not maintain an internet presence linking them to their employer. Underrepresentation should be fairly equal across all companies, and relative position in the rankings should be accurate.</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 8
+                    text: Yup. The data underrepresents actual employment figures, as there are many employees who do not maintain an internet presence linking them to their employer. Underrepresentation should be fairly equal across all companies, and relative position in the rankings should be accurate.
+                    type: post
+                    parentId: 7
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: JanitorKarl
+                    authorUrl: https://old.reddit.com/user/JanitorKarl
+                    diffbotUri: post|3|-149138223
+                    html: <p>Schlumberger and Baker Hughes are both in the oilfield services industry.</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 9
+                    text: Schlumberger and Baker Hughes are both in the oilfield services industry.
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: flumenia
+                    authorUrl: https://old.reddit.com/user/flumenia
+                    diffbotUri: post|3|889762151
+                    html: <p>What if Microsoft stops to extend licenses of Microsoft Office to Russia? That would make the biggest impact, I guess</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 10
+                    text: What if Microsoft stops to extend licenses of Microsoft Office to Russia? That would make the biggest impact, I guess
+                    type: post
+                    parentId: 0
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: Imperial_Empirical
+                    authorUrl: https://old.reddit.com/user/Imperial_Empirical
+                    diffbotUri: post|3|-179317804
+                    html: <p>Putin ordered the development of Russian alternatives after the Crimean annexation due to dependancy/spying fears. I believe from 2016 onwards Microsoft was largely fased out internally.</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 11
+                    text: Putin ordered the development of Russian alternatives after the Crimean annexation due to dependancy/spying fears. I believe from 2016 onwards Microsoft was largely fased out internally.
+                    type: post
+                    parentId: 10
+                  - date: Fri, 11 Mar 2022 00:00:00 GMT
+                    humanLanguage: en
+                    author: Nightblood83
+                    authorUrl: https://old.reddit.com/user/Nightblood83
+                    diffbotUri: post|3|-901046006
+                    html: <p>A lot of accountants for commies...</p>
+                    pageUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/
+                    id: 12
+                    text: A lot of accountants for commies...
+                    type: post
+                    parentId: 0
+                  tags:
+                  - score: 0.8428076505661011
+                    count: 5
+                    label: economic sanctions
+                    uri: https://diffbot.com/entity/EWnXSPtH6Osi0pmx8-WPKAg
+                    rdfTypes:
+                    - http://dbpedia.org/ontology/Miscellaneous
+                  participants: 9
+                  rssUrl: https://old.reddit.com/r/dataisbeautiful/comments/tbvdhu/oc_66_of_top_50_russian_exposed_companies_have/.rss
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

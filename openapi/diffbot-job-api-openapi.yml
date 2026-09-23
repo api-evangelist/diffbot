@@ -1,0 +1,364 @@
+openapi: 3.2.0
+info:
+  title: Extract Job API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Job
+paths:
+  /job:
+    get:
+      tags:
+      - Job
+      summary: Job
+      description: Automatically extracts structured information from job postings.
+      operationId: job
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://www.pathai.com/careers/DirectorClinicalOperations-6715804002
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        requirements:
+                          type: array
+                          items:
+                            type: string
+                        diffbotUri:
+                          type: string
+                        type:
+                          type: string
+                        title:
+                          type: string
+                        postedDate:
+                          type: string
+                        remote:
+                          type: string
+                        skills:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              salience:
+                                type: number
+                              skill:
+                                type: string
+                              confidence:
+                                type: number
+                              diffbotUri:
+                                type: string
+                        humanLanguage:
+                          type: string
+                        employer:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            diffbotUri:
+                              type: string
+                        text:
+                          type: string
+                        pageUrl:
+                          type: string
+                        tasks:
+                          type: array
+                          items:
+                            type: string
+                        locations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              country:
+                                type: object
+                                properties:
+                                  summary:
+                                    type: string
+                                  image:
+                                    type: string
+                                  types:
+                                    type: array
+                                    items:
+                                      type: string
+                                  name:
+                                    type: string
+                                  diffbotUri:
+                                    type: string
+                                  targetDiffbotUri:
+                                    type: string
+                                  targetDiffbotId:
+                                    type: string
+                                  type:
+                                    type: string
+                              address:
+                                type: string
+                              city:
+                                type: object
+                                properties:
+                                  summary:
+                                    type: string
+                                  image:
+                                    type: string
+                                  types:
+                                    type: array
+                                    items:
+                                      type: string
+                                  name:
+                                    type: string
+                                  diffbotUri:
+                                    type: string
+                                  targetDiffbotUri:
+                                    type: string
+                                  targetDiffbotId:
+                                    type: string
+                                  type:
+                                    type: string
+                              region:
+                                type: object
+                                properties:
+                                  summary:
+                                    type: string
+                                  image:
+                                    type: string
+                                  types:
+                                    type: array
+                                    items:
+                                      type: string
+                                  name:
+                                    type: string
+                                  diffbotUri:
+                                    type: string
+                                  targetDiffbotUri:
+                                    type: string
+                                  targetDiffbotId:
+                                    type: string
+                                  type:
+                                    type: string
+                              subregion:
+                                type: object
+                                properties:
+                                  summary:
+                                    type: string
+                                  image:
+                                    type: string
+                                  types:
+                                    type: array
+                                    items:
+                                      type: string
+                                  name:
+                                    type: string
+                                  diffbotUri:
+                                    type: string
+                                  targetDiffbotUri:
+                                    type: string
+                                  targetDiffbotId:
+                                    type: string
+                                  type:
+                                    type: string
+                              latitude:
+                                type: number
+                              precision:
+                                type: number
+                              longitude:
+                                type: number
+              example:
+                request:
+                  pageUrl: https://www.pathai.com/careers/DirectorClinicalOperations-6715804002
+                  api: job
+                  version: 3
+                objects:
+                - requirements:
+                  - Experience in histologic-based or other medical imaging in a regulated environment is strongly preferred.
+                  diffbotUri: job|3|1793551482
+                  type: job
+                  title: Director, Clinical Operations
+                  remote: REMOTE
+                  skills:
+                  - salience: 0.7316089
+                    skill: DDT
+                    confidence: 0.6169359
+                    diffbotUri: https://diffbot.com/entity/Ey44naXoPNamQWWt5PK0JEQ
+                  humanLanguage: en
+                  employer:
+                    name: PathAI
+                    diffbotUri: https://diffbot.com/entity/EIf6kAhRvMq2mBsM6DV2Krw
+                  pageUrl: https://www.pathai.com/careers/DirectorClinicalOperations-6715804002
+                  text: 'Who We Are
+
+                    PathAI is on a mission to improve patient outcomes with AI-powered pathology. We are transforming traditional pathology methods into powerful, new technologies. These innovations in pathology can help accelerate drug development, improve confidence in the accuracy of diagnosis, and get life-saving therapies to patients more quickly. At PathAI, you''ll work with a diverse and talented team of people, who are dedicated to solving complex problems and making a huge impact.
+
+                    Where You Fit
+
+                    The Director of Clinical Operations will be responsible for programmatic tactical execution of regulated research and clinical products, including companion diagnostic (CDx), non-CDx-IVD, Drug Development Tools (DDT) and RUO strategies. This is a highly matrixed role that requires outstanding emotional intelligence combined with detailed subject matter expertise in order to help coordinate the program across all functional areas including quality, clinical, business development, scientific programs, engineering and product teams. The Director of Clinical Operations will bring together all stakeholders internally and externally to successfully design, execute on all aspects of our clinical development programs. Outstanding detailed organizational skills with a proactive mindset toward identification of all programmatic risks and mitigations is essential.
+
+                    What You’ll Do
+
+                    Lead the execution of research and clinical development strategies for new clinical trial, research, and medical device product development, and operationalize these strategies from development to commercialization.
+
+                    Accountable for oversight of all assigned studies within the country in accordance with the overall development plan and clinical operations plan, including adherence to quality, timelines and budget.
+
+                    Establish and continually communicate detailed program and project plans with critical paths and dependencies clearly identified across each area and communicate timeline progress and risks through defined operating mechanisms.
+
+                    Educate relevant leads from each functional area on the regulations impacting development programs.
+
+                    Clearly communicate strategy, progress, and risks cross functionally and proactively drive/facilitate the relationship between internal project teams and external stakeholders.
+
+                    Effectively prioritize the projects within our clinical development programs to ensure adequate resourcing and efficient delivery on priority projects for PathAI.
+
+                    Inform leadership of any identified gaps, risks, solutions to the program as a whole.
+
+                    What You Bring
+
+                    Our employees'' skills come in all shapes and sizes, but to be successful in this role with us, you''ll at least need:
+
+                    Ph.D (preferred) or M.S. in a Life Science or equivalent field, plus at least 5-7 years of relevant industry experience, including at least 3 years in a role of primary responsibility for clinical trial execution and management.
+
+                    You have a solid understanding of and experience in drug development (clinical trials, biomarker testing), assay development, and co-development for CDx programs.
+
+                    Direct management experience and supervisory responsibility.
+
+                    You have knowledge (training preferred) of the software development life cycle (IEC 62304), design control, and experience in leading in vitro diagnostic development teams.
+
+                    You have supported projects for FDA and other regulatory body submissions from development to validation to approval.
+
+                    You have cross therapeutic area clinical biomarker testing and diagnostic testing experience in global clinical trials.
+
+                    You have experience and a deep understanding of biomarker testing and reporting requirements globally.
+
+                    You excel in leading multidisciplinary teams of scientists and engineers in highly matrixed organization is strongly preferred
+
+                    You are a strategic thinker, pro-active and agile, and you have a strong interest in bringing teams together at PathAI, as well as external partners, to bring better treatments to patients.
+
+                    Experience in histologic-based or other medical imaging in a regulated environment is strongly preferred.
+
+                    We Want To Hear From You
+
+                    At PathAI, we are looking for individuals who are team players, are willing to do the work no matter how big or small it may be, and who are passionate about everything they do. If this sounds like you, even if you may not match the job description to a tee, we encourage you to apply. You could be exactly what we''re looking for.
+
+                    PathAI is an equal opportunity employer, dedicated to creating a workplace that is free of harassment and discrimination. We base our employment decisions on business needs, job requirements, and qualifications — that''s all. We do not discriminate based on race, gender, religion, health, personal beliefs, age, family or parental status, or any other status. We don''t tolerate any kind of discrimination or bias, and we are looking for teammates who feel the same way.
+
+                    #LI-Remote
+
+                    '
+                  datePosted: Sat, 07 May 2022 00:00:00 GMT
+                  tasks:
+                  - Lead the execution of research and clinical development strategies for new clinical trial, research, and medical device product development, and operationalize these strategies from development to commercialization.
+                  - Accountable for oversight of all assigned studies within the country in accordance with the overall development plan and clinical operations plan, including adherence to quality, timelines and budget.
+                  - 'Establish and continually communicate detailed program and project plans with critical paths and dependencies clearly identified across each area and communicate timeline progress and risks through defined operating mechanisms.
+
+                    '
+                  - 'Educate relevant leads from each functional area on the regulations impacting development programs.
+
+                    '
+                  - Clearly communicate strategy, progress, and risks cross functionally and proactively drive/facilitate the relationship between internal project teams and external stakeholders.
+                  - 'Effectively prioritize the projects within our clinical development programs to ensure adequate resourcing and efficient delivery on priority projects for PathAI.
+
+                    '
+                  - 'Inform leadership of any identified gaps, risks, solutions to the program as a whole.
+
+                    '
+                  - Ph.D (preferred) or M.S. in a Life Science or equivalent field, plus at least 5-7 years of relevant industry experience, including at least 3 years in a role of primary responsibility for clinical trial execution and management.
+                  - 'You have a solid understanding of and experience in drug development (clinical trials, biomarker testing), assay development, and co-development for CDx programs.
+
+                    '
+                  - Direct management experience and supervisory responsibility.
+                  - You have knowledge (training preferred) of the software development life cycle (IEC 62304), design control, and experience in leading in vitro diagnostic development teams.
+                  - You have supported projects for FDA and other regulatory body submissions from development to validation to approval.
+                  - You have cross therapeutic area clinical biomarker testing and diagnostic testing experience in global clinical trials.
+                  - You have experience and a deep understanding of biomarker testing and reporting requirements globally.
+                  - You excel in leading multidisciplinary teams of scientists and engineers in highly matrixed organization is strongly preferred
+                  - 'You are a strategic thinker, pro-active and agile, and you have a strong interest in bringing teams together at PathAI, as well as external partners, to bring better treatments to patients.
+
+                    '
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

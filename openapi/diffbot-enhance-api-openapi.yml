@@ -1,0 +1,819 @@
+openapi: 3.2.0
+info:
+  title: Enhance API
+  description: Enhance is an API to find a person or organization in the Knowledge Graph using partial data
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 3.0.0
+servers:
+- url: https://kg.diffbot.com
+  description: Diffbot KG endpoint
+tags:
+- name: Enhance
+  description: Enhance single records synchronously
+paths:
+  /kg/v3/enhance:
+    get:
+      tags:
+      - Enhance
+      summary: Enhance
+      description: Enrich a person or organization record with partial data input
+      operationId: enhance
+      parameters:
+      - name: type
+        in: query
+        description: Diffbot entity type
+        required: true
+        schema:
+          type: string
+          enum:
+          - Person
+          - Organization
+      - name: id
+        in: query
+        description: DiffbotId of entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: array
+          items:
+            type: string
+      - name: url
+        in: query
+        description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: array
+          items:
+            type: string
+      - name: phone
+        in: query
+        description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Email of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: array
+          items:
+            type: string
+      - name: employer
+        in: query
+        description: Employer of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: title
+        in: query
+        description: Title of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: school
+        in: query
+        description: School of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: location
+        in: query
+        description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: description
+        in: query
+        description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: ip
+        in: query
+        description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: customId
+        in: query
+        description: User defined ID for correlation
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: Maximum number of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: threshold
+        in: query
+        description: Enhance similarity threshold
+        schema:
+          type: number
+          format: double
+      - name: refresh
+        in: query
+        description: '`refresh=true` indicates that Diffbot will attempt to recrawl all the origins of the identified entity and reconstruct the returned entity from this refreshed data.'
+        schema:
+          type: boolean
+          default: false
+      - name: search
+        in: query
+        description: '`search=true` indicates that Diffbot will attempt to search the web for origins for the search query and merge relevant results with whats found in the KG.'
+        schema:
+          type: boolean
+          default: false
+      - name: nonCanonicalFacts
+        in: query
+        description: '`nonCanonicalFacts=true` returns non-canonical facts.'
+        schema:
+          type: boolean
+          default: false
+      - name: jsonmode
+        in: query
+        description: '`jsonmode=extended` returns origin information for facts.'
+        schema:
+          type: string
+          enum:
+          - extended
+      - name: filter
+        in: query
+        description: Semi-colon separated path filter to filter response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        schema:
+          type: string
+      - name: filterExclude
+        in: query
+        description: Semi-colon separated path filter to filter and exclude data from response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Enhanced entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhanceResponse'
+        '400':
+          description: Error parsing request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+        '401':
+          description: Token not specified or other client errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '429':
+          description: Insufficient credits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+      security:
+      - tokenscheme: []
+    post:
+      tags:
+      - Enhance
+      summary: Enhance
+      description: Enrich a person or organization record with partial data input (POST option)
+      operationId: enhancePost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnhancePostRequest'
+      responses:
+        '200':
+          description: Enhanced entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhanceResponse'
+        '400':
+          description: Error parsing request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+        '401':
+          description: Token not specified or other client errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '429':
+          description: Insufficient credits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+      security:
+      - tokenscheme: []
+  /kg/v3/enhance/combine:
+    get:
+      tags:
+      - Enhance
+      summary: Combine
+      description: Enrich a person record and return both person and current employer data
+      operationId: combine
+      parameters:
+      - name: type
+        in: query
+        description: Diffbot entity type
+        required: true
+        schema:
+          type: string
+          enum:
+          - Person
+      - name: name
+        in: query
+        description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: array
+          items:
+            type: string
+      - name: url
+        in: query
+        description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: array
+          items:
+            type: string
+      - name: phone
+        in: query
+        description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Email of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: employer
+        in: query
+        description: Employer of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: title
+        in: query
+        description: Title of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: school
+        in: query
+        description: School of the entity to enhance. Parameter can be used only with type `Person`
+        schema:
+          type: string
+      - name: location
+        in: query
+        description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: ip
+        in: query
+        description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        schema:
+          type: string
+      - name: customId
+        in: query
+        description: User defined ID for correlation
+        schema:
+          type: string
+      - name: threshold
+        in: query
+        description: Enhance similarity threshold
+        schema:
+          type: number
+          format: double
+      - name: refresh
+        in: query
+        description: '`refresh=true` indicates that Diffbot will attempt to recrawl all the origins of the identified entity and reconstruct the returned entity from this refreshed data.'
+        schema:
+          type: boolean
+          default: false
+      - name: search
+        in: query
+        description: '`search=true` indicates that Diffbot will attempt to search the web for origins for the search query and merge relevant results with whats found in the KG.'
+        schema:
+          type: boolean
+          default: false
+      - name: nonCanonicalFacts
+        in: query
+        description: '`nonCanonicalFacts=true` returns non-canonical facts.'
+        schema:
+          type: boolean
+          default: false
+      - name: jsonmode
+        in: query
+        description: '`jsonmode=extended` returns origin information for facts.'
+        schema:
+          type: string
+          enum:
+          - extended
+      - name: filter
+        in: query
+        description: Semi-colon separated path filter to filter response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        schema:
+          type: string
+      - name: filterExclude
+        in: query
+        description: Semi-colon separated path filter to filter and exclude data from response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Enhanced entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnhanceResponse'
+        '400':
+          description: Error parsing request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+        '401':
+          description: Token not specified or other client errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '429':
+          description: Insufficient credits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseError'
+      security:
+      - tokenscheme: []
+components:
+  schemas:
+    EnhancePostRequest:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: Diffbot entity type
+          enum:
+          - Person
+          - Organization
+        id:
+          type: string
+          description: DiffbotId of entity to enhance. Parameter can be used with types `Person` and `Organization`
+        name:
+          type: array
+          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        url:
+          type: array
+          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        location:
+          type: string
+          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        ip:
+          type: string
+          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        phone:
+          type: string
+          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        description:
+          type: string
+          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        email:
+          type: array
+          description: Email of the entity to enhance. Parameter can be used only with type `Person`
+          items:
+            type: string
+        employer:
+          type: string
+          description: Employer of the entity to enhance. Parameter can be used only with type `Person`
+        title:
+          type: string
+          description: Title of the entity to enhance. Parameter can be used only with type `Person`
+        school:
+          type: string
+          description: School of the entity to enhance. Parameter can be used only with type `Person`
+        customId:
+          type: string
+          description: User defined ID for correlation
+        size:
+          type: integer
+          description: Maximum number of results to return
+          format: int32
+          default: 1
+        threshold:
+          type: number
+          description: Enhance similarity threshold
+          format: double
+        refresh:
+          type: boolean
+          description: '`refresh=true` indicates that Diffbot will attempt to recrawl all the origins of the identified entity and reconstruct the returned entity from this refreshed data.'
+          default: false
+        search:
+          type: boolean
+          description: '`search=true` indicates that Diffbot will attempt to search the web for origins for the search query and merge relevant results with whats found in the KG.'
+          default: false
+        nonCanonicalFacts:
+          type: boolean
+          description: '`nonCanonicalFacts=true` returns non-canonical facts.'
+          default: false
+        jsonmode:
+          type: string
+          description: '`jsonmode=extended` returns origin information for facts.'
+          enum:
+          - extended
+        filter:
+          type: string
+          description: Semi-colon separated path filter to filter response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        filterExclude:
+          type: string
+          description: Semi-colon separated path filter to filter and exclude data from response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+    BulkjobStatus:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: Bulkjob Id
+        name:
+          type: string
+          description: Bulkjob name
+        refresh:
+          type: boolean
+          description: Is Refresh enabled for this job?
+        search:
+          type: string
+          description: Is Search enabled for this job?
+          enum:
+          - 'ON'
+          - 'OFF'
+          - SEARCHONLY
+          - FALLBACK
+        message:
+          type: string
+          description: Bulkjob status message
+        jobs_total:
+          type: integer
+          description: Number of jobs in bulkjob
+          format: int32
+        jobs_completed:
+          type: integer
+          description: Number of jobs completed in bulkjob.
+          format: int32
+        status:
+          type: string
+          description: Status of Bulkjob. One of {NOT_STARTED, IN_PROCESS, COMPLETE, COMPLETE_WITH_FAILURES, STOPPED, ERROR_FINALIZING, UNKNOWN}
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETE
+          - COMPLETE_WITH_FAILURES
+          - STOPPED
+          - ERROR_FINALIZING
+          - ERROR_SCHEDULING
+          - UNKNOWN
+        estimate_remaining_time:
+          type: integer
+          description: Estimated remaining time for bulkjob to complete (in seconds). `null` if job is completed or not started.
+          format: int64
+        submit_time_ms:
+          type: integer
+          description: Bulkjob submit time
+          format: int64
+        start_time_ms:
+          type: integer
+          description: Bulkjob start time
+          format: int64
+        completed_time_ms:
+          type: integer
+          description: Bulkjob completed time
+          format: int64
+        total_results:
+          type: integer
+          description: Total results
+          format: int32
+        bulkjobId:
+          type: string
+        totalJobs:
+          type: integer
+          format: int32
+        finishedJobs:
+          type: integer
+          format: int32
+        estimateRemainingTimeSec:
+          type: integer
+          format: int64
+        submitTimeMs:
+          type: integer
+          format: int64
+        startTimeMs:
+          type: integer
+          format: int64
+        completedTimeMs:
+          type: integer
+          format: int64
+        totalResults:
+          type: integer
+          format: int32
+        fileSizeBytes:
+          type: integer
+          description: Size of download file in bytes
+          format: int64
+        reports:
+          type: array
+          description: Coverage reports generated for this bulkjob
+          items:
+            $ref: '#/components/schemas/Report'
+      description: Bulkjob status
+    AuthError:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: Identifier of the rejected request, also returned in the `X-Diffbot-RequestId` header
+        code:
+          type: integer
+          description: Status code (same as the HTTP status code)
+          format: int32
+        message:
+          type: string
+          description: Status message
+    RefreshDebugInformation:
+      type: object
+      properties:
+        url:
+          type: string
+        hasResult:
+          type: boolean
+        lastCrawlTime:
+          type: integer
+          format: int64
+        message:
+          type: string
+    Data:
+      type: object
+      properties:
+        score:
+          type: number
+          description: Enhance score
+          format: double
+        esscore:
+          type: number
+          format: double
+        entity:
+          $ref: '#/components/schemas/ObjectNode'
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error/warning messages.
+        refreshInfo:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RefreshDebugInformation'
+          description: Refresh info for debug
+        refreshDelta:
+          $ref: '#/components/schemas/Delta'
+        entity_ctx:
+          type: object
+          additionalProperties:
+            type: object
+            description: Entity-level context
+          description: Entity-level context
+      description: Enhanced entity data
+    RequestContext:
+      type: object
+      properties:
+        query:
+          description: Submitted query
+          oneOf:
+          - $ref: '#/components/schemas/OrganizationRequest'
+          - $ref: '#/components/schemas/PersonRequest'
+          - type: string
+        query_ctx:
+          type: object
+          additionalProperties:
+            type: object
+            description: 'Query context. Example: submitted query parameters etc.'
+          description: 'Query context. Example: submitted query parameters etc.'
+      description: Request context
+    Delta:
+      type: object
+    SearchCandidate:
+      type: object
+      properties:
+        mlScore:
+          type: number
+          format: double
+        baseMlScore:
+          type: number
+          format: double
+        debugInfo:
+          $ref: '#/components/schemas/RefreshDebugInformation'
+      description: Search info for debug
+    PersonRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Diffbot entity type
+        name:
+          type: array
+          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        url:
+          type: array
+          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        location:
+          type: string
+          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        ip:
+          type: string
+          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        phone:
+          type: string
+          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        description:
+          type: string
+          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        email:
+          type: array
+          description: Email of the entity to enhance. Parameter can be used only with type `Person`
+          items:
+            type: string
+        employer:
+          type: string
+          description: Employer of the entity to enhance. Parameter can be used only with type `Person`
+        title:
+          type: string
+          description: Title of the entity to enhance. Parameter can be used only with type `Person`
+        school:
+          type: string
+          description: School of the entity to enhance. Parameter can be used only with type `Person`
+    EnhanceResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: Response version
+          format: int32
+        hits:
+          type: integer
+          description: Number of matches returned
+          format: int32
+        kgversion:
+          type: string
+          description: Version of KG that was queried
+        request_ctx:
+          $ref: '#/components/schemas/RequestContext'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error/warning messages.
+        searchInfo:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SearchCandidate'
+          description: Search info for debug
+    StatusResponseError:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Status code (same as the HTTP status code)
+          format: int32
+        message:
+          type: string
+          description: Status message
+        request_ctx:
+          $ref: '#/components/schemas/RequestContext'
+        bulkjobStatus:
+          $ref: '#/components/schemas/BulkjobStatus'
+        error:
+          type: boolean
+          description: '`true` if error'
+    Report:
+      type: object
+      properties:
+        reportId:
+          type: string
+          description: Coverage Report ID
+        status:
+          type: string
+          description: Status of report generation. One of {NOT_STARTED, IN_PROCESS, COMPLETE, UNKNOWN}
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETE
+          - COMPLETE_WITH_FAILURES
+          - STOPPED
+          - ERROR_FINALIZING
+          - ERROR_SCHEDULING
+          - UNKNOWN
+        format:
+          type: string
+          description: Export format
+        spec:
+          type: string
+          description: 'The spec defines the columns to export. This is applicable for csv, xls and xslx formats.
+
+
+            Export spec specifies how to export the entity JSON to a csv. A simple export spec looks like `name;summary`. To specify more complex export spec, including specifying how many of a list of `industries` to return, or the ideal `employment` record, see [Exporting Columnar Format](https://docs.diffbot.com/reference/exporting-csv) and [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields).'
+        exportfile:
+          type: string
+        exportSeparator:
+          type: string
+          description: Separator for multi-value fields when exporting columnar results
+        filter:
+          type: string
+          description: Semi-colon separated path filter to filter response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        onlyMatches:
+          type: boolean
+          description: Return only records that have a match
+      description: Coverage reports generated for this bulkjob
+    OrganizationRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Diffbot entity type
+        name:
+          type: array
+          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        url:
+          type: array
+          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        location:
+          type: string
+          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        ip:
+          type: string
+          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        phone:
+          type: string
+          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        description:
+          type: string
+          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+    ObjectNode:
+      type: object
+      description: Enhanced entity. Can be null if no entity was found.
+      example:
+        id: EYX1i02YVPsuT7fPLUYgRhQ
+        images:
+        - naturalHeight: 0
+          width: 0
+          url: https://kg.diffbot.com/image/api/get?fetch=yes&url=g%3Cj7P0St%7D9u.LnOv%7BI%7C%40g7.pBYINs%3Ff%7CGZ7jr-tGZhWf%3DK%2FOvy%5Bp%3CSKbs8i%7CEyNzCa%3EYr%3Ef%3CRc%3CLr5gx_hOgiFuER5%3Cb%7C%3E.I%5Do
+          isCached: true
+          naturalWidth: 0
+          primary: true
+          height: 0
+        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
+        name: Diffbot
+        origins:
+        - angel.co/diffbot
+        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
+        - crunchbase.com/organization/diffbot
+        - linkedin.com/company/diffbot
+        - en.wikipedia.org/wiki/Diffbot
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      description: Diffbot API token, supplied as the `token` query parameter on every request.
+      name: token
+      in: query

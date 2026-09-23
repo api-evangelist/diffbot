@@ -1,0 +1,312 @@
+openapi: 3.2.0
+info:
+  title: Extract Event API
+  description: Diffbot's Extraction APIs include various endpoints to extract JSON data/fields from different types of web pages. The Analyze endpoint is used when the page type is unknown, and will attempt to identify the page type and send it to the appropriate extraction API.
+  termsOfService: https://www.diffbot.com/terms/
+  contact:
+    email: support@diffbot.com
+  version: 1.1.0
+servers:
+- url: https://api.diffbot.com/v3
+tags:
+- name: Event
+paths:
+  /event:
+    get:
+      tags:
+      - Event
+      summary: Event
+      description: Automatically extracts dates, location and address information, images and event descriptions from event pages.
+      operationId: event
+      parameters:
+      - name: url
+        in: query
+        description: Target URL to extract
+        required: true
+        schema:
+          type: string
+          default: https://www.eventbrite.com/e/graphql-summit-2018-tickets-46601841362
+      - name: fields
+        in: query
+        description: Specify optional fields to be returned from any fully-extracted pages (e.g. `fields=querystring,links`)
+        schema:
+          type: string
+          enum:
+          - links
+          - extlinks
+          - meta
+          - querystring
+          - breadcrumb
+      - name: timeout
+        in: query
+        description: Sets a value in milliseconds to wait for the retrieval/fetch of content from the requested URL. The default timeout for the third-party response is 30 seconds (30000).
+        schema:
+          type: integer
+          format: int32
+      - name: callback
+        in: query
+        description: Use for jsonp requests. Needed for cross-domain ajax.
+        schema:
+          type: string
+      - name: proxy
+        in: query
+        description: 'Specify an IP address of a [custom proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) that will be used to fetch the target page. (Ex: `&proxy` or `&proxy=0.0.0.0`)'
+        schema:
+          type: string
+          default: ''
+      - name: proxyAuth
+        in: query
+        description: 'Used to specify the authentication parameters that will be used with a custom proxy specified in the &proxy parameter. (Ex: `proxyAuth=username:password`)'
+        schema:
+          type: string
+      - name: useProxy
+        in: query
+        description: Set to `default` to use [Diffbot's datacenter proxy](https://docs.diffbot.com/reference/using-proxies#how-to-use-proxies) for this request. `none` will instruct Extract to not use proxies, even if proxies have been enabled for this particular URL globally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful API Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request:
+                    type: object
+                    properties:
+                      pageUrl:
+                        type: string
+                      api:
+                        type: string
+                      version:
+                        type: integer
+                  objects:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        venue:
+                          type: string
+                        images:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              naturalHeight:
+                                type: integer
+                              width:
+                                type: integer
+                              diffbotUri:
+                                type: string
+                              url:
+                                type: string
+                              naturalWidth:
+                                type: integer
+                              primary:
+                                type: boolean
+                              height:
+                                type: integer
+                        timezoneOffset:
+                          type: string
+                        endDate:
+                          type: string
+                        endDateLocalTimezone:
+                          type: string
+                        humanLanguage:
+                          type: string
+                        diffbotUri:
+                          type: string
+                        description:
+                          type: string
+                        pageUrl:
+                          type: string
+                        location:
+                          type: object
+                          properties:
+                            country:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                diffbotUri:
+                                  type: string
+                                websiteUris:
+                                  type: array
+                                  items:
+                                    type: string
+                                targetDiffbotUri:
+                                  type: string
+                                surfaceForm:
+                                  type: string
+                            isCurrent:
+                              type: boolean
+                            address:
+                              type: string
+                            city:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                diffbotUri:
+                                  type: string
+                                websiteUris:
+                                  type: array
+                                  items:
+                                    type: string
+                                targetDiffbotUri:
+                                  type: string
+                                surfaceForm:
+                                  type: string
+                            street:
+                              type: string
+                            subregion:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                diffbotUri:
+                                  type: string
+                                websiteUris:
+                                  type: array
+                                  items:
+                                    type: string
+                                targetDiffbotUri:
+                                  type: string
+                                surfaceForm:
+                                  type: string
+                            latitude:
+                              type: number
+                            precision:
+                              type: number
+                            postalCode:
+                              type: string
+                            region:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                diffbotUri:
+                                  type: string
+                                websiteUris:
+                                  type: array
+                                  items:
+                                    type: string
+                                targetDiffbotUri:
+                                  type: string
+                                surfaceForm:
+                                  type: string
+                            longitude:
+                              type: number
+                        type:
+                          type: string
+                        title:
+                          type: string
+                        startDate:
+                          type: string
+                        startDateLocalTimezone:
+                          type: string
+              example:
+                request:
+                  pageUrl: https://www.eventbrite.com/e/graphql-summit-2018-tickets-46601841362
+                  api: event
+                  version: 3
+                objects:
+                - venue: The Regency Center
+                  images:
+                  - naturalHeight: 0
+                    width: 720
+                    diffbotUri: image|3|2088675194
+                    url: https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F45534724%2F182934487936%2F1%2Foriginal.jpg?w=800&auto=compress&rect=0%2C0%2C2160%2C1080&s=e73c0be202c2cd939dcd3e809d96e093
+                    naturalWidth: 0
+                    primary: true
+                    height: 360
+                  timezoneOffset: -07:00
+                  endDate: Fri, 09 Nov 2018 01:00:00 GMT
+                  endDateLocalTimezone: Thu, 08 Nov 2018 17:00:00
+                  humanLanguage: en
+                  diffbotUri: event|3|-2069254052
+                  description: '​Join over 850 developers at the 3rd annual GraphQL Summit, the world''s largest conference dedicated to GraphQL. Whether you''re just getting started or a veteran GraphQL practitioner, this is the must-attend developer conference of the year.
+
+                    Choose from 40+ sessions across two tracks at one of San Francisco''s most historic event venues
+
+                    ​See how teams at top startups and enterprises are modernizing their platforms by using GraphQL in complex production environments
+
+                    Hear where the technology is heading next, directly from the leaders of GraphQL''s major open source projects
+
+                    Meet top solution providers from around the world - all under one roof.
+
+                    Enroll in hands-on workshops and classroom training to boost your skills to get the most out of GraphQL.
+
+                    GraphQL Summit Day Code of Conduct
+
+                    We believe our community and events should be truly open for everyone. As such, we are committed to providing a friendly, safe, and welcoming environment for all, regardless of gender, sexual orientation, disability, ethnicity, or religion. Our event code of conduct outlines our expectations for participant behavior, as well as the consequences for unacceptable behavior.
+
+                    *GraphQL Summit is hosted at the Regency Center which is an accessible space with elevator access*'
+                  pageUrl: https://archives.diffbot.com/replay/4F02A5A651C6767544362C27B1D9BAC1/
+                  location:
+                    country:
+                      name: United States
+                      diffbotUri: http://diffbot.com/entity/A01d4EK33MmCosgI2KXa4-A
+                      websiteUris:
+                      - wikidata.org/entity/Q30
+                      targetDiffbotUri: http://diffbot.com/entity/A01d4EK33MmCosgI2KXa4-A
+                      surfaceForm: United States
+                    isCurrent: true
+                    address: 1300 Van Ness Ave, San Francisco, California
+                    city:
+                      name: San Francisco
+                      diffbotUri: http://diffbot.com/entity/A8AV-O2v0MBuACAY7pFZzbg
+                      websiteUris:
+                      - wikidata.org/entity/Q62
+                      targetDiffbotUri: http://diffbot.com/entity/A8AV-O2v0MBuACAY7pFZzbg
+                      surfaceForm: San Francisco
+                    street: 1300 Van Ness Ave
+                    subregion:
+                      name: San Francisco County
+                      diffbotUri: http://diffbot.com/entity/A8AV-O2v0MBuACAY7pFZzbg
+                      websiteUris:
+                      - wikidata.org/entity/Q62
+                      targetDiffbotUri: http://diffbot.com/entity/A8AV-O2v0MBuACAY7pFZzbg
+                      surfaceForm: San Francisco County
+                    latitude: 37.78785705566406
+                    precision: 0.10000000149011612
+                    postalCode: '94109'
+                    region:
+                      name: California
+                      diffbotUri: http://diffbot.com/entity/Al0_8ehooNxOPT36Y4RdV9w
+                      websiteUris:
+                      - wikidata.org/entity/Q99
+                      targetDiffbotUri: http://diffbot.com/entity/Al0_8ehooNxOPT36Y4RdV9w
+                      surfaceForm: California
+                    longitude: -122.42138671875
+                  type: event
+                  title: GraphQL Summit 2018
+                  startDate: Wed, 07 Nov 2018 16:30:00 GMT
+                  startDateLocalTimezone: Wed, 07 Nov 2018 08:30:00
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                  error:
+                    type: string
+              example:
+                errorCode: 500
+                error: Internal Server Error
+      security:
+      - tokenscheme: []
+components:
+  securitySchemes:
+    tokenscheme:
+      type: apiKey
+      name: token
+      in: query
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true
