@@ -623,12 +623,17 @@ paths:
       - tokenscheme: []
 components:
   schemas:
-    BulkjobRecoveryStatusResponse:
+    Delta:
+      type: object
+    Report:
       type: object
       properties:
+        reportId:
+          type: string
+          description: Coverage Report ID
         status:
           type: string
-          description: Bulkjob recovery status
+          description: Status of report generation. One of {NOT_STARTED, IN_PROCESS, COMPLETE, UNKNOWN}
           enum:
           - NOT_STARTED
           - IN_PROCESS
@@ -638,9 +643,89 @@ components:
           - ERROR_FINALIZING
           - ERROR_SCHEDULING
           - UNKNOWN
+        format:
+          type: string
+          description: Export format
+        spec:
+          type: string
+          description: 'The spec defines the columns to export. This is applicable for csv, xls and xslx formats.
+
+
+            Export spec specifies how to export the entity JSON to a csv. A simple export spec looks like `name;summary`. To specify more complex export spec, including specifying how many of a list of `industries` to return, or the ideal `employment` record, see [Exporting Columnar Format](https://docs.diffbot.com/reference/exporting-csv) and [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields).'
+        exportfile:
+          type: string
+        exportSeparator:
+          type: string
+          description: Separator for multi-value fields when exporting columnar results
+        filter:
+          type: string
+          description: Semi-colon separated path filter to filter response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
+        onlyMatches:
+          type: boolean
+          description: Return only records that have a match
+      description: Coverage reports generated for this bulkjob
+    EnhanceResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: Response version
+          format: int32
+        hits:
+          type: integer
+          description: Number of matches returned
+          format: int32
+        kgversion:
+          type: string
+          description: Version of KG that was queried
+        request_ctx:
+          $ref: '#/components/schemas/RequestContext'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error/warning messages.
+        searchInfo:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SearchCandidate'
+          description: Search info for debug
+    BulkjobStatusResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Bulkjob status code (same as the HTTP status code)
+          format: int32
+        content:
+          $ref: '#/components/schemas/BulkjobStatus'
+    StatusResponseError:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Status code (same as the HTTP status code)
+          format: int32
         message:
           type: string
-          description: Bulkjob recovery status message
+          description: Status message
+        request_ctx:
+          $ref: '#/components/schemas/RequestContext'
+        bulkjobStatus:
+          $ref: '#/components/schemas/BulkjobStatus'
+        error:
+          type: boolean
+          description: '`true` if error'
+    IdRequestEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: DiffbotId of entity to enhance. Parameter can be used with types `Person` and `Organization`
     BulkjobStatus:
       type: object
       properties:
@@ -737,89 +822,34 @@ components:
           items:
             $ref: '#/components/schemas/Report'
       description: Bulkjob status
-    AuthError:
+    RequestContext:
       type: object
       properties:
-        requestId:
-          type: string
-          description: Identifier of the rejected request, also returned in the `X-Diffbot-RequestId` header
-        code:
-          type: integer
-          description: Status code (same as the HTTP status code)
-          format: int32
-        message:
-          type: string
-          description: Status message
-    Data:
-      type: object
-      properties:
-        score:
-          type: number
-          description: Enhance score
-          format: double
-        esscore:
-          type: number
-          format: double
-        entity:
-          $ref: '#/components/schemas/ObjectNode'
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error/warning messages.
-        refreshInfo:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/RefreshDebugInformation'
-          description: Refresh info for debug
-        refreshDelta:
-          $ref: '#/components/schemas/Delta'
-        entity_ctx:
+        query:
+          description: Submitted query
+          oneOf:
+          - $ref: '#/components/schemas/OrganizationRequest'
+          - $ref: '#/components/schemas/PersonRequest'
+          - type: string
+        query_ctx:
           type: object
           additionalProperties:
             type: object
-            description: Entity-level context
-          description: Entity-level context
-      description: Enhanced entity data
-    Report:
+            description: 'Query context. Example: submitted query parameters etc.'
+          description: 'Query context. Example: submitted query parameters etc.'
+      description: Request context
+    RefreshDebugInformation:
       type: object
       properties:
-        reportId:
+        url:
           type: string
-          description: Coverage Report ID
-        status:
-          type: string
-          description: Status of report generation. One of {NOT_STARTED, IN_PROCESS, COMPLETE, UNKNOWN}
-          enum:
-          - NOT_STARTED
-          - IN_PROCESS
-          - COMPLETE
-          - COMPLETE_WITH_FAILURES
-          - STOPPED
-          - ERROR_FINALIZING
-          - ERROR_SCHEDULING
-          - UNKNOWN
-        format:
-          type: string
-          description: Export format
-        spec:
-          type: string
-          description: 'The spec defines the columns to export. This is applicable for csv, xls and xslx formats.
-
-
-            Export spec specifies how to export the entity JSON to a csv. A simple export spec looks like `name;summary`. To specify more complex export spec, including specifying how many of a list of `industries` to return, or the ideal `employment` record, see [Exporting Columnar Format](https://docs.diffbot.com/reference/exporting-csv) and [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields).'
-        exportfile:
-          type: string
-        exportSeparator:
-          type: string
-          description: Separator for multi-value fields when exporting columnar results
-        filter:
-          type: string
-          description: Semi-colon separated path filter to filter response json. You can use a simple dot notation `skills.name` or a JsonPath expression such as `$.name;$.locations.country.name`. For more advanced options, see [JsonPath Filtering](https://docs.diffbot.com/reference/filtering-fields) for syntax.
-        onlyMatches:
+        hasResult:
           type: boolean
-          description: Return only records that have a match
-      description: Coverage reports generated for this bulkjob
+        lastCrawlTime:
+          type: integer
+          format: int64
+        message:
+          type: string
     OrganizationRequest:
       type: object
       properties:
@@ -848,52 +878,20 @@ components:
         description:
           type: string
           description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-    ObjectNode:
+    JsonNode:
       type: object
-      description: Enhanced entity. Can be null if no entity was found.
-      example:
-        id: EYX1i02YVPsuT7fPLUYgRhQ
-        images:
-        - naturalHeight: 0
-          width: 0
-          url: https://kg.diffbot.com/image/api/get?fetch=yes&url=g%3Cj7P0St%7D9u.LnOv%7BI%7C%40g7.pBYINs%3Ff%7CGZ7jr-tGZhWf%3DK%2FOvy%5Bp%3CSKbs8i%7CEyNzCa%3EYr%3Ef%3CRc%3CLr5gx_hOgiFuER5%3Cb%7C%3E.I%5Do
-          isCached: true
-          naturalWidth: 0
-          primary: true
-          height: 0
-        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
-        name: Diffbot
-        origins:
-        - angel.co/diffbot
-        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
-        - crunchbase.com/organization/diffbot
-        - linkedin.com/company/diffbot
-        - en.wikipedia.org/wiki/Diffbot
-    BulkjobStatusResponse:
+    SearchCandidate:
       type: object
       properties:
-        code:
-          type: integer
-          description: Bulkjob status code (same as the HTTP status code)
-          format: int32
-        content:
-          $ref: '#/components/schemas/BulkjobStatus'
-    RequestContext:
-      type: object
-      properties:
-        query:
-          description: Submitted query
-          oneOf:
-          - $ref: '#/components/schemas/OrganizationRequest'
-          - $ref: '#/components/schemas/PersonRequest'
-          - type: string
-        query_ctx:
-          type: object
-          additionalProperties:
-            type: object
-            description: 'Query context. Example: submitted query parameters etc.'
-          description: 'Query context. Example: submitted query parameters etc.'
-      description: Request context
+        mlScore:
+          type: number
+          format: double
+        baseMlScore:
+          type: number
+          format: double
+        debugInfo:
+          $ref: '#/components/schemas/RefreshDebugInformation'
+      description: Search info for debug
     PersonRequest:
       type: object
       properties:
@@ -936,42 +934,95 @@ components:
         school:
           type: string
           description: School of the entity to enhance. Parameter can be used only with type `Person`
-    IdRequestEntity:
+    BulkjobRecoveryStatusResponse:
       type: object
       properties:
-        id:
+        status:
           type: string
-          description: DiffbotId of entity to enhance. Parameter can be used with types `Person` and `Organization`
+          description: Bulkjob recovery status
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETE
+          - COMPLETE_WITH_FAILURES
+          - STOPPED
+          - ERROR_FINALIZING
+          - ERROR_SCHEDULING
+          - UNKNOWN
+        message:
+          type: string
+          description: Bulkjob recovery status message
+    AuthError:
+      type: object
+      properties:
+        requestId:
+          type: string
+          description: Identifier of the rejected request, also returned in the `X-Diffbot-RequestId` header
+        code:
+          type: integer
+          description: Status code (same as the HTTP status code)
+          format: int32
+        message:
+          type: string
+          description: Status message
     BulkjobAccepted:
       type: object
       properties:
         job_id:
           type: string
           description: Bulkjob Id for checking status and downloading results
-    RefreshDebugInformation:
+    Data:
       type: object
       properties:
-        url:
-          type: string
-        hasResult:
-          type: boolean
-        lastCrawlTime:
-          type: integer
-          format: int64
-        message:
-          type: string
-    SearchCandidate:
+        score:
+          type: number
+          description: Enhance score
+          format: double
+        esscore:
+          type: number
+          format: double
+        entity:
+          $ref: '#/components/schemas/ObjectNode'
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error/warning messages.
+        refreshInfo:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RefreshDebugInformation'
+          description: Refresh info for debug
+        refreshDelta:
+          $ref: '#/components/schemas/Delta'
+        entity_ctx:
+          type: object
+          additionalProperties:
+            type: object
+            description: Entity-level context
+          description: Entity-level context
+      description: Enhanced entity data
+    ObjectNode:
       type: object
-      properties:
-        mlScore:
-          type: number
-          format: double
-        baseMlScore:
-          type: number
-          format: double
-        debugInfo:
-          $ref: '#/components/schemas/RefreshDebugInformation'
-      description: Search info for debug
+      description: Enhanced entity. Can be null if no entity was found.
+      example:
+        id: EYX1i02YVPsuT7fPLUYgRhQ
+        images:
+        - naturalHeight: 0
+          width: 0
+          url: https://kg.diffbot.com/image/api/get?fetch=yes&url=g%3Cj7P0St%7D9u.LnOv%7BI%7C%40g7.pBYINs%3Ff%7CGZ7jr-tGZhWf%3DK%2FOvy%5Bp%3CSKbs8i%7CEyNzCa%3EYr%3Ef%3CRc%3CLr5gx_hOgiFuER5%3Cb%7C%3E.I%5Do
+          isCached: true
+          naturalWidth: 0
+          primary: true
+          height: 0
+        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
+        name: Diffbot
+        origins:
+        - angel.co/diffbot
+        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
+        - crunchbase.com/organization/diffbot
+        - linkedin.com/company/diffbot
+        - en.wikipedia.org/wiki/Diffbot
     BulkjobResultPostRequest:
       type: object
       properties:
@@ -1024,57 +1075,6 @@ components:
           type: integer
           description: Seconds to wait for bulkjob results to export. Results will continue to export in the background. To only trigger an export, use 0.
           format: int32
-    Delta:
-      type: object
-    EnhanceResponse:
-      type: object
-      properties:
-        version:
-          type: integer
-          description: Response version
-          format: int32
-        hits:
-          type: integer
-          description: Number of matches returned
-          format: int32
-        kgversion:
-          type: string
-          description: Version of KG that was queried
-        request_ctx:
-          $ref: '#/components/schemas/RequestContext'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Data'
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error/warning messages.
-        searchInfo:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/SearchCandidate'
-          description: Search info for debug
-    StatusResponseError:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Status code (same as the HTTP status code)
-          format: int32
-        message:
-          type: string
-          description: Status message
-        request_ctx:
-          $ref: '#/components/schemas/RequestContext'
-        bulkjobStatus:
-          $ref: '#/components/schemas/BulkjobStatus'
-        error:
-          type: boolean
-          description: '`true` if error'
-    JsonNode:
-      type: object
   securitySchemes:
     tokenscheme:
       type: apiKey

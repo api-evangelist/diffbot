@@ -1,5 +1,8 @@
 aid: diffbot
 url: https://raw.githubusercontent.com/api-search/diffbot/refs/heads/main/apis.yml
+x-docs-platform: vitepress
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-25
 apis:
 - aid: diffbot:diffbot-extract-api
   name: Diffbot Extract API
