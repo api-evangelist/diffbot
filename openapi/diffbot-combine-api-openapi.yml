@@ -159,8 +159,139 @@ paths:
       - tokenscheme: []
 components:
   schemas:
-    Delta:
+    ObjectNode:
       type: object
+      description: Enhanced entity. Can be null if no entity was found.
+      example:
+        id: EYX1i02YVPsuT7fPLUYgRhQ
+        images:
+        - naturalHeight: 0
+          width: 0
+          url: https://kg.diffbot.com/image/api/get?fetch=yes&url=g%3Cj7P0St%7D9u.LnOv%7BI%7C%40g7.pBYINs%3Ff%7CGZ7jr-tGZhWf%3DK%2FOvy%5Bp%3CSKbs8i%7CEyNzCa%3EYr%3Ef%3CRc%3CLr5gx_hOgiFuER5%3Cb%7C%3E.I%5Do
+          isCached: true
+          naturalWidth: 0
+          primary: true
+          height: 0
+        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
+        name: Diffbot
+        origins:
+        - angel.co/diffbot
+        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
+        - crunchbase.com/organization/diffbot
+        - linkedin.com/company/diffbot
+        - en.wikipedia.org/wiki/Diffbot
+    SearchCandidate:
+      type: object
+      properties:
+        mlScore:
+          type: number
+          format: double
+        baseMlScore:
+          type: number
+          format: double
+        debugInfo:
+          $ref: '#/components/schemas/RefreshDebugInformation'
+      description: Search info for debug
+    EnhanceResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: Response version
+          format: int32
+        hits:
+          type: integer
+          description: Number of matches returned
+          format: int32
+        kgversion:
+          type: string
+          description: Version of KG that was queried
+        request_ctx:
+          $ref: '#/components/schemas/RequestContext'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Data'
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error/warning messages.
+        searchInfo:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SearchCandidate'
+          description: Search info for debug
+    PersonRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Diffbot entity type
+        name:
+          type: array
+          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        url:
+          type: array
+          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        location:
+          type: string
+          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        ip:
+          type: string
+          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        phone:
+          type: string
+          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        description:
+          type: string
+          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        email:
+          type: array
+          description: Email of the entity to enhance. Parameter can be used only with type `Person`
+          items:
+            type: string
+        employer:
+          type: string
+          description: Employer of the entity to enhance. Parameter can be used only with type `Person`
+        title:
+          type: string
+          description: Title of the entity to enhance. Parameter can be used only with type `Person`
+        school:
+          type: string
+          description: School of the entity to enhance. Parameter can be used only with type `Person`
+    OrganizationRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Diffbot entity type
+        name:
+          type: array
+          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        url:
+          type: array
+          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
+          items:
+            type: string
+        location:
+          type: string
+          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        ip:
+          type: string
+          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        phone:
+          type: string
+          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
+        description:
+          type: string
+          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
     BulkjobStatus:
       type: object
       properties:
@@ -257,48 +388,97 @@ components:
           items:
             $ref: '#/components/schemas/Report'
       description: Bulkjob status
-    PersonRequest:
+    AuthError:
       type: object
       properties:
-        type:
+        requestId:
           type: string
-          description: Diffbot entity type
-        name:
+          description: Identifier of the rejected request, also returned in the `X-Diffbot-RequestId` header
+        code:
+          type: integer
+          description: Status code (same as the HTTP status code)
+          format: int32
+        message:
+          type: string
+          description: Status message
+    Delta:
+      type: object
+    Data:
+      type: object
+      properties:
+        score:
+          type: number
+          description: Enhance score
+          format: double
+        esscore:
+          type: number
+          format: double
+        entity:
+          $ref: '#/components/schemas/ObjectNode'
+        errors:
           type: array
-          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
           items:
             type: string
+            description: Error/warning messages.
+        refreshInfo:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RefreshDebugInformation'
+          description: Refresh info for debug
+        refreshDelta:
+          $ref: '#/components/schemas/Delta'
+        entity_ctx:
+          type: object
+          additionalProperties:
+            type: object
+            description: Entity-level context
+          description: Entity-level context
+      description: Enhanced entity data
+    RequestContext:
+      type: object
+      properties:
+        query:
+          description: Submitted query
+          oneOf:
+          - $ref: '#/components/schemas/OrganizationRequest'
+          - $ref: '#/components/schemas/PersonRequest'
+          - type: string
+        query_ctx:
+          type: object
+          additionalProperties:
+            type: object
+            description: 'Query context. Example: submitted query parameters etc.'
+          description: 'Query context. Example: submitted query parameters etc.'
+      description: Request context
+    StatusResponseError:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Status code (same as the HTTP status code)
+          format: int32
+        message:
+          type: string
+          description: Status message
+        request_ctx:
+          $ref: '#/components/schemas/RequestContext'
+        bulkjobStatus:
+          $ref: '#/components/schemas/BulkjobStatus'
+        error:
+          type: boolean
+          description: '`true` if error'
+    RefreshDebugInformation:
+      type: object
+      properties:
         url:
-          type: array
-          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
-          items:
-            type: string
-        location:
           type: string
-          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        ip:
+        hasResult:
+          type: boolean
+        lastCrawlTime:
+          type: integer
+          format: int64
+        message:
           type: string
-          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        phone:
-          type: string
-          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        description:
-          type: string
-          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        email:
-          type: array
-          description: Email of the entity to enhance. Parameter can be used only with type `Person`
-          items:
-            type: string
-        employer:
-          type: string
-          description: Employer of the entity to enhance. Parameter can be used only with type `Person`
-        title:
-          type: string
-          description: Title of the entity to enhance. Parameter can be used only with type `Person`
-        school:
-          type: string
-          description: School of the entity to enhance. Parameter can be used only with type `Person`
     Report:
       type: object
       properties:
@@ -338,186 +518,6 @@ components:
           type: boolean
           description: Return only records that have a match
       description: Coverage reports generated for this bulkjob
-    RequestContext:
-      type: object
-      properties:
-        query:
-          description: Submitted query
-          oneOf:
-          - $ref: '#/components/schemas/OrganizationRequest'
-          - $ref: '#/components/schemas/PersonRequest'
-          - type: string
-        query_ctx:
-          type: object
-          additionalProperties:
-            type: object
-            description: 'Query context. Example: submitted query parameters etc.'
-          description: 'Query context. Example: submitted query parameters etc.'
-      description: Request context
-    AuthError:
-      type: object
-      properties:
-        requestId:
-          type: string
-          description: Identifier of the rejected request, also returned in the `X-Diffbot-RequestId` header
-        code:
-          type: integer
-          description: Status code (same as the HTTP status code)
-          format: int32
-        message:
-          type: string
-          description: Status message
-    EnhanceResponse:
-      type: object
-      properties:
-        version:
-          type: integer
-          description: Response version
-          format: int32
-        hits:
-          type: integer
-          description: Number of matches returned
-          format: int32
-        kgversion:
-          type: string
-          description: Version of KG that was queried
-        request_ctx:
-          $ref: '#/components/schemas/RequestContext'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Data'
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error/warning messages.
-        searchInfo:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/SearchCandidate'
-          description: Search info for debug
-    RefreshDebugInformation:
-      type: object
-      properties:
-        url:
-          type: string
-        hasResult:
-          type: boolean
-        lastCrawlTime:
-          type: integer
-          format: int64
-        message:
-          type: string
-    Data:
-      type: object
-      properties:
-        score:
-          type: number
-          description: Enhance score
-          format: double
-        esscore:
-          type: number
-          format: double
-        entity:
-          $ref: '#/components/schemas/ObjectNode'
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error/warning messages.
-        refreshInfo:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/RefreshDebugInformation'
-          description: Refresh info for debug
-        refreshDelta:
-          $ref: '#/components/schemas/Delta'
-        entity_ctx:
-          type: object
-          additionalProperties:
-            type: object
-            description: Entity-level context
-          description: Entity-level context
-      description: Enhanced entity data
-    ObjectNode:
-      type: object
-      description: Enhanced entity. Can be null if no entity was found.
-      example:
-        id: EYX1i02YVPsuT7fPLUYgRhQ
-        images:
-        - naturalHeight: 0
-          width: 0
-          url: https://kg.diffbot.com/image/api/get?fetch=yes&url=g%3Cj7P0St%7D9u.LnOv%7BI%7C%40g7.pBYINs%3Ff%7CGZ7jr-tGZhWf%3DK%2FOvy%5Bp%3CSKbs8i%7CEyNzCa%3EYr%3Ef%3CRc%3CLr5gx_hOgiFuER5%3Cb%7C%3E.I%5Do
-          isCached: true
-          naturalWidth: 0
-          primary: true
-          height: 0
-        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
-        name: Diffbot
-        origins:
-        - angel.co/diffbot
-        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
-        - crunchbase.com/organization/diffbot
-        - linkedin.com/company/diffbot
-        - en.wikipedia.org/wiki/Diffbot
-    SearchCandidate:
-      type: object
-      properties:
-        mlScore:
-          type: number
-          format: double
-        baseMlScore:
-          type: number
-          format: double
-        debugInfo:
-          $ref: '#/components/schemas/RefreshDebugInformation'
-      description: Search info for debug
-    StatusResponseError:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Status code (same as the HTTP status code)
-          format: int32
-        message:
-          type: string
-          description: Status message
-        request_ctx:
-          $ref: '#/components/schemas/RequestContext'
-        bulkjobStatus:
-          $ref: '#/components/schemas/BulkjobStatus'
-        error:
-          type: boolean
-          description: '`true` if error'
-    OrganizationRequest:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Diffbot entity type
-        name:
-          type: array
-          description: Name of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-          items:
-            type: string
-        url:
-          type: array
-          description: Origin or homepage URI of entity to enhance. Parameter can be used with types `Person` and `Organization`
-          items:
-            type: string
-        location:
-          type: string
-          description: Location of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        ip:
-          type: string
-          description: IP address of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        phone:
-          type: string
-          description: Phone of the entity to enhance. Parameter can be used with types `Person` and `Organization`
-        description:
-          type: string
-          description: Description of the entity to enhance. Parameter can be used with types `Person` and `Organization`
   securitySchemes:
     tokenscheme:
       type: apiKey
