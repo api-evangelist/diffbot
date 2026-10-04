@@ -106,6 +106,26 @@ paths:
       - Web Search
 components:
   responses:
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 401
+                default: 0
+              message:
+                type: string
+                example: 'Missing or invalid Authorization header. Expected: Bearer <token>'
+          examples:
+            Unauthorized:
+              summary: Unauthorized
+              value:
+                code: 401
+                message: 'Missing or invalid Authorization header. Expected: Bearer <token>'
+      description: Unauthorized
     Results:
       description: Successful response
       content:
@@ -172,31 +192,7 @@ components:
                 example: 154
                 default: 0
                 description: Time taken for retrieval, reranking, and response generation.
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                example: 401
-                default: 0
-              message:
-                type: string
-                example: 'Missing or invalid Authorization header. Expected: Bearer <token>'
-          examples:
-            Unauthorized:
-              summary: Unauthorized
-              value:
-                code: 401
-                message: 'Missing or invalid Authorization header. Expected: Bearer <token>'
-      description: Unauthorized
   schemas:
-    Size:
-      type: number
-      default: '10'
-      description: Number of results to return in the search response
     Query:
       type: array
       minItems: 1
@@ -205,6 +201,10 @@ components:
         type: string
         example: diffbot
       description: "Your search query.\n\nUse the following operators to refine your search. \n\n| Operator | Description | Example |\n| --- | --- | --- |\n| `after` | Documents published after the provided date | `after:2026-06-10` |\n| `before` | Documents published before the provided date | `before:2026-05-10` |\n| `site` | Documents matching the provided domain | `site:diffbot.com` |\n| `url` | Documents matching the exact URL | `url:diffbot.com` |"
+    Size:
+      type: number
+      default: '10'
+      description: Number of results to return in the search response
     MaxTokens:
       type: number
       description: Cap the search response to this value. Highlight chunks will be reduced in length equitably.
