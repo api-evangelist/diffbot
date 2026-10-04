@@ -655,6 +655,7 @@ tags:
   - Natural-Language
   - Entity Resolution
   - Artificial Intelligence
+  - Data Extraction
 tags_raw:
   - Extraction
   - Harvesting
@@ -666,6 +667,7 @@ tags_raw:
   - Natural Language
   - Entity Resolution
   - AI
+  - Data Extraction
 type: Index
 deliveryModel:
   model: saas
