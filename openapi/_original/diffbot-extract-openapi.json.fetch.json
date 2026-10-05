@@ -1,0 +1,12 @@
+{
+ "url": "https://www.diffbot.com/openapi/extract.json",
+ "requested_url": "https://www.diffbot.com/openapi/extract.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 299287,
+ "sha256": "5a7801421b21b91bd1403b5b7b3acc531553c43ddbb0571f8e57d8ef3727168a",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
