@@ -218,3 +218,55 @@ discounts:
       for open-source projects — star and open an issue on diffbot-python, diffbot-typescript
       or diffbot-skills to request it.
     source: https://www.diffbot.com/docs/web-search/
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - negotiated
+  units:
+  - credit
+  - rate
+  - seat
+  plans:
+  - name: Free
+    access: freemium
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - rate
+    periods:
+    - minute
+    - month
+  - name: Startup
+    access: paid
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - rate
+    periods:
+    - month
+    - second
+  - name: Plus
+    access: paid
+    model: free
+    model_how: derived
+    units:
+    - credit
+    - other
+    - rate
+    - seat
+    periods:
+    - month
+    - second
+  - name: Enterprise
+    access: negotiated
+    model: negotiated
+    model_how: stated
+    units:
+    - credit
+    - other
+    - rate
+    periods: []
