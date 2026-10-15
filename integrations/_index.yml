@@ -40,7 +40,7 @@
     builder: unknown (not in the directory record)
     other_apps:
     - diffbot-enhance
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: diffbot-pipedream
   label: Pipedream
@@ -66,5 +66,5 @@
     actions: true
     sources: false
     builder: Pipedream repo (component)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
