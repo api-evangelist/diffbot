@@ -318,6 +318,32 @@ components:
           type: string
         reason:
           type: string
+    JSONObject:
+      type: object
+      properties:
+        empty:
+          type: boolean
+      description: Entity. Can be null if no entity was found.
+      example:
+        id: EYX1i02YVPsuT7fPLUYgRhQ
+        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
+        name: Diffbot
+        origins:
+        - angel.co/diffbot
+        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
+        - crunchbase.com/organization/diffbot
+        - linkedin.com/company/diffbot
+        - en.wikipedia.org/wiki/Diffbot
+    ParameterError:
+      type: object
+      description: Returned when a request parameter is missing or invalid.
+      properties:
+        error:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Parameter 'query' not specified
     DqlPostRequest:
       required:
       - query
@@ -403,16 +429,90 @@ components:
           default: false
         view:
           type: string
-    ParameterError:
+    Data:
       type: object
-      description: Returned when a request parameter is missing or invalid.
+      properties:
+        score:
+          type: number
+          description: score
+          format: double
+          example: 0.75
+        entity:
+          $ref: '#/components/schemas/JSONObject'
+        entity_ctx:
+          type: object
+          additionalProperties:
+            type: object
+            description: Entity-level context
+          description: Entity-level context
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error/warning messages.
+        callbackQuery:
+          type: string
+          description: The query for the facet
+        upperBound:
+          type: number
+          description: The upper bound of the facet
+          format: double
+        lowerBound:
+          type: number
+          description: The lower bound of the facet
+          format: double
+        count:
+          type: integer
+          description: The count of the facet
+          format: int64
+        value:
+          type: string
+          description: The value of the facet
+        uri:
+          type: string
+          description: The uri of the facet value (for uri facets)
+      description: A single result
+    QueryParseError:
+      type: object
+      description: Returned when the DQL query itself cannot be parsed.
       properties:
         error:
           type: boolean
           example: true
         message:
           type: string
-          example: Parameter 'query' not specified
+          example: 'Encountered " ":" ": "" at line 1, column 6.'
+        line:
+          type: integer
+          example: 1
+        column:
+          type: integer
+          example: 6
+        htmlMessage:
+          type: string
+          description: The message with the offending token wrapped in `<mark>` for display.
+          example: <span>type:<mark>:</mark>:Bogus((</span>
+    AuthError:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 401
+        message:
+          type: string
+          example: Unauthorized. Incorrect token.
+        requestId:
+          type: string
+          example: a9cbf96bb0e2084d5c1595ae8f526576
+    ServerError:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: HTTP 500 Internal Server Error
     DqlResponse:
       type: object
       properties:
@@ -457,119 +557,22 @@ components:
           type: string
           description: Identifier for the generated coverage report. Present only when `report=true` was passed.
           example: C-4d87a965-b43f
-    Data:
-      type: object
-      properties:
-        score:
-          type: number
-          description: score
-          format: double
-          example: 0.75
-        entity:
-          $ref: '#/components/schemas/JSONObject'
-        entity_ctx:
-          type: object
-          additionalProperties:
-            type: object
-            description: Entity-level context
-          description: Entity-level context
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error/warning messages.
-        callbackQuery:
-          type: string
-          description: The query for the facet
-        upperBound:
-          type: number
-          description: The upper bound of the facet
-          format: double
-        lowerBound:
-          type: number
-          description: The lower bound of the facet
-          format: double
-        count:
-          type: integer
-          description: The count of the facet
-          format: int64
-        value:
-          type: string
-          description: The value of the facet
-        uri:
-          type: string
-          description: The uri of the facet value (for uri facets)
-      description: A single result
-    AuthError:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 401
-        message:
-          type: string
-          example: Unauthorized. Incorrect token.
-        requestId:
-          type: string
-          example: a9cbf96bb0e2084d5c1595ae8f526576
-    ServerError:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 500
-        message:
-          type: string
-          example: HTTP 500 Internal Server Error
-    QueryParseError:
-      type: object
-      description: Returned when the DQL query itself cannot be parsed.
-      properties:
-        error:
-          type: boolean
-          example: true
-        message:
-          type: string
-          example: 'Encountered " ":" ": "" at line 1, column 6.'
-        line:
-          type: integer
-          example: 1
-        column:
-          type: integer
-          example: 6
-        htmlMessage:
-          type: string
-          description: The message with the offending token wrapped in `<mark>` for display.
-          example: <span>type:<mark>:</mark>:Bogus((</span>
-    JSONObject:
-      type: object
-      properties:
-        empty:
-          type: boolean
-      description: Entity. Can be null if no entity was found.
-      example:
-        id: EYX1i02YVPsuT7fPLUYgRhQ
-        diffbotUri: http://diffbot.com/entity/EYX1i02YVPsuT7fPLUYgRhQ
-        name: Diffbot
-        origins:
-        - angel.co/diffbot
-        - bloomberg.com/profiles/companies/0506286D:US-diffbot-corp
-        - crunchbase.com/organization/diffbot
-        - linkedin.com/company/diffbot
-        - en.wikipedia.org/wiki/Diffbot
   responses:
-    ServerError:
-      description: Internal Server Error
+    QueryParseError:
+      description: Error parsing the query
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ServerError'
+            $ref: '#/components/schemas/QueryParseError'
           examples:
-            Server error:
-              summary: Server error
+            Parse error:
+              summary: Malformed DQL
               value:
-                code: 500
-                message: HTTP 500 Internal Server Error
+                line: 1
+                column: 6
+                htmlMessage: <span>type:<mark>:</mark>:Bogus((</span>
+                error: true
+                message: 'Encountered " ":" ": "" at line 1, column 6.'
     Unauthorized:
       description: Unauthorized
       content:
@@ -583,6 +586,18 @@ components:
                 code: 401
                 message: Unauthorized. Incorrect token.
                 requestId: a9cbf96bb0e2084d5c1595ae8f526576
+    ServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerError'
+          examples:
+            Server error:
+              summary: Server error
+              value:
+                code: 500
+                message: HTTP 500 Internal Server Error
     ParameterError:
       description: Invalid or missing parameters
       content:
@@ -648,21 +663,6 @@ components:
         application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
           schema:
             type: object
-    QueryParseError:
-      description: Error parsing the query
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/QueryParseError'
-          examples:
-            Parse error:
-              summary: Malformed DQL
-              value:
-                line: 1
-                column: 6
-                htmlMessage: <span>type:<mark>:</mark>:Bogus((</span>
-                error: true
-                message: 'Encountered " ":" ": "" at line 1, column 6.'
   securitySchemes:
     tokenscheme:
       type: apiKey
