@@ -12,6 +12,11 @@ apis:
   tags:
   - Extraction
   - Harvesting
+  - Web Scraping
+  - Web
+  tags_raw:
+  - Extraction
+  - Harvesting
   - Scraping
   - Web
   properties:
@@ -39,6 +44,11 @@ apis:
   - Crawling
   - Extraction
   - Harvesting
+  - Web Scraping
+  tags_raw:
+  - Crawling
+  - Extraction
+  - Harvesting
   - Scraping
   properties:
   - type: OpenAPI
@@ -62,6 +72,11 @@ apis:
   baseURL: https://nl.diffbot.com
   humanURL: https://www.diffbot.com/docs/natural-language/
   tags:
+  - Extraction
+  - Harvesting
+  - Language
+  - Web Scraping
+  tags_raw:
   - Extraction
   - Harvesting
   - Language
@@ -117,6 +132,12 @@ apis:
   baseURL: https://api.diffbot.com/v3
   humanURL: https://www.diffbot.com/docs/crawl/search
   tags:
+  - Bulk
+  - Crawling
+  - Extraction
+  - Harvesting
+  - Web Scraping
+  tags_raw:
   - Bulk
   - Crawling
   - Extraction
@@ -647,7 +668,7 @@ name: Diffbot
 tags:
   - Extraction
   - Harvesting
-  - Scraping
+  - Web Scraping
   - Web
   - Knowledge Graph
   - Crawling
