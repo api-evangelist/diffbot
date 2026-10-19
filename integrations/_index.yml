@@ -68,3 +68,113 @@
     builder: Pipedream repo (component)
   status: not-a-workflow
   arazzo: null
+- slug: diffbot-go-module-proxy
+  label: Go module proxy
+  partner_name: Go module proxy
+  category: official SDK (Go)
+  type: register
+  channel: package-registry
+  evidence: https://pkg.go.dev/github.com/diffbot/diffbot-go-client
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: Go module proxy (public registry JSON)
+    spec_file: null
+    language: Go
+    packages:
+    - name: github.com/diffbot/diffbot-go-client
+      version: v0.0.0-20250619194721-188674a61e05
+      released: '2025-06-19'
+      released_field: Time
+      lapsed: false
+      page: https://pkg.go.dev/github.com/diffbot/diffbot-go-client
+      repo_leg: github-org:diffbot
+      publisher_leg: org:diffbot
+      matched_by: github-org
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: diffbot-npm-registry
+  label: npm registry
+  partner: npm
+  partner_name: npm registry
+  category: official SDK (JavaScript/TypeScript)
+  type: register
+  channel: package-registry
+  evidence: https://www.npmjs.com/package/@diffbot/pi
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@diffbot/pi'
+      version: 0.2.0
+      released: '2026-09-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@diffbot/pi
+      repo_leg: github-org:diffbot
+      publisher_leg: email:diffbot.com
+      matched_by: domain
+    - name: '@diffbot/typescript'
+      version: 0.2.0
+      released: '2026-09-08'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@diffbot/typescript
+      repo_leg: github-org:diffbot
+      publisher_leg: email:diffbot.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: diffbot-pypi
+  label: PyPI
+  partner: pypi
+  partner_name: PyPI
+  category: official SDK (Python)
+  type: register
+  channel: package-registry
+  evidence: https://pypi.org/project/diffbot/
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: PyPI (public registry JSON)
+    spec_file: null
+    language: Python
+    packages:
+    - name: diffbot
+      version: 3.0.0
+      released: '2026-09-28'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/diffbot/
+      repo_leg: github-org:diffbot
+      publisher_leg: email:diffbot.com
+      matched_by: domain
+    - name: diffbot-python
+      version: 0.3.0
+      released: '2026-09-28'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/diffbot-python/
+      repo_leg: github-org:diffbot
+      publisher_leg: email:diffbot.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
