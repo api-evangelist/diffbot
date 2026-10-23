@@ -101,7 +101,7 @@ apis:
 - aid: diffbot:diffbot-knowledge-graph-api
   name: Diffbot Knowledge Graph API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/diffbot.png
-  baseURL: https://kg.diffbot.com/kg/v3
+  baseURL: https://api.diffbot.com
   humanURL: https://www.diffbot.com/docs/ontology/
   tags:
   - Knowledge Graph
@@ -156,7 +156,7 @@ apis:
   name: Diffbot Account API
   description: The Account API from Diffbot — 1 operation(s) for account.
   humanURL: https://www.diffbot.com/docs/extract/
-  baseURL: https://api.diffbot.com/v3
+  baseURL: https://api.diffbot.com/v4
   tags:
   - Account
   properties:
@@ -276,7 +276,7 @@ apis:
   name: Diffbot Bulk Enhance API
   description: Enhance multiple records asynchronously
   humanURL: https://www.diffbot.com/docs/extract/
-  baseURL: https://api.diffbot.com/v3
+  baseURL: https://kg.diffbot.com
   tags:
   - Bulk Enhance
   properties:
@@ -306,7 +306,7 @@ apis:
   name: Diffbot Combine API
   description: Enhance both a person and the employer data
   humanURL: https://www.diffbot.com/docs/extract/
-  baseURL: https://api.diffbot.com/v3
+  baseURL: https://kg.diffbot.com
   tags:
   - Combine
   properties:
@@ -398,7 +398,7 @@ apis:
   name: Diffbot DQL Search API
   description: DQL Search
   humanURL: https://www.diffbot.com/docs/extract/
-  baseURL: https://api.diffbot.com/v3
+  baseURL: https://kg.diffbot.com
   tags:
   - DQL Search
   properties:
@@ -428,7 +428,7 @@ apis:
   name: Diffbot Enhance API
   description: Enhance single records synchronously
   humanURL: https://www.diffbot.com/docs/extract/
-  baseURL: https://api.diffbot.com/v3
+  baseURL: https://kg.diffbot.com
   tags:
   - Enhance
   properties:
@@ -638,7 +638,7 @@ apis:
   name: Diffbot Web Search API
   description: The Web Search API from Diffbot — 1 operation(s) for web search.
   humanURL: https://www.diffbot.com/docs/extract/
-  baseURL: https://api.diffbot.com/v3
+  baseURL: https://llm.diffbot.com/api/v1/web_search
   tags:
   - Web Search
   properties:
