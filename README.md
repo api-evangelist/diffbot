@@ -1,4 +1,4 @@
-# Diffbot (diffbot)
+# Diffbot
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,179 +66,193 @@
 
 Diffbot is a company that provides AI-powered web scraping and data extraction services. Their technology allows businesses to automatically extract and organize data from any website, turning unstructured web content into structured data that can be easily analyzed and used for various purposes. Diffbot's solution is used by companies across industries to gather competitive intelligence, monitor market trends, track online mentions, and more.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-search/diffbot/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-search/diffbot/refs/heads/main/apis.yml)
+**Areas:** Extraction · Harvesting · Web Scraping · Web · Knowledge Graph · Crawling · Web Search · Natural-Language · Entity Resolution · Artificial Intelligence · Data Extraction
 
-## Scope
+## Diffbot on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Diffbot is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/diffbot/](https://apis.io/providers/diffbot/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (22)
 
-- Extraction
-- Harvesting
-- Scraping
-- Web
+- [Diffbot Extract API](https://apis.io/apis/diffbot/diffbot-extract-api/) — Diffbot Extract API is a powerful tool that allows users to automatically extract multiple types of data from web pages. This API is capable of extracting…
+- [Diffbot Crawl API](https://apis.io/apis/diffbot/diffbot-crawl-api/) — Diffbot Crawl API is a powerful tool that automates the process of extracting content and data from websites on a large scale. By using advanced machine…
+- [Diffbot Natural Language API](https://apis.io/apis/diffbot/diffbot-natural-language-api/) — Diffbot Natural Language API allows users to extract and analyze textual content from websites. By utilizing advanced natural language processing…
+- [Diffbot Knowledge Graph API](https://apis.io/apis/diffbot/diffbot-knowledge-graph-api/) — The Knowledge Graph itself — a linked graph of over 10 billion entities (organizations, people, articles, places, products, job posts and more) crawled and…
+- [Diffbot Crawl/Bulk Job API](https://apis.io/apis/diffbot/diffbot-crawlbulk-job-api/) — The Diffbot Crawl/Bulk Job API is a powerful tool that allows users to automatically extract and organize large amounts of web data. It enables users to…
+- [Diffbot Account API](https://apis.io/apis/diffbot/diffbot-account-api/) — The Account API from Diffbot — 1 operation(s) for account.
+- [Diffbot Analyze API](https://apis.io/apis/diffbot/diffbot-analyze-api/) — The Analyze API from Diffbot — 1 operation(s) for analyze.
+- [Diffbot Article API](https://apis.io/apis/diffbot/diffbot-article-api/) — The Article API from Diffbot — 1 operation(s) for article.
+- [Diffbot Bulk API](https://apis.io/apis/diffbot/diffbot-bulk-api/) — The Bulk API from Diffbot — 2 operation(s) for bulk.
+- [Diffbot Bulk Enhance API](https://apis.io/apis/diffbot/diffbot-bulk-enhance-api/) — Enhance multiple records asynchronously
+- [Diffbot Combine API](https://apis.io/apis/diffbot/diffbot-combine-api/) — Enhance both a person and the employer data
+- [Diffbot Custom API](https://apis.io/apis/diffbot/diffbot-custom-api/) — The Custom API from Diffbot — 2 operation(s) for custom.
+- [Diffbot Discussion API](https://apis.io/apis/diffbot/diffbot-discussion-api/) — The Discussion API from Diffbot — 1 operation(s) for discussion.
+- [Diffbot DQL Search API](https://apis.io/apis/diffbot/diffbot-dql-search-api/) — DQL Search
+- [Diffbot Enhance API](https://apis.io/apis/diffbot/diffbot-enhance-api/) — Enhance single records synchronously
+- [Diffbot Event API](https://apis.io/apis/diffbot/diffbot-event-api/) — The Event API from Diffbot — 1 operation(s) for event.
+- [Diffbot Image API](https://apis.io/apis/diffbot/diffbot-image-api/) — The Image API from Diffbot — 1 operation(s) for image.
+- [Diffbot Job API](https://apis.io/apis/diffbot/diffbot-job-api/) — The Job API from Diffbot — 1 operation(s) for job.
+- [Diffbot List API](https://apis.io/apis/diffbot/diffbot-list-api/) — The List API from Diffbot — 1 operation(s) for list.
+- [Diffbot Product API](https://apis.io/apis/diffbot/diffbot-product-api/) — The Product API from Diffbot — 1 operation(s) for product.
+- [Diffbot Video API](https://apis.io/apis/diffbot/diffbot-video-api/) — The Video API from Diffbot — 1 operation(s) for video.
+- [Diffbot Web Search API](https://apis.io/apis/diffbot/diffbot-web-search-api/) — The Web Search API from Diffbot — 1 operation(s) for web search.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2024-11-13
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Diffbot DQL API
+Event-driven and webhook contracts.
 
-The Diffbot DQL API is a powerful tool that allows users to query and retrieve data from the web in a structured format. By using a simple query language, users can access a wealth of information from articles, images, videos, and more. This API is particularly useful for developers and data analysts who need to extract specific data from websites quickly and efficiently.
+- [Diffbot Webhooks](https://apis.io/asyncapis/diffbot/diffbot-webhooks/)
 
-- **Human URL:** [https://docs.diffbot.com/reference/introduction-to-search-dql](https://docs.diffbot.com/reference/introduction-to-search-dql)
+#### MCP servers (1)
 
-#### Tags
+Model Context Protocol servers that expose the API to agents.
 
-- Extraction
-- Harvesting
-- Query Language
-- Scraping
+- [Diffbot MCP Server](https://apis.io/servers/diffbot/diffbot-mcp-server/)
 
-#### Properties
+#### Agentic access (1)
 
-- [Documentation](https://docs.diffbot.com/reference/introduction-to-search-dql)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Diffbot Enhance API
+- [Diffbot Agentic Access](https://apis.io/agentic-access/diffbot/diffbot-agentic-access/)
 
-Diffbot Enhance API enhances data by providing additional context and insights. By analyzing text and images, the API can identify and extract key information, such as entities, topics, and sentiment, to enrich existing data sets.
+#### Collections (5)
 
-- **Human URL:** [https://docs.diffbot.com/reference/introduction-to-enhance-api](https://docs.diffbot.com/reference/introduction-to-enhance-api)
+Postman and Open Collection request collections.
 
-#### Tags
+- [Diffbot API](https://apis.io/collections/diffbot/open-diffbot/)
+- [Diffbot Crawl API](https://apis.io/collections/diffbot/open-diffbot-crawl-api/)
+- [Diffbot Crawl Extract API](https://apis.io/collections/diffbot/open-diffbot-extract-api/)
+- [Diffbot Crawl Knowledge Graph API](https://apis.io/collections/diffbot/open-diffbot-knowledge-graph-api/)
+- [Diffbot Crawl Natural Language API](https://apis.io/collections/diffbot/open-diffbot-natural-language-api/)
 
-- Enhancements
-- Extraction
-- Harvesting
-- Scraping
+#### Overlays (29)
 
-#### Properties
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Documentation](https://docs.diffbot.com/reference/introduction-to-enhance-api)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Diffbot Account Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-account-api-phrasing-overlay/)
+- [Diffbot Account Overlay](https://apis.io/overlays/diffbot/diffbot-account-overlay/)
+- [Diffbot Analyze Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-analyze-api-phrasing-overlay/)
+- [Diffbot Article Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-article-api-phrasing-overlay/)
+- [Diffbot Bulk Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-bulk-api-phrasing-overlay/)
+- [Diffbot Bulk Enhance Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-bulk-enhance-api-phrasing-overlay/)
+- [Diffbot Bulk Overlay](https://apis.io/overlays/diffbot/diffbot-bulk-overlay/)
+- [Diffbot Combine Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-combine-api-phrasing-overlay/)
+- [Diffbot Crawl Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-crawl-api-phrasing-overlay/)
+- [Diffbot Crawl Overlay](https://apis.io/overlays/diffbot/diffbot-crawl-overlay/)
+- [Diffbot Custom Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-custom-api-phrasing-overlay/)
+- [Diffbot Discussion Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-discussion-api-phrasing-overlay/)
+- [Diffbot Dql Overlay](https://apis.io/overlays/diffbot/diffbot-dql-overlay/)
+- [Diffbot Dql Search Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-dql-search-api-phrasing-overlay/)
+- [Diffbot Enhance Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-enhance-api-phrasing-overlay/)
+- [Diffbot Enhance Overlay](https://apis.io/overlays/diffbot/diffbot-enhance-overlay/)
+- [Diffbot Event Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-event-api-phrasing-overlay/)
+- [Diffbot Extract Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-extract-api-phrasing-overlay/)
+- [Diffbot Extract Overlay](https://apis.io/overlays/diffbot/diffbot-extract-overlay/)
+- [Diffbot Image Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-image-api-phrasing-overlay/)
+- [Diffbot Job Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-job-api-phrasing-overlay/)
+- [Diffbot Knowledge Graph Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-knowledge-graph-api-phrasing-overlay/)
+- [Diffbot List Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-list-api-phrasing-overlay/)
+- [Diffbot Natural Language Api Phrasing Overlay](https://apis.io/overlays/diffbot/diffbot-natural-language-api-phrasing-overlay/)
+- [Diffbot Natural Language Overlay](https://apis.io/overlays/diffbot/diffbot-natural-language-overlay/)
+- …and 4 more published on APIs.io
 
-### Diffbot Natural Language API
+#### Security (2)
 
-Diffbot Natural Language API allows users to extract and analyze textual content from websites. By utilizing advanced natural language processing algorithms, the API can automatically identify and extract valuable information such as article titles, authors, publication dates, and key entities mentioned in the text.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.diffbot.com/reference/introduction-to-natural-language-api](https://docs.diffbot.com/reference/introduction-to-natural-language-api)
+- [Diffbot Authentication](https://apis.io/security/diffbot/diffbot-authentication/)
+- [Diffbot Domain Security](https://apis.io/security/diffbot/diffbot-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Extraction
-- Harvesting
-- Languages
-- Scraping
+Published plans, tiers and prices.
 
-#### Properties
+- [Diffbot Plans Pricing](https://apis.io/plans/diffbot/diffbot-plans-pricing/)
 
-- [Documentation](https://docs.diffbot.com/reference/introduction-to-natural-language-api)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Diffbot Extract API
+Published request limits.
 
-Diffbot Extract API is a powerful tool that allows users to automatically extract multiple types of data from web pages. This API is capable of extracting information such as article text, author details, images, and even product prices from a variety of websites.
+- [Diffbot Rate Limits](https://apis.io/rate-limits/diffbot/diffbot-rate-limits/)
 
-- **Human URL:** [https://docs.diffbot.com/reference/extract-introduction](https://docs.diffbot.com/reference/extract-introduction)
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Extraction
-- Harvesting
-- Scraping
+- [Diffbot Finops](https://apis.io/finops/diffbot/diffbot-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://docs.diffbot.com/reference/extract-introduction)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Diffbot Bulk Extract API
-
-Diffbot Bulk Extract API is a tool that allows users to extract data at scale from a variety of sources, including websites, documents, and social media platforms. This API utilizes machine learning algorithms to automatically identify and extract relevant information from large amounts of unstructured data.
-
-- **Human URL:** [https://docs.diffbot.com/reference/bulk-job-introduction](https://docs.diffbot.com/reference/bulk-job-introduction)
-
-#### Tags
-
-- Extraction
-- Harvesting
-- Scraping
-
-#### Properties
-
-- [Documentation](https://docs.diffbot.com/reference/bulk-job-introduction)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Diffbot Crawl API
-
-Diffbot Crawl API is a powerful tool that automates the process of extracting content and data from websites on a large scale. By using advanced machine learning algorithms, the API can analyze and extract information from web pages with speed and accuracy.
-
-- **Human URL:** [https://docs.diffbot.com/reference/crawl-introduction](https://docs.diffbot.com/reference/crawl-introduction)
-
-#### Tags
-
-- Crawling
-- Extraction
-- Harvesting
-- Scraping
-
-#### Properties
-
-- [Documentation](https://docs.diffbot.com/reference/crawl-introduction)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Diffbot Crawl/Bulk Job API
-
-The Diffbot Crawl/Bulk Job API is a powerful tool that allows users to automatically extract and organize large amounts of web data. It enables users to create custom scraping jobs that can gather information from multiple websites in a structured and organized manner.
-
-- **Human URL:** [https://docs.diffbot.com/reference/search](https://docs.diffbot.com/reference/search)
-
-#### Tags
-
-- Bulk
-- Crawling
-- Extraction
-- Harvesting
-- Scraping
-
-#### Properties
-
-- [Documentation](https://docs.diffbot.com/reference/search)
-- [Postman Collection](collections/diffbot.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/diffbot.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/diffbot)
-- [LinkedIn](https://www.linkedin.com/company/diffbot)
-- [Changelog](https://docs.diffbot.com/changelog)
 - [Website](https://www.diffbot.com/)
+- [Documentation](https://www.diffbot.com/docs/)
+- [Getting started](https://www.diffbot.com/docs/products-overview)
+- [API reference](https://www.diffbot.com/docs/interfaces/api)
 - [Pricing](https://www.diffbot.com/pricing/)
-- [Customers](https://www.diffbot.com/customer-stories/)
-- [Documentation](https://docs.diffbot.com/docs/getting-started-with-diffbot)
-- [News](https://www.diffbot.com/company/news/)
+- [Sign up](https://app.diffbot.com/get-started)
+- [Changelog](https://www.diffbot.com/changelog)
 - [Blog](https://blog.diffbot.com/)
-- [Glossary](https://blog.diffbot.com/knowledge-graph-glossary/)
-- [Webinars](https://blog.diffbot.com/webinars/)
-- [Terms of Service](https://www.diffbot.com/company/terms/)
-- [Privacy Policy](https://www.diffbot.com/company/privacy/)
-- [Data Licensing](https://docs.diffbot.com/docs/is-diffbot-compliant-with-gdpr)
-- [L L Ms Txt](https://docs.diffbot.com/llms.txt)
+- [Terms of service](https://www.diffbot.com/company/terms/)
+- [Privacy policy](https://www.diffbot.com/company/privacy/)
+- [GitHub](https://github.com/diffbot)
+- [Status](https://status.diffbot.com/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 73.8** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 81.7 |
+| Contract quality | 58.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 81.6 |
+| Developer ergonomics | 90.5 |
+| Access clarity | 84.2 |
+
+**Agent readiness 42.4** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | yes |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 27.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/diffbot/](https://apis.io/providers/diffbot/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Diffbot: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/diffbot/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
